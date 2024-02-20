@@ -1,3 +1,6 @@
 # Mark Survival Ascended for Minetest
-Todo write the readme file
 
+For install the game, please download this repository and :
+
+- Place the games/mark_survival_ascended in your minetest/games/
+- Place the worlds/theIsland in your minetest/worlds
