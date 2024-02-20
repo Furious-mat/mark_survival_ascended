@@ -1,0 +1,160 @@
+# textdomain:equip_exam
+
+# Translators: Jordan Irwin (AntumDeluge)
+
+# Any attribute keys not listed here can be added manually. Just replace
+# underscores ("_") with spaces (" ") and append it with ": @1" and it
+# will be translated.
+#
+# For example: In the `building_blocks` mod, some nodes and items have
+# the "slab_desc" attribute. To translate it, add the following line:
+#
+#   slab desc: @1=
+
+
+# general
+Equipment Examiner=Examinador de Equipo
+Specs:=
+specs unavailable=specs extraviados
+Close=Cerrar
+Technical@nNames=Nombres@nTécnicos
+yes=sí
+no=
+Name: @1=Nombre: @1
+ID: @1=
+Mod: @1=
+Description: @1=Descripción: @1
+Type: @1=Tipo: @1
+
+# tool
+Tool:=Herramienta:
+node drop level: @1=nivel de caída de nodo: @1
+uses: @1=cantidad de uso: @1
+
+# node
+Node:=Nodo:
+attached: @1=apegado: @1
+dig immediate: @1=excava inmediatamente: @1
+added fall damage: @1=daño de caida agregado: @1
+hand breakable: @1=se rompe por mano: @1
+bouncy: @1=rebote: @1
+colorable: @1=colorado: @1
+rail-like: @1=como carril: @1
+fall: @1=se cae: @1
+level: @1=nivel: @1
+slippery: @1=resbaladizo: @1
+drops: @1=da: @1
+ground content: @1=contenido de tierra: @1
+replaced on build: @1=se reemplaza al construir: @1
+sunlight propagates: @1=se propaga luz del sol: @1
+walkable: @1=atravesable: @1
+pointable: @1=apuntable: @1
+diggable: @1=cavable: @1
+climbable: @1=escalada: @1
+floodable: @1=inundable: @1
+liquid type: @1=tipo líquido: @1
+drawtype: @1=tipo traza: @1
+
+# tool & node
+mine level: @1=nivel de minería: @1
+chop level: @1=nivel de talar: @1
+dig level: @1=nivel de excavar: @1
+snap level: @1=nivel de romper: @1
+explosive level: @1=nivel de explotar: @1
+light level: @1=nivel de luz: @1
+
+# weapon
+Weapon:=Arma:
+attack: @1=ataque: @1
+
+# armor
+Armor:=Amadura:
+defense: @1=defensa: @1
+head def.: @1=def. de cabeza: @1
+torso def.: @1=def. de torso: @1
+legs def.: @1=def. de piernas: @1
+feet def.: @1=def. de pies: @1
+shield def.: @1=def. de escudo: @1
+healing: @1=curativo: @1
+
+# other & meta
+Other:=Otro:
+Meta:=
+groups:=grupos:
+inventory image: @1=imagen inventario: @1
+wield image: @1=imagen empuñado: @1
+flammable: @1=inflamable: @1
+color: @1=
+speed interval: @1=intervalo velocidad: @1
+range: @1=alcance: @1
+texture: @1=textura: @1
+texture alpha mode: @1=modo textura alfa: @1
+stackable: @1=apilable: @1
+stack max: @1=apila max: @1
+style: @1=estilo: @1
+liquids pointable: @1=apuntable a líquido: @1
+palette: @1=paleta: @1
+palette index: @1=índice de paleta: @1
+durability: @1=durabilidad: @1
+wear: @1=deterioro: @1
+emits light: @1=emite luz: @1
+backface culling: @1=
+mesh: @1=
+paramtype: @1=
+paramtype2: @1=
+on rotate: @1=al girar: @1
+infotext: @1=texto informativo: @1
+liquid viscosity: @1=viscosidad líquido: @1
+drowning: @1=ahogo: @1
+liquid alternative flowing: @1=líquido fluente alternativo: @1
+liquid range: @1=alcance líquido: @1
+liquid renewable: @1=líquido renovable: @1
+liquid alternative source: @1=fuente líquido alternativa: @1
+waving: @1=ondulación: @1
+wallmounted: @1=montado en pared: @1
+legacy wallmounted: @1=legado montado en pared: @1
+
+# xdecor / workbench
+workbench repairable: @1=reparo por banco de trabajo: @1
+
+# 3d_armor
+preview: @1=previsio: @1
+subtype: @1=subtipo: @1
+
+# shields
+reciprocate damage: @1=reciproca daño: @1
+
+# throwing
+target: @1=objetivo: @1
+on hit sound: @1=sonido al golpear: @1
+allow protected: @1=permitir protegido: @1
+mass: @1=masa: @1
+strength: @1=fuerza: @1
+
+# sling:sling
+cooldown: @1=
+delay: @1=demora: @1
+sound: @1=sonido: @1
+
+# technic
+wear represents: @1=
+
+# unverified
+replace empty with: @1=vacío reemplazado con: @1
+jump disabled: @1=brinco se desactivada: @1
+liquid boyancy: @1=se flota en líquido: @1
+repair disabled: @1=reparo se desactiva: @1
+anvil repair disabled: @1=se desactiva el reparo de yunque: @1
+slots: @1=espacios: @1
+radiation: @1=radiación: @1
+punch operable: @1=operado por golpe: @1
+
+# groups not translated?
+not in creative inventory: @1=no está en inventario creativo: @1
+immortal: @1=inmortal: @1
+meat: @1=carne: @1
+eatable: @1=comestible: @1
+wool: @1=lana: @1
+metal: @1=
+weapon: @1=arma: @1
+heavy: @1=pesado: @1

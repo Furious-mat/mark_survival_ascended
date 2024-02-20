@@ -1,0 +1,12 @@
+# Whether or not subtitles should be enabled by default on singleplayer.
+subtitles.default_enable_singleplayer (Enable subtitles by default on singleplayer) bool true
+
+# Whether or not subtitles should be enabled by default on multiplayer.
+subtitles.default_enable_multiplayer (Enable subtitles by default on multiplayer) bool false
+
+# If this is enabled, an introduction message will be shown to new players informing them that subtitles are available.
+# This has no effect on singleplayer.
+subtitles.show_introduction (Show introduction message) bool true
+
+# If this is enabled, a subtitles button or tab will be shown on supported inventories.
+subtitles.inventory_integration (Enable inventory integration) bool true

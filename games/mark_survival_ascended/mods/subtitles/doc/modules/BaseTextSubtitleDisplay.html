@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Subtitles API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Class_BaseTextSubtitleDisplay">Class BaseTextSubtitleDisplay </a></li>
+<li><a href="#Class_BaseTextSubtitleDisplay_Entry">Class BaseTextSubtitleDisplay.Entry </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Agent.html">Agent</a></li>
+  <li><strong>BaseTextSubtitleDisplay</strong></li>
+  <li><a href="../modules/ChatSubtitleDisplay.html">ChatSubtitleDisplay</a></li>
+  <li><a href="../modules/ClassicSubtitleDisplay.html">ClassicSubtitleDisplay</a></li>
+  <li><a href="../modules/CornerSubtitleDisplay.html">CornerSubtitleDisplay</a></li>
+  <li><a href="../modules/Sound.html">Sound</a></li>
+  <li><a href="../modules/SubtitleDisplay.html">SubtitleDisplay</a></li>
+  <li><a href="../modules/WaypointSubtitleDisplay.html">WaypointSubtitleDisplay</a></li>
+  <li><a href="../modules/api.html">api</a></li>
+  <li><a href="../modules/chatcommands.html">chatcommands</a></li>
+  <li><a href="../modules/descriptions.html">descriptions</a></li>
+  <li><a href="../modules/init.html">init</a></li>
+  <li><a href="../modules/listeners.html">listeners</a></li>
+  <li><a href="../modules/menu.html">menu</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>BaseTextSubtitleDisplay</code></h1>
+<p>Provides the BaseTextSubtitleDisplay class, a base class for subtitle displays using text HUDs.</p>
+<p></p>
+
+
+<h2><a href="#Class_BaseTextSubtitleDisplay">Class BaseTextSubtitleDisplay </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay:remove_entry">subtitles.BaseTextSubtitleDisplay:remove_entry (entry)</a></td>
+	<td class="summary">Removes a subtitle entry.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay:get_free_slot">subtitles.BaseTextSubtitleDisplay:get_free_slot ()</a></td>
+	<td class="summary">Returns the next available slot.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay:get_huds">subtitles.BaseTextSubtitleDisplay:get_huds (entry)</a></td>
+	<td class="summary">Generates the HUDs to display a subtitle entry.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay:get_hud_defaults">subtitles.BaseTextSubtitleDisplay:get_hud_defaults (entry)</a></td>
+	<td class="summary">Returns the default properties for a HUD for the specified entry.</td>
+	</tr>
+</table>
+<h2><a href="#Class_BaseTextSubtitleDisplay_Entry">Class BaseTextSubtitleDisplay.Entry </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:new">subtitles.BaseTextSubtitleDisplay.Entry:new (display, sound, slot)</a></td>
+	<td class="summary">Constructor.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:show">subtitles.BaseTextSubtitleDisplay.Entry:show ()</a></td>
+	<td class="summary">Shows or updates the subtitle.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:hide">subtitles.BaseTextSubtitleDisplay.Entry:hide ()</a></td>
+	<td class="summary">Hides the subtitle.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:get_offset">subtitles.BaseTextSubtitleDisplay.Entry:get_offset ()</a></td>
+	<td class="summary">Gets the entry's offset based on its slot.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:get_distance_shade">subtitles.BaseTextSubtitleDisplay.Entry:get_distance_shade ()</a></td>
+	<td class="summary">Returns a shade representing the distance of the sound from the player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:get_pan">subtitles.BaseTextSubtitleDisplay.Entry:get_pan ()</a></td>
+	<td class="summary">Calculates which direction the sound is in from the player's perspective, and how far.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:ref">subtitles.BaseTextSubtitleDisplay.Entry:ref ()</a></td>
+	<td class="summary">Increases the entry's reference count.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.BaseTextSubtitleDisplay.Entry:unref">subtitles.BaseTextSubtitleDisplay.Entry:unref ()</a></td>
+	<td class="summary">Decreases the entry's reference count, possibly removing it.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header has-description"><a name="Class_BaseTextSubtitleDisplay"></a>Class BaseTextSubtitleDisplay </h2>
+
+          <div class="section-description">
+          A base class for subtitle displays using text HUDs.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay:remove_entry"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay:remove_entry (entry)</strong>
+    </dt>
+    <dd>
+    Removes a subtitle entry.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entry</span>
+         The `Entry` object to remove.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay:get_free_slot"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay:get_free_slot ()</strong>
+    </dt>
+    <dd>
+    Returns the next available slot.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The slot index, starting from 1.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay:get_huds"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay:get_huds (entry)</strong>
+    </dt>
+    <dd>
+    Generates the HUDs to display a subtitle entry.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entry</span>
+         The `Entry` object.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A table of {hud_key1 = hud_def1, hud_key2 = hud_def2}.
+         HUD keys can be strings or integers.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay:get_hud_defaults"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay:get_hud_defaults (entry)</strong>
+    </dt>
+    <dd>
+    Returns the default properties for a HUD for the specified entry.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">entry</span>
+         An `Entry` object.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A partial HUD definition.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Class_BaseTextSubtitleDisplay_Entry"></a>Class BaseTextSubtitleDisplay.Entry </h2>
+
+          <div class="section-description">
+          Represents a single subtitle.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:new"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:new (display, sound, slot)</strong>
+    </dt>
+    <dd>
+    Constructor.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">display</span>
+         The `SubtitleDisplay` object.
+        </li>
+        <li><span class="parameter">sound</span>
+         The `Sound` object.
+        </li>
+        <li><span class="parameter">slot</span>
+         The integer subtitle slot.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:show"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:show ()</strong>
+    </dt>
+    <dd>
+    Shows or updates the subtitle.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:hide"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:hide ()</strong>
+    </dt>
+    <dd>
+    Hides the subtitle.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:get_offset"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:get_offset ()</strong>
+    </dt>
+    <dd>
+    Gets the entry's offset based on its slot.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A table of {x: integer, y: integer}.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:get_distance_shade"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:get_distance_shade ()</strong>
+    </dt>
+    <dd>
+    Returns a shade representing the distance of the sound from the player.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A number from 0.0 to 1.0.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:get_pan"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:get_pan ()</strong>
+    </dt>
+    <dd>
+    Calculates which direction the sound is in from the player's perspective, and how far.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A number from -1.0 (far left) to 1.0 (far right).
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:ref"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:ref ()</strong>
+    </dt>
+    <dd>
+    Increases the entry's reference count.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.BaseTextSubtitleDisplay.Entry:unref"></a>
+    <strong>subtitles.BaseTextSubtitleDisplay.Entry:unref ()</strong>
+    </dt>
+    <dd>
+    Decreases the entry's reference count, possibly removing it.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-01-14 06:51:17 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

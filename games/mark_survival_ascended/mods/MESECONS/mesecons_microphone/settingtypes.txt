@@ -1,0 +1,7 @@
+# Sets the default hotword when placing a microphone.
+# Default: "microphone"
+mesecons_microphone_default_hotword (Mesecons Microphone default hotword) string microphone
+
+# Range is determined by a cube with "range*2" sides centered on the player.
+# Default: 50
+mesecons_microphone_range (Mesecons Microphone maximum range) int 50

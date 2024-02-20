@@ -1,0 +1,1 @@
+local _={};_[1]="player_name";return {{[_[1]]="singleplayer"},{[_[1]]="Furi0us_mat"},{[_[1]]="Gogo"},{[_[1]]="Test2"},{[_[1]]="admin"},{[_[1]]="Furi0us_mat2"},{[_[1]]="FM3"}}

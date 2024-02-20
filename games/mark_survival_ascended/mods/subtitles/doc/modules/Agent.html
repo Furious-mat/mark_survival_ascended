@@ -1,0 +1,479 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Subtitles API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Class_Agent">Class Agent </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>Agent</strong></li>
+  <li><a href="../modules/BaseTextSubtitleDisplay.html">BaseTextSubtitleDisplay</a></li>
+  <li><a href="../modules/ChatSubtitleDisplay.html">ChatSubtitleDisplay</a></li>
+  <li><a href="../modules/ClassicSubtitleDisplay.html">ClassicSubtitleDisplay</a></li>
+  <li><a href="../modules/CornerSubtitleDisplay.html">CornerSubtitleDisplay</a></li>
+  <li><a href="../modules/Sound.html">Sound</a></li>
+  <li><a href="../modules/SubtitleDisplay.html">SubtitleDisplay</a></li>
+  <li><a href="../modules/WaypointSubtitleDisplay.html">WaypointSubtitleDisplay</a></li>
+  <li><a href="../modules/api.html">api</a></li>
+  <li><a href="../modules/chatcommands.html">chatcommands</a></li>
+  <li><a href="../modules/descriptions.html">descriptions</a></li>
+  <li><a href="../modules/init.html">init</a></li>
+  <li><a href="../modules/listeners.html">listeners</a></li>
+  <li><a href="../modules/menu.html">menu</a></li>
+  <li><a href="../modules/util.html">util</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>Agent</code></h1>
+<p>Provides the Agent class, which represents a player.</p>
+<p></p>
+
+
+<h2><a href="#Class_Agent">Class Agent </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:new">subtitles.Agent:new (username)</a></td>
+	<td class="summary">Constructor.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:load_settings">subtitles.Agent:load_settings ()</a></td>
+	<td class="summary">Loads settings from the player's metadata.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:get_player">subtitles.Agent:get_player ()</a></td>
+	<td class="summary">Returns the player's ObjectRef, or nil if the player has disconnected.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:get_display">subtitles.Agent:get_display ()</a></td>
+	<td class="summary">Returns the user's currently active display object.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:create_display">subtitles.Agent:create_display ()</a></td>
+	<td class="summary">Creates a display object according to the user's current preferences.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:get_enabled">subtitles.Agent:get_enabled ()</a></td>
+	<td class="summary">Checks if the player has subtitles enabled.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:set_enabled">subtitles.Agent:set_enabled (enabled)</a></td>
+	<td class="summary">Enables or disables subtitles for the player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:toggle_enabled">subtitles.Agent:toggle_enabled ()</a></td>
+	<td class="summary">Toggles subtitles on/off.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:get_footsteps_enabled">subtitles.Agent:get_footsteps_enabled ()</a></td>
+	<td class="summary">Checks if footsteps are enabled for this player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:set_footsteps_enabled">subtitles.Agent:set_footsteps_enabled (enabled)</a></td>
+	<td class="summary">Enables or disables footsteps for the player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:toggle_footsteps_enabled">subtitles.Agent:toggle_footsteps_enabled ()</a></td>
+	<td class="summary">Toggles the footsteps enabled state on/off.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:get_display_name">subtitles.Agent:get_display_name ()</a></td>
+	<td class="summary">Returns the player's selected display name.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:set_display_name">subtitles.Agent:set_display_name (name)</a></td>
+	<td class="summary">Sets the player's display type.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:handle_footsteps">subtitles.Agent:handle_footsteps ()</a></td>
+	<td class="summary">Detects footsteps around the player and simulates sound effects.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:step">subtitles.Agent:step (dtime)</a></td>
+	<td class="summary">Called every game tick.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:show_intro">subtitles.Agent:show_intro ()</a></td>
+	<td class="summary">Shows an introduction message to the player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:on_first_join">subtitles.Agent:on_first_join ()</a></td>
+	<td class="summary">Called when the player first joins.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.Agent:on_leave">subtitles.Agent:on_leave ()</a></td>
+	<td class="summary">Called when the player leaves the game.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header has-description"><a name="Class_Agent"></a>Class Agent </h2>
+
+          <div class="section-description">
+          Represents a player.
+ Each player gets one Agent object.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "subtitles.Agent:new"></a>
+    <strong>subtitles.Agent:new (username)</strong>
+    </dt>
+    <dd>
+    Constructor.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">username</span>
+         The name of the player.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:load_settings"></a>
+    <strong>subtitles.Agent:load_settings ()</strong>
+    </dt>
+    <dd>
+    Loads settings from the player's metadata.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:get_player"></a>
+    <strong>subtitles.Agent:get_player ()</strong>
+    </dt>
+    <dd>
+    Returns the player's ObjectRef, or nil if the player has disconnected.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        An ObjectRef or nil.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:get_display"></a>
+    <strong>subtitles.Agent:get_display ()</strong>
+    </dt>
+    <dd>
+    Returns the user's currently active display object.
+ This creates the display if necessary.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A SubtitleDisplay object.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:create_display"></a>
+    <strong>subtitles.Agent:create_display ()</strong>
+    </dt>
+    <dd>
+    Creates a display object according to the user's current preferences.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A SubtitleDisplay object.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:get_enabled"></a>
+    <strong>subtitles.Agent:get_enabled ()</strong>
+    </dt>
+    <dd>
+    Checks if the player has subtitles enabled.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true if subtitles are enabled.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:set_enabled"></a>
+    <strong>subtitles.Agent:set_enabled (enabled)</strong>
+    </dt>
+    <dd>
+    Enables or disables subtitles for the player.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">enabled</span>
+         true to enable, or false to disable.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:toggle_enabled"></a>
+    <strong>subtitles.Agent:toggle_enabled ()</strong>
+    </dt>
+    <dd>
+    Toggles subtitles on/off.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:get_footsteps_enabled"></a>
+    <strong>subtitles.Agent:get_footsteps_enabled ()</strong>
+    </dt>
+    <dd>
+    Checks if footsteps are enabled for this player.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true if footsteps are enabled.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:set_footsteps_enabled"></a>
+    <strong>subtitles.Agent:set_footsteps_enabled (enabled)</strong>
+    </dt>
+    <dd>
+    Enables or disables footsteps for the player.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">enabled</span>
+         true to enable, or false to disable.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:toggle_footsteps_enabled"></a>
+    <strong>subtitles.Agent:toggle_footsteps_enabled ()</strong>
+    </dt>
+    <dd>
+    Toggles the footsteps enabled state on/off.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:get_display_name"></a>
+    <strong>subtitles.Agent:get_display_name ()</strong>
+    </dt>
+    <dd>
+    Returns the player's selected display name.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A display name string.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:set_display_name"></a>
+    <strong>subtitles.Agent:set_display_name (name)</strong>
+    </dt>
+    <dd>
+    Sets the player's display type.
+ This recreates the display if necessary.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         A display name string.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:handle_footsteps"></a>
+    <strong>subtitles.Agent:handle_footsteps ()</strong>
+    </dt>
+    <dd>
+    Detects footsteps around the player and simulates sound effects.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:step"></a>
+    <strong>subtitles.Agent:step (dtime)</strong>
+    </dt>
+    <dd>
+    Called every game tick.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">dtime</span>
+         Seconds since this method was last called.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:show_intro"></a>
+    <strong>subtitles.Agent:show_intro ()</strong>
+    </dt>
+    <dd>
+    Shows an introduction message to the player.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:on_first_join"></a>
+    <strong>subtitles.Agent:on_first_join ()</strong>
+    </dt>
+    <dd>
+    Called when the player first joins.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.Agent:on_leave"></a>
+    <strong>subtitles.Agent:on_leave ()</strong>
+    </dt>
+    <dd>
+    Called when the player leaves the game.
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-01-14 06:51:17 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,28 @@
+Node Definitions
+
+ic_mods: (Table), overlay images, every value is applied to their respective slot.
+
+pre_entity_mod(ent, pos): (Function), execute a function before the entity functions.
+pos_entity_mod(ent, pos): (Function), execute a function after the entity functions.
+
+preitem(i): (Function), i = itempos in slots, adds some image modifier before the actual image, good for using stuff like [combine:.
+positem(i): (Function), i = itempos in slots, adds some image modifier after the image, used to close preitem(i) if used, but can also be used for ^[colorize, etc.
+
+itemcase: (String), define either as 'items' or 'armors', that one for item showcases and the other for armorstands and the like.
+is_itemcase: (Boolean), false by default, set to true so the entity works.
+
+itemcase2: (Number), 1 by default, if 2 then it will draw the images on top and bottom of the entity rather than front and back.
+
+itemplacehold: (Texture), define which texture is the placeholder for when here no items in the item holder.
+background: (Texture), this will always be BEHIND the main texture, used for shelves and the like when here's no need for sense of deepth.
+
+delete_unused: (Boolean), false by default, when set to true, entity won't show IF here's no item to display.
+
+moveitem: (Table), define where to move the entity, must be less than 0.50 and more than -0.50.
+(example): (This is the same as the display shelf!)
+    moveitem = {
+		[0] = {x=0,y=0,z= 0.45},
+		[1] = {x= 0.45,y=0,z=0},
+		[2] = {x=0,y=0,z= -0.45},
+		[3] = {x= -0.45,y=0,z=0},
+	}

@@ -1,0 +1,512 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Subtitles API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>ldoc</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/Agent.html">Agent</a></li>
+  <li><a href="../modules/BaseTextSubtitleDisplay.html">BaseTextSubtitleDisplay</a></li>
+  <li><a href="../modules/ChatSubtitleDisplay.html">ChatSubtitleDisplay</a></li>
+  <li><a href="../modules/ClassicSubtitleDisplay.html">ClassicSubtitleDisplay</a></li>
+  <li><a href="../modules/CornerSubtitleDisplay.html">CornerSubtitleDisplay</a></li>
+  <li><a href="../modules/Sound.html">Sound</a></li>
+  <li><a href="../modules/SubtitleDisplay.html">SubtitleDisplay</a></li>
+  <li><a href="../modules/WaypointSubtitleDisplay.html">WaypointSubtitleDisplay</a></li>
+  <li><a href="../modules/api.html">api</a></li>
+  <li><a href="../modules/chatcommands.html">chatcommands</a></li>
+  <li><a href="../modules/descriptions.html">descriptions</a></li>
+  <li><a href="../modules/init.html">init</a></li>
+  <li><a href="../modules/listeners.html">listeners</a></li>
+  <li><a href="../modules/menu.html">menu</a></li>
+  <li><strong>util</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>util</code></h1>
+<p>Generic utility functions.</p>
+<p></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.get_node_sound">subtitles.util.get_node_sound (name, keys)</a></td>
+	<td class="summary">Returns the sound spec for a particular action on a node.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.get_dig_sound_for_groups">subtitles.util.get_dig_sound_for_groups (groups)</a></td>
+	<td class="summary">Decides which sounds to use for a node with the specified groups.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.describe_damage">subtitles.util.describe_damage (reason)</a></td>
+	<td class="summary">Describes how a player was damaged.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.update">subtitles.util.update (tbl, ...)</a></td>
+	<td class="summary">Updates a table, overriding existing keys.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.object_is_walking">subtitles.util.object_is_walking (objref)</a></td>
+	<td class="summary">Checks if a player or entity is moving at walking speed.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.get_feet_pos">subtitles.util.get_feet_pos (objref)</a></td>
+	<td class="summary">Returns the position of an object's feet based on its collision box.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.update_hud">subtitles.util.update_hud (player, hud_id, old_def, new_def)</a></td>
+	<td class="summary">Updates a HUD, only settings attributes that have changed.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.clamp">subtitles.util.clamp (value, min, max)</a></td>
+	<td class="summary">Clamps a number to within a specified range.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.get_meta_bool">subtitles.util.get_meta_bool (meta, key, default)</a></td>
+	<td class="summary">Reads a boolean value from metadata.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.set_meta_bool">subtitles.util.set_meta_bool (meta, key, value)</a></td>
+	<td class="summary">Writes a boolean value to metadata.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.rgb_to_number">subtitles.util.rgb_to_number (red, green, blue)</a></td>
+	<td class="summary">Converts a colour from RGB to a number for HUDs.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.HUDDirection">subtitles.util.HUDDirection</a></td>
+	<td class="summary">An enumerator of HUD directions.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subtitles.util.TextStyle">subtitles.util.TextStyle</a></td>
+	<td class="summary">A bitfield of HUD text styles.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "subtitles.util.get_node_sound"></a>
+    <strong>subtitles.util.get_node_sound (name, keys)</strong>
+    </dt>
+    <dd>
+    Returns the sound spec for a particular action on a node.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+         The name of the node.
+        </li>
+        <li><span class="parameter">keys</span>
+         A key in the sounds table, such as 'dig' or 'footstep', or a list of such keys.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A SimpleSoundSpec or `nil`.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.get_dig_sound_for_groups"></a>
+    <strong>subtitles.util.get_dig_sound_for_groups (groups)</strong>
+    </dt>
+    <dd>
+    Decides which sounds to use for a node with the specified groups.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">groups</span>
+         A group table.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A SimpleSoundSpec or `nil`.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.describe_damage"></a>
+    <strong>subtitles.util.describe_damage (reason)</strong>
+    </dt>
+    <dd>
+    Describes how a player was damaged.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">reason</span>
+         A damage reason table, as passed to on_player_hp_change callbacks.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A human-readabable description
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.update"></a>
+    <strong>subtitles.util.update (tbl, ...)</strong>
+    </dt>
+    <dd>
+    Updates a table, overriding existing keys.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tbl</span>
+         The table to update.
+        </li>
+        <li><span class="parameter">...</span>
+         Any number of additional tables to update from.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A reference to the original table.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.object_is_walking"></a>
+    <strong>subtitles.util.object_is_walking (objref)</strong>
+    </dt>
+    <dd>
+    Checks if a player or entity is moving at walking speed.
+ This function does not check if the object is on ground.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">objref</span>
+         An ObjectRef.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        true if the object is moving at walking speed.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.get_feet_pos"></a>
+    <strong>subtitles.util.get_feet_pos (objref)</strong>
+    </dt>
+    <dd>
+    Returns the position of an object's feet based on its collision box.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">objref</span>
+         A player or entity.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        An absolute position vector.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.update_hud"></a>
+    <strong>subtitles.util.update_hud (player, hud_id, old_def, new_def)</strong>
+    </dt>
+    <dd>
+    Updates a HUD, only settings attributes that have changed.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+         A player ObjectRef.
+        </li>
+        <li><span class="parameter">hud_id</span>
+         The id of the HUD to update.
+        </li>
+        <li><span class="parameter">old_def</span>
+         The old HUD definition table.
+        </li>
+        <li><span class="parameter">new_def</span>
+         The new HUD definition table.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.clamp"></a>
+    <strong>subtitles.util.clamp (value, min, max)</strong>
+    </dt>
+    <dd>
+    Clamps a number to within a specified range.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+         The value to clamp.
+        </li>
+        <li><span class="parameter">min</span>
+         The lower bound.
+        </li>
+        <li><span class="parameter">max</span>
+         The upper bound.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        min, max, or value.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.get_meta_bool"></a>
+    <strong>subtitles.util.get_meta_bool (meta, key, default)</strong>
+    </dt>
+    <dd>
+    Reads a boolean value from metadata.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">meta</span>
+         The MetaDataRef to read from.
+        </li>
+        <li><span class="parameter">key</span>
+         The name of the metadata entry to read.
+        </li>
+        <li><span class="parameter">default</span>
+         The default value. Not necessarily a boolean.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A boolean value or the default.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.set_meta_bool"></a>
+    <strong>subtitles.util.set_meta_bool (meta, key, value)</strong>
+    </dt>
+    <dd>
+    Writes a boolean value to metadata.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">meta</span>
+         The MetaDataRef to write to.
+        </li>
+        <li><span class="parameter">key</span>
+         The name of the metadata entry to write.
+        </li>
+        <li><span class="parameter">value</span>
+         The boolean value to write.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.rgb_to_number"></a>
+    <strong>subtitles.util.rgb_to_number (red, green, blue)</strong>
+    </dt>
+    <dd>
+    Converts a colour from RGB to a number for HUDs.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">red</span>
+         The red component, from 0 to 255.
+        </li>
+        <li><span class="parameter">green</span>
+         The green component, from 0 to 255.
+        </li>
+        <li><span class="parameter">blue</span>
+         The blue component, from 0 to 255.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        An integer in the form 0xRRGGBB.
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "subtitles.util.HUDDirection"></a>
+    <strong>subtitles.util.HUDDirection</strong>
+    </dt>
+    <dd>
+    An enumerator of HUD directions.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">LEFT_TO_RIGHT</span>
+
+        </li>
+        <li><span class="parameter">RIGHT_TO_LEFT</span>
+
+        </li>
+        <li><span class="parameter">TOP_TO_BOTTOM</span>
+
+        </li>
+        <li><span class="parameter">BOTTOM_TO_TOP</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "subtitles.util.TextStyle"></a>
+    <strong>subtitles.util.TextStyle</strong>
+    </dt>
+    <dd>
+    A bitfield of HUD text styles.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">REGULAR</span>
+
+        </li>
+        <li><span class="parameter">BOLD</span>
+
+        </li>
+        <li><span class="parameter">ITALIC</span>
+
+        </li>
+        <li><span class="parameter">MONOSPACE</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2023-01-14 06:51:17 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

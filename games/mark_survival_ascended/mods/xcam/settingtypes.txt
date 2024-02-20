@@ -1,0 +1,5 @@
+xcam_dutch_angle (Xcam Dutch Angle) bool false
+xcam_photo_height (Xcam Photo Height) int 128 16 192
+xcam_photo_width (Xcam Photo Width) int 128 16 192
+xcam_render_distance (Xcam Render Distance) float 128.0 1.0 256.0
+xcam_supersampling_samples (Xcam Supersampling Samples) int 4 1 9

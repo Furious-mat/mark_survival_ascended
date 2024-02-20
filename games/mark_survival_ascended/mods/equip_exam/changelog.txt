@@ -1,0 +1,59 @@
+
+v1.7
+----
+- added missing "textdomain" line in localization template
+- added Spanish translation
+- indent groups & add header
+
+v1.6
+----
+- added nil check when updating formspec
+- updated for API:
+	- xdecor (Git commit 0dbf92e)
+	- wielded_light v2021-07-15
+- removed abandoned wlight support
+- added 3d_armor_light support
+
+v1.5
+----
+- parses meta information
+- supports unifieddyes node coloring
+- non-real attributes are hidden in technical view
+- displays ID (technical name) of unknown items
+- added xdecor & workbench support to check if items are repairable
+- displays source mod
+
+v1.4
+----
+- bugfix: added missing optional dependency "default"
+
+v1.3
+----
+- collects all specs from `item.groups`, `item.tool_capabilities`, & `item.armor_groups`
+- added option to show technical names
+- item type(s) are displayed as a list
+- parses node specs
+- parses entity specs
+- supports many more attributes
+- added wlight & wielded_light support
+
+v1.2
+----
+- any item can be examined
+
+v1.1
+----
+- fixed front texture position
+
+v1.0
+----
+- created equipment examiner node & formspec
+- reads common name & technical name
+- reads ability levels:
+  - attack (fleshy)
+  - defense (fleshy) (3d_armor)
+  - mine (cracky)
+  - chop (choppy)
+  - dig (crumbly)
+  - snap (snappy)
+- added craft recipe (requires default & optionally basic_materials)

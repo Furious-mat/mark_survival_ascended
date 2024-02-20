@@ -1,0 +1,5 @@
+core.register_on_joinplayer(function(player)
+	core.after(0.1,function()
+		player:set_properties({hp_max=100})
+	end)
+end)

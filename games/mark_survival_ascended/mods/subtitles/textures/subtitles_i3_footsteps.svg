@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg id="svg2" sodipodi:docname="subtitles_i3_footsteps.svg" inkscape:export-filename="subtitles_i3_footsteps.png" viewBox="0 0 64 64" inkscape:export-xdpi="90" version="1.1" inkscape:export-ydpi="90" inkscape:version="1.2.2 (1:1.2.2+202212051550+b0a8486541)" width="64" height="64" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <defs id="defs19150" />
+    <sodipodi:namedview id="base" bordercolor="#666666" inkscape:pageshadow="2" inkscape:window-y="-4" pagecolor="#000000" inkscape:window-height="853" inkscape:window-maximized="1" inkscape:zoom="8.8241032" inkscape:window-x="-4" showgrid="true" borderopacity="1.0" inkscape:current-layer="layer1" inkscape:cx="7.3410833" inkscape:cy="24" inkscape:window-width="1440" inkscape:pageopacity="0" inkscape:document-units="px" inkscape:showpageshadow="2" inkscape:pagecheckerboard="true" inkscape:deskcolor="#d1d1d1">
+        <inkscape:grid type="xygrid" id="grid19632" originx="0" originy="0" spacingx="4" spacingy="4" />
+    </sodipodi:namedview>
+    <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer" transform="translate(0,-1004.4)">
+        <path id="path2816" sodipodi:nodetypes="ccc" style="fill:#ffffff;stroke:#ffffff;stroke-width:0.999996" d="m 13.90618,1038.2283 10.033204,-1.8916 c 17.416055,-34.7322 -21.3188775,-36.35336 -10.033204,1.8916 z" />
+        <path id="path2816-1" sodipodi:nodetypes="ccc" style="fill:#ffffff;stroke:#ffffff;stroke-width:0.999996" d="m 23.006157,1042.2063 -8.188613,0.885 c -7.5728743,16.9964 13.750492,17.432 8.188613,-0.885 z" />
+        <path id="path2816-7" sodipodi:nodetypes="ccc" style="fill:#ffffff;stroke:#ffffff;stroke-width:0.999996" d="m 36.366261,1043.8763 9.166735,4.4606 c 27.758058,-27.1873 -7.411544,-44.2975 -9.166735,-4.4606 z" />
+        <path id="path2816-1-4" sodipodi:nodetypes="ccc" style="fill:#ffffff;stroke:#ffffff;stroke-width:0.999996" d="m 43.169772,1052.298 -8.104776,-2.1664 c -12.685706,13.6129 7.411446,21.2958 8.104776,2.1664 z" />
+    </g>
+    <metadata id="metadata19147">
+        <rdf:RDF>
+            <cc:Work>
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+                <cc:license rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+                <dc:publisher>
+                    <cc:Agent rdf:about="http://openclipart.org/">
+                        <dc:title>Openclipart</dc:title>
+                    </cc:Agent>
+                </dc:publisher>
+                <dc:date>2011-03-18T16:17:08</dc:date>
+                <dc:description />
+                <dc:source>https://openclipart.org/detail/128215/footprint-by-milovanderlinden</dc:source>
+                <dc:creator>
+                    <cc:Agent>
+                        <dc:title>milovanderlinden</dc:title>
+                    </cc:Agent>
+                </dc:creator>
+                <dc:subject>
+                    <rdf:Bag>
+                        <rdf:li>black</rdf:li>
+                        <rdf:li>foot</rdf:li>
+                        <rdf:li>print</rdf:li>
+                        <rdf:li>red</rdf:li>
+                        <rdf:li>shoe</rdf:li>
+                        <rdf:li>sign</rdf:li>
+                    </rdf:Bag>
+                </dc:subject>
+            </cc:Work>
+            <cc:License rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+                <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+                <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+                <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+            </cc:License>
+        </rdf:RDF>
+    </metadata>
+</svg>

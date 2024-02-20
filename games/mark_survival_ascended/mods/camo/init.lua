@@ -1,0 +1,7 @@
+print("Camo mod loading....")
+dofile(minetest.get_modpath("camo").."/crafting.lua")
+print("[Camo] Crafting loaded!")
+dofile(minetest.get_modpath("camo").."/mob_turret.lua")
+print("[Camo] Mob Killing Turrets loaded!")
+dofile(minetest.get_modpath("camo").."/tek_mob_turret.lua")
+print("[Camo] Tek Mob Killing Turrets loaded!")

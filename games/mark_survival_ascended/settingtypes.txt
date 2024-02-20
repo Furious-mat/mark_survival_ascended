@@ -1,0 +1,785 @@
+[Minetest]
+#    In creative mode players are able to dig all kind of blocks nearly
+#    instantly, and have access to unlimited resources.
+#    Some of the functionality is only available if this setting is present
+#    at startup.
+creative_mode (Creative mode) bool false
+
+#    Flammable nodes will be ignited by nearby igniters. Spreading fire may
+#    cause severe destruction.
+#    Spreading fire nodes will disappear when fire is disabled, but
+#    'permanent_flame' nodes are unaffected.
+enable_fire (Fire) bool true
+
+#    Enable flame sound.
+flame_sound (Flame sound) bool true
+
+#    Enable lavacooling.
+enable_lavacooling (Lavacooling) bool true
+
+#    If enabled, players respawn at the bed they last lay on instead of normal
+#    spawn.
+#    This setting is only read at startup.
+enable_bed_respawn (Respawn at bed) bool true
+
+#    If enabled, the night can be skipped if more than half of the players are
+#    in beds.
+enable_bed_night_skip (Skip night when sleeping) bool true
+
+#    If enabled, fences and walls cannot be jumped over.
+enable_fence_tall (Tall fences and walls) bool false
+
+#    When TNT explodes, it destroys nearby nodes and damages nearby players.
+#    This setting is disabled by default on servers.
+enable_tnt (TNT) bool true
+
+#    The radius in which nodes will be destroyed by a TNT explosion.
+tnt_radius (TNT radius) int 3 0
+
+#    Sets the behaviour of the inventory items when a player dies.
+#    bones: Store items in a bone node but drop items if inside protected area.
+#    drop: Drop items on the ground.
+#    keep: Player keeps items.
+bones_mode (Bones mode) enum bones bones,drop,keep
+
+#    The time in seconds after which the bones of a dead player can be looted
+#    by everyone.
+#    Setting this to 0 will disable sharing of bones completely.
+share_bones_time (Bones share time) int 1200 0
+
+#    How much earlier the bones of a dead player can be looted by
+#    everyone if the player dies in a protected area they don't own.
+#    0 to disable. By default it is "share_bones_time" divide by four.
+share_bones_time_early (Earlier bones share time) int 300 0
+
+#    Inform player of condition and location of new bones.
+bones_position_message (Inform player about bones) bool false
+
+#    Replaces old stairs with new ones. Only required for older worlds.
+enable_stairs_replace_abm (Replace old stairs) bool false
+
+#    If enabled, use the engine's spawn search which does not check for a
+#    suitable starting biome.
+engine_spawn (Use engine spawn search) bool false
+
+#    Whether river water source nodes create flowing sounds.
+#    Helps rivers create more sound, especially on level sections.
+river_source_sounds (River source node sounds) bool false
+
+#    Enable cloud and shadow intensity variation by the 'weather' mod.
+#    Non-functional in V6 or Singlenode mapgens.
+enable_weather (Enable weather) bool true
+
+#    If enabled, non-player actions are logged
+log_non_player_actions (Log non-player action) bool false
+
+[3d_armor]
+# Increase this if you get initialization glitches when a player first joins.
+armor_init_delay (Initialization delay) int 2
+
+# Number of initialization attempts.
+# Use in conjunction with armor_init_delay if initialization problems persist.
+armor_init_times (Initialization attempts) int 10
+
+# Increase this if armor is not getting into bones due to server lag.
+armor_bones_delay (Delay for bones) int 1
+
+# How often player armor items are updated.
+armor_update_time (Armor refresh rate [seconds]) int 1
+
+# Drop armor when a player dies.
+# Uses bones mod if present, otherwise items are dropped around the player.
+armor_drop (Drop armor on death) bool true
+
+# Pulverize armor when a player dies, overrides armor_drop.
+armor_destroy (Pulverize armor on death) bool false
+
+# You can use this to increase or decrease overall armor effectiveness,
+# eg: level_multiplier = 0.5 will reduce armor level by half.
+armor_level_multiplier (Armor effectiveness multiplier) float 1
+
+# You can use this to increase or decrease overall armor healing,
+# eg: armor_heal_multiplier = 0 will disable healing altogether.
+armor_heal_multiplier (Armor healing multiplier) float 1
+
+# Armor set item names, remove or add items to include them or remove them from whats considered an Armor set.
+armor_set_elements (Armor set items) string head torso legs feet shield
+
+# Bonus multiplier when wearing armor set, set to the same as armor_level_multiplier to disable
+armor_set_multiplier (Armor Set Bonus multiplier) float 1.1
+
+# Enable water protection (periodically restores breath when activated).
+armor_water_protect (Enable water protection) bool true
+
+# Enable fire protection (defaults true if using ethereal mod).
+armor_fire_protect (Enable fire protection) bool false
+
+# Enable fire damage from torches (defaults true if using ethereal mod).
+armor_fire_protect_torch (Enable fire protection torch damage) bool false
+
+# Enable punch damage effects.
+armor_punch_damage (Enable damage effects) bool true
+
+# Enable migration of old armor inventories.
+armor_migrate_old_inventory (Migrate old armor inventories) bool true
+
+# Armor is not visible on player model when enabled.
+armor_transparent (Transparent armor) bool false
+
+
+[shields]
+shields_disable_sounds (Disable shield sounds) bool false
+
+
+[wieldview]
+# Set number of seconds between visible wielded item updates.
+wieldview_update_time (Wieldview refresh rate [seconds]) int 2
+
+# Show nodes as tiles, disabled by default.
+wieldview_node_tiles (Show nodes as tiles) bool false
+
+[Ambience]
+#    If enabled will play a random music file from ./minetest/sounds at midnight
+ambience_music (Ambience music) bool true
+
+#    If enabled then ambience will take over sounds when moving in water
+ambience_water_move (Ambience water movement) bool true
+
+[Anvil]
+anvil_hammer_is_repairable (Hammer can be repaired on anvil) bool true
+
+[Beacons]
+beacon_height (Beacon height) int 0 0 61840
+
+[Biofuel]
+#The time that the refinery needs to produce fuel
+fuel_production_time (fuel production time) int 10 5 360
+
+#The number of biomass required for fuel production
+biomass_input (required input) int 4 1 99
+
+#Change of refinery output between vial or bottle
+#Default is vial
+refinery_output (bottle output) bool false
+
+#Enables the conversion of food into fuel
+#Default is disabled
+food_fuel (food waste) bool false
+
+[Bonemeal]
+# Disable recipe for bones:bones to craft into bonemeal
+bonemeal.disable_deathbones_recipe (Disable recipe for death bones into bonemeal) bool false
+
+[Cannon]
+# Allow cannon shells to destry nodes when exploding
+cannon73_node_destruction (Cannon shell node destruction) bool true
+
+[Ccompass]
+# If disabled each compass can be calibrated one time only
+ccompass_recalibrate (Allow compass recalibration) bool true
+
+# If disabled (default) all nodes are allowed to be compass target
+ccompass_restrict_target (Restrict nodes usable for calibration) bool false
+
+# If enabled, climbable nodes above target are considered unsafe.
+ccompass_deny_climbable_target (Deny climbable node above target) bool false
+
+# List of technical node names allowed for compass calibration, separated by ','
+ccompass_restrict_target_nodes (Nodes list allowed for calibration) string
+
+# Enable aliasses to replace other compass mods
+ccompass_aliasses (Enable compatibility aliasses) bool false
+
+# Nodes able to teleport to destination on punch, separated by ','. Set it to "none" to disable the teleporting feature.
+ccompass_teleport_nodes (Nodes list for teleport on punch) string default:mese
+
+# If one of these nodes is at target, skip other checks and allow teleporting.
+# String list of node names separated by ','
+ccompass_nodes_over_target_allow (Nodes list for additional allowed nodes) string
+
+# If one of these nodes is at target, skip other checks and deny teleporting.
+# String list of node names separated by ','
+ccompass_nodes_over_target_deny (Nodes list for additional deny nodes) string
+
+# Drawtype of nodes over target that are considered safe. This will only be checked
+# checked after ccompass_nodes_over_target_allow and ccompass_nodes_over_target_deny.
+# String list of node names separated by ','
+ccompass_nodes_over_target_allow_drawtypes (Drawtypes of nodes allowed over target) string airlike,flowingliquid,liquid,plantlike,plantlike_rooted
+
+# By default ccompass will not teleport players into or over damaging nodes.
+# To allow this, change to true.
+ccompass_allow_damage_target (Enable to allow teleporting into damaging nodes) bool false
+
+# Maximum size of compass stacks. Only identical and same direction pointing compasses can be stacked.
+# Defaults to 1
+ccompass_stack_max (Sets maximum stack size) int 1 1 65535
+# Requires stack_max greater than 1. When true, allows a whole stack to be calibrated at the same time.
+ccompass_allow_using_stacks (Enable to allow callibrating stacks) bool false
+
+# When no players have active compasses, the mod enters an idle state and only checks for compasses at this interval, measured in seconds. This setting is meant to reduce the load on the server.
+ccompass_idle_interval (Time between checks when idling) float 1 0 10
+
+[Crafting]
+#When enabled, all recipes registered via the original minetest.register_craft
+#method will be automatically added to this mod's new crafting system as well
+import_default_recipes (Import default crafting system recipes) bool true
+
+#When set to true, this mod will eliminate all imported recipes from the default
+#crafting system except for the recipe for this mod's crafting table.
+crafting_clear_default_crafting (Clear default crafting system recipes) bool false
+
+#When set to true, the crafting output list in the crafting table is
+#sorted alphabetically by name. When false, it's left in the order
+#in which items were registered, which usually groups items by
+#function (since similar items are often regitered by the same code)
+
+crafting_sort_alphabetically (Sort crafting output list alphabetically) bool false
+
+#When enabled, crafting guides are available from the table/furnace formspecs
+#and crafting guide items that can be consulted anywhere are defined.
+crafting_show_guides (Show crafting guides) bool true
+
+[Crafting Bench]
+# The number of seconds between each operation of the crafting bench.
+crafting_bench_crafting_rate (Crafting rate) int 5 1 60
+
+[Cryopod]
+# Cryopod can be crafted.
+cryopod.craftable (Craftable Cryopod) bool true
+
+[Death Compass]
+# The number of seconds the death compass will remain active for.
+# Set this to 0 to let the death compass continue to be active indefinitely.
+death_compass_duration (Death compass duration) int 0
+
+# When a player dies they'll be given a death compass automatically, and it will
+# disappear when its duration expires or the player reaches the death location
+death_compass_automatic (Death compass given to players automatically) bool false
+
+[HUD properties]
+death_compass_hud_x (Relative X coordinate of HUD) float 0.5
+death_compass_hud_y (Relative Y coordinate of HUD) float 0.9
+death_compass_hud_color (Color string for HUD) string FFFF00
+
+[Doc]
+#This feature is experimental!
+#If enabled, the mod will show alternative group names which are a bit
+#more readable than the internally used (but canonical) group names. For
+#example, the group “wood” may be rendered as “Wood”, “leaves” as
+#“Leaves and Needles”, “oddly_breakable_by_hand” as “Hand-breakable”,
+#and so on. Note that these alternative names are only used for better
+#understanding, they are not official.
+#This feature might be removed in later versions if it becomes obsolete.
+doc_items_friendly_group_names (Show “friendly” group names) bool false
+
+#If enabled, the mod will show the itemstring of the entry for each item to
+#all players. If disabled, the itemstring will only be shown to players
+#with the “give” or “debug” privilege.
+#The itemstring is useful to power users and programmers and
+#is used e.g. for the /give and /giveme commands.
+doc_items_show_itemstrings (Always show itemstrings) bool false
+
+[Double Jump]
+# Extra jumps. This does NOT count the builtin jump.
+double_jump.max_jump (The maximum number of player jumps) int 1
+
+double_jump.infinite_jumps (Whether to have infinite jumps or not) bool false
+double_jump.max_height (The maximum height of a player jump after the first jump) float 6.5
+
+[Hotbar]
+# default hotbar size
+hotbar_size (Default hotbar size) int 16 1 32
+
+[Shadows]
+#    Default shadow intensity when no other has been set.
+enable_shadows_default_intensity (Default shadow intensity) float 0.33 0 1
+
+[Hangglider]
+# The number of times the hangglider can be used before breaking. Set to 0 for infinite uses.
+hangglider.uses (Hangglider uses) int 250
+
+# If true, an image of the hangglider struts is shown on the hud when gliding.
+hangglider.enable_hud_overlay (Enable overlay) bool true
+
+# If enabled, and the `areas` mod is installed, enables airspace restrictions to be added to areas.
+hangglider.enable_flak (Enable flak) bool true
+
+# Time in seconds before hanggliders get shot down when flying in restricted airspace
+hangglider.flak_warning_time (Flak warning time) float 2
+
+[Hbarmor]
+#If true, automatically hides the armor HUD bar when the player wears no
+#armor. Otherwise, the armor bar shows “0%”.
+hbarmor_autohide (Automatically hide armor HUD bar) bool true
+
+#Time difference in seconds between updates to the armor HUD bar.
+#Increase this number for slow servers.
+hbarmor_tick (Armor HUD bar update frequency) float 0.1 0.0 4.0
+
+[Headlamp]
+# If enabled, all turned-on headlamps in players' inventories will drain their battery, otherwise only the wielded and worn headlamps will be drained.
+headlamp_drain_inventory (Drain battery in inventory) bool false
+
+# The battery lifetime of headlamps, in minutes.
+headlamp_battery_life (Battery lifetime) int 180
+
+[Hopper]
+#  Dimensions of the textures used, in pixels.
+hopper_texture_size (Hopper texture size) enum 16 16,32
+
+#  When true, the hopper mod uses a single craftable item that auto-selects
+#  a top hopper or side hopper depending on the context the player places it in.
+#  When false, top hoppers and side hoppers are explicitly craftable as separate
+#  items.
+hopper_single_craftable_item (Single craftable item) bool true
+
+#  This enables a toggle button in the hopper formspecs that allows a hopper
+#  to be set to "eject" items out into the world if there's no suitable node
+#  in their target location to receive them. By default hoppers do not eject
+#  items like this, the player must set this on a per-hopper basis.
+hopper_eject_button (Eject items button) bool true
+
+#  The Minetest log level to use for inventory take/put actions
+hopper_inventory_log_level (Inventory log level) enum action none,action,info,verbose
+
+[Give Initial Stuff]
+#    If enabled, speciment implant will be given to new
+#    players.
+give_initial_stuff (Give initial items) bool true
+
+[Appearance]
+# Specifies how the value indicators (i.e. health, breah, etc.) look. There are 3 styles
+# available. You can choose between the default progress-bar-like bars and the good
+# old statbars like you know from vanilla Minetest.
+# These values are possible:
+#   - progress_bar:    A horizontal progress-bar-like bar with a label, showing numerical value
+#                      (current, maximum), and an icon. These bars usually convey the most
+#                      information. This is the default and recommended value.
+#   - statbar_classic: Classic statbar, like in vanilla Minetest. Made out of up to 20
+#                      half-symbols. Those bars represent the vague ratio between
+#                      the current value and the maximum value. 1 half-symbol stands for
+#                      approximately 5% of the maximum value.
+#   - statbar_modern:  Like the classic statbar, but also supports background images, this
+#                      kind of statbar may be considered to be more user-friendly than the
+#                      classic statbar. This bar type closely resembles the mod
+#                      “Better HUD” [hud] by BlockMen.
+hudbars_bar_type (HUD bars style) enum progress_bar progress_bar,statbar_classic,statbar_modern
+
+
+# If enabled (default), the breath indicators in the HUD will be automatically hidden shortly
+# after the breath has been filled up. Otherwise, the breath will always be displayed. 
+hudbars_autohide_breath (Automatically hide breath indicators) bool true
+
+# This setting changes the way the HUD bars are ordered on the display. You can choose
+# between a zig-zag pattern (default) or a vertically stacked pattern.
+# The following values are allowed:
+#    - zigzag:     Starting from the left bottom, the next is right from the first,
+#                  the next is above the first, the next is right of the third, etc.
+#    - stack_up:   The HUD bars are stacked vertically, going upwards.
+#    - stack_down: The HUD bars are stacked vertically, going downwards.
+hudbars_alignment_pattern (HUD bars alignment pattern) enum zigzag zigzag,stack_up,stack_down
+
+# This setting allows you to specify the order of the HUD bars explicitly. If left empty
+# (the default), the health and breath indicators come first, additional indicators
+# may appear in any order. This setting is quite technical and normal users probably do not
+# need to worry about it.
+#
+# Syntax:
+# The setting has to be specified as a comma-seperated list of key=value pairs, where a key
+# refers to the identifier of a HUD bar and the value refers to the slot number of where the
+# HUD bar should be placed. The slot number must be an integer greater of equal to 0. Where
+# the HUD bars will be displayed exactly depends on the alignment pattern being used.
+# All HUD bars to which no order value has been applied will fill in all slots which have
+# not been occupied by the HUD bars specified in this setting, the slots will be filled in
+# from the lowest slot number.
+# Note that the order of those remaining HUD bars is not fixed, it basically just boils
+# down on which mod “came” first. Don't worry, the mod will still work perfectly fine, this
+# setting is entirely optional.
+# The identifier for the health bar is “health” and the identifier for the breath bar is
+# “breath”. For other HUD bars, you have to learn it from the mod which is supplying them.
+#
+# Be careful not to use slot indices twice, or else different HUD bars will be drawn over
+# each other!
+#
+# Example: “breath=0, health=1”
+# This makes the breath bar first and the health bar second, which is the opposite order
+# of the default one.
+hudbars_sorting (HUD bars order) string
+
+[Positions and offsets]
+# Horizontal (x) main position of the HUD bars over the entire screen.
+# 0.0 is left-most, 1.0 is right-most.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+hudbars_pos_left_x (Left HUD bar screen x position) float 0.5 0.0 1.0
+# Vertical (y) main position of the HUD bars over the entire screen.
+# 0.0 is top, 1.0 is bottom.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+hudbars_pos_left_y (Left HUD bar screen y position) float 1.0 0.0 1.0
+# Horizontal (x) main position of the right HUD bars over the entire screen.
+# 0.0 is left-most, 1.0 is right-most.
+# Only used for the zig-zag alignment pattern.
+hudbars_pos_right_x (Right HUD bar screen x position) float 0.5 0.0 1.0
+# Vertical main position (y) of the right HUD bars over the entire screen.
+# 0.0 is top, 1.0 is bottom.
+# Only used for the zig-zag alignment pattern.
+hudbars_pos_right_y (Right HUD bar screen y position) float 1.0 0.0 1.0
+
+# Precise x offset in pixels from the basic screen x position of the HUD bars.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_left_x (Left HUD bar x offset) int -175
+# Precise y offset in pixels from the basic screen y position of the HUD bars.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_left_y (Left HUD bar y offset) int -86
+# Precise x offset in pixels from the basic screen x position of the right HUD bars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_right_x (Right HUD bar x offset) int 15
+# Precise y offset in pixels from the basic screen y position of the right HUD bars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_right_y (Right HUD bar y offset) int -86
+
+# Precise x offset in pixels from the basic screen x position of the HUD statbars.
+# For the zig-zag alignment pattern, this is for the left HUD statbars.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_left_x (Left HUD statbar x offset) int -265
+# Precise y offset in pixels from the basic screen y position of the HUD statbars.
+# For the zig-zag alignment pattern, this is for the left HUD statbars.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_left_y (Left HUD statbar y offset) int -90
+# Precise x offset in pixels from the basic screen x position of the right HUD statbars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_right_x (Right HUD statbar x offset) int 25
+# Precise y offset in pixels from the basic screen y position of the right HUD statbars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_right_y (Right HUD statbar y offset) int -90
+
+# The vertical distance between two HUD bars, in pixels.
+hudbars_vmargin (Vertical distance between HUD bars) int 24 0
+
+[Performance]
+# The of seconds which need to pass before the server updates the default HUD bars
+# (health and breath). Increase this number if you have a slow server or a slow network
+# connection and experience performance problems.
+hudbars_tick (Default HUD bars update interval) float 0.1 0.0 4.0
+
+[Pedestal]
+# If false, the item will always just be dropped on the ground.
+itemframes.return_item (return placed item to the player's inventory on right-click) bool false
+
+# if false, inserting and removing items from frames and pedestals will not be logged
+itemframes.log_actions (log player actions when using itemframes and pedestals) bool false
+
+itemframes.allow_rotate (Allow item rotation in protected areas) bool false
+
+[Leads]
+# The length a lead can reach before stretching, in metres.
+leads.lead_length (Lead length) float 8 1 16
+
+# The strength of a lead. The lower this number is, the more easily leads will break.
+leads.lead_strength (Lead strength) float 4 0 256
+
+# How to drop leads when broken.
+# drop: Drop the lead item.
+# give: Put the lead in the player's inventory.
+# auto: Matches the node drop behaviour of the game.
+leads.drop_mode (Item drop mode) enum auto drop,give,auto
+
+# If this is enabled, both leads will pull both ends equally.
+# Otherwise, only the follower will be pulled.
+leads.symmetrical (Symmetrical physics) bool false
+
+
+[Visuals]
+
+# If this is enabled, lead textures will dynamically update to match the length of the lead.
+leads.dynamic_textures (Dynamic textures) bool true
+
+# If this is enabled, leads will have a lead-shaped selection box. Otherwise, the selection box will be a cube in the middle of the lead.
+# This requires a 5.7.0+ client.
+leads.rotate_selection_box (Long selection box) bool true
+
+# If this is enabled, leads will curve downwards instead of being straight.
+# This is purely aesthetic.
+leads.enable_slack (Enable visual slack) bool true
+
+# Displays messages in the chat console when failing to use a lead.
+leads.chat_messages (Show chat messages) bool false
+
+
+[Protection and Ownership]
+
+# Disallows adding and removing knots in protected areas.
+leads.respect_protection (Respect protection) bool true
+
+# Allows using leads on mobs with no owner.
+leads.allow_leash_unowned (Allow leashing unowned mobs) bool true
+
+# Allows using leads on mobs owned by other players.
+leads.allow_leash_owned_other (Allow leashing mobs owned by others) bool true
+
+
+[Object Types]
+
+# Allows using leads on other players.
+leads.allow_leash_player (Allow leashing players) bool true
+
+# Allows using leads on animals.
+leads.allow_leash_animal (Allow leashing animals) bool true
+
+# Allows using leads on monsters.
+leads.allow_leash_monster (Allow leashing monsters) bool true
+
+# Allows using leads on NPCs.
+leads.allow_leash_npc (Allow leashing NPCs) bool true
+
+# Allows using leads on vehicles.
+leads.allow_leash_vehicle (Allow leashing vehicles) bool true
+
+# Allows using leads on miscellaneous entities.
+leads.allow_leash_other (Allow leashing other) bool true
+
+
+[Advanced]
+
+# Allows using leads on all entities.
+# Leashing an unsupported entity may cause unexpected behaviour.
+# This overrides all other leashable settings.
+leads.allow_leash_all (Allow leashing any object) bool false
+
+# How hard leads pull entities.
+leads.pull_force (Pull force) float 15 1 1000
+
+# Prints verbose debugging information to the chat console.
+leads.debug (Debug mode) bool false
+
+[MESECONS]
+
+[Mob Core]
+#    Blocks mobs from spawning in protected areas
+block_protected_spawn (Block Spawning in Protected Areas) bool true
+
+#    Sets the limit for amount of mobs in area (of a single name)
+mob_limit (Mob Limit) float 4
+
+#    Allows for large mobs to jump on pre-5.3 clients
+legacy_jump (Legacy node jumping. For pre-5.3 clients) bool false
+
+#    Mod used to set player animations (default for minetest game, mcl_player for MineClone 2)
+mount_mod (Mod used to set player animation) string default
+
+[BroodMother Lysrix]
+#    Enable setting so that Mobs Redo mobs can attack Creatura mobs
+mobs_attack_creatura (Attack Creatura Mobs) bool true
+
+#    How often mobs get nodes around them (default is 0.25, 1/4 second)
+mob_node_timer_interval (Mob Node Timer Interval) float 0.25
+
+#    How often mobs run main functions (default is 1.00, 1 second)
+mob_main_timer_interval (Mob Node Timer Interval) float 1.00
+
+#    If false then mobs no longer spawn in world without spawner or spawn egg
+mobs_spawn (Spawn Mobs) bool true
+
+#    If enabled then monsters no longer spawn in world
+only_peaceful_mobs (Only spawn peaceful Mobs) bool false
+
+#   If enabled then punching mobs no longer shows blood effects
+mobs_disable_blood (Disable Mob blood) bool false
+
+#   If enabled the mobs will be highlighted when hit
+mob_hit_effect (Highlight Mob when Hit) bool false
+
+#    If disabled then Mobs no longer destroy world blocks
+mobs_griefing (Griefing Mobs) bool true
+
+#    If false then Mobs no longer spawn inside player protected areas
+mobs_spawn_protected (Spawn Mobs in protected areas) bool true
+
+#    If false then Monsters no longer spawn inside player protected areas
+mobs_spawn_monster_protected (Spawn Monsters in protected areas) bool true
+
+#    If true Mobs will be removed once a map chunk is out of view
+remove_far_mobs (Remove far Mobs) bool true
+
+#    Sets Mob difficulty level by multiplying punch damage
+mob_difficulty (Mob difficulty) float 1.0
+
+#    Contains a value used to multiply Mob spawn values
+mob_chance_multiplier (Mob chance multiplier) float 1.0
+
+#    When false Mob no longer drop items when killed
+mobs_drop_items (Mob drops) bool true
+
+#    Sets minimum distance around player that mobs cannot spawn
+mob_nospawn_range (Mob no-spawn range) float 12.0
+
+#    Sets maximum number of active mobs in game (0 for unlimited)
+mob_active_limit (Mob Active Limit) float 0
+
+#    Enables area check when spawning mobs
+mob_area_spawn (Mob Area Spawn) bool false
+
+#    Enable peaceful player attack prevention
+enable_peaceful_player (Mobs do not attack peaceful player without reason) bool false
+
+#    Enable mobs smooth rotation
+mob_smooth_rotate (Smooth rotation for mobs) bool true
+
+#   Fix Mob Height if too low so they cannot escape through specific nodes
+mob_height_fix (Fix Mob Height) bool true
+
+mob_log_spawn (Log Mob Spawning) bool false
+
+[Pathfinding]
+#    Enable pathfinding (default Enabled)
+mob_pathfinding_enable (Enable pathfinding) bool true
+#    Use pathfinder mod if available (default Enabled)
+mob_pathfinder_enable (Use pathfinder mod if available) bool true
+#    How long before stuck mobs starts searching (default 3.0)
+mob_pathfinding_stuck_timeout (How long before stuck mobs start searching) float 3.0
+#    How long will mob follow path before giving up (default 5.0)
+mob_pathfinding_stuck_path_timeout (How long will mob follow path before giving up) float 5.0
+#    Which pathfinding algorithm to use
+#      - Dijkstra (default)
+#      - A*_noprefetch (AStar_noprefetch)
+#      - A* (AStar)
+#      (A* names differ cause Minetest doesn´t allow "*" in settings)
+mob_pathfinding_algorithm (pathfinding algorithm) enum Dijkstra Dijkstra,AStar_noprefetch,AStar
+# max search distance from search positions (default 16)
+mob_pathfinding_searchdistance (path search distance) int 16
+# max jump height for pathfinding (default 4)
+mob_pathfinding_max_jump (path max jump height) int 4
+# max drop height for pathfinding (default 6)
+mob_pathfinding_max_drop (path max drop height) int 6
+
+
+
+[Paleotest]
+#    Allows mobs to breed
+breeding (Breeding) bool true
+
+#    Allows large mobs to destroy blocks weaker than soil
+block_breaking (Block Breaking) bool false
+
+#    Allows Very large mobs to destroy blocks like cobble or iron.
+dinos_block_breaking (Dinos Block Breaking) bool true
+
+#    Allows creatures to appear naturally (Caution: too many creatures on less powerful PC = Lag)
+creature_spawning (Creature Spawning) bool true
+
+[Punch and Place Particles]
+punch_particles (Show particles when a node is punched) bool true
+place_particles (Show particles when a node is placed) bool true
+dug_particles (Show particles of the surrounding nodes when a node is dug) bool true
+
+[Quartz]
+# Set this to true to allow usage of the stairsplus mod in moreblocks
+
+ENABLE_STAIRSPLUS = false
+
+# This enables the old horizontal pillar block(deprecated, be sure to convert them back to normal pillars)
+
+ENABLE_HORIZONTAL_PILLAR = true
+
+[Radiant Damage]
+radiant_damage_enable_heat_damage (Enable radiant heat damage) bool false
+radiant_damage_lava_damage (Damage dealt per second when standing directly adjacent to one lava node) int 8
+radiant_damage_fire_damage (Damage dealt per second when standing directly adjacent to one fire node) int 2
+
+radiant_damage_enable_mese_damage (Enable mese ore radiation damage) bool false
+radiant_damage_mese_interval (Number of seconds between mese radiation damage checks) int 5
+radiant_damage_mese_damage (Damage dealt per second when standing directly adjacent to one mese ore node) int 2
+
+[Sounds]
+# This setting can increase how loud footsteps are.
+# Default is 0.1, which is a pretty average volume
+# for footsteps.
+#
+# The maximum this setting can be is 1.0;
+# the larger the number, the louder the footsteps will be.
+footstep_vol (Footstep Volume) float 0.1
+
+[Subtitles]
+# Whether or not subtitles should be enabled by default on singleplayer.
+subtitles.default_enable_singleplayer (Enable subtitles by default on singleplayer) bool true
+
+# Whether or not subtitles should be enabled by default on multiplayer.
+subtitles.default_enable_multiplayer (Enable subtitles by default on multiplayer) bool false
+
+# If this is enabled, an introduction message will be shown to new players informing them that subtitles are available.
+# This has no effect on singleplayer.
+subtitles.show_introduction (Show introduction message) bool true
+
+# If this is enabled, a subtitles button or tab will be shown on supported inventories.
+subtitles.inventory_integration (Enable inventory integration) bool true
+
+[Furniture]
+ts_furniture.enable_sitting (Enable sitting) bool true
+ts_furniture.globalstep (Enable globalstep) bool true
+ts_furniture.kneeling_bench (Enable kneeling benches) bool false
+
+[Vein Miner]
+# The maximum amount of nodes that can be mined at once
+vein_miner_max_nodes (Maximum Mineable Nodes) int 188
+
+# If true, allows vein mining of "stone_with_[orename]" blocks
+vein_miner_allow_ores (Allow mining ores) bool true
+
+# If true, allows vein mining tree blocks (logs, leaves, ect.)
+vein_miner_allow_trees (Allow mining trees) bool false
+
+# If true, allow vein mining any block. Overrides previous settings
+vein_miner_allow_all (Allow mining any node) bool false
+
+[WildLife]
+# This file contains settings of wildlife that can be changed in
+# minetest.conf
+
+#    Chance of spawning a mob when there are no other 
+#    mobs in active_block_range around player
+#    must be float from 0 to 1
+#    1 is always, 0 is never
+wildlife_spawn_chance (Spawn chance) float 0.3
+
+#    Base spawn chance is reduced by this factor
+#    for each mob within active_block_range
+#    must be float from 0 to 1
+#    greater number is greater reduction
+wildlife_spawn_reduction (Spawn chance reduction) float 0.2
+
+[X Bows]
+# Disabled per default due to inconsistent mob models scaling (visual_size). This will scale the arrows unproportionally and looks bad. If you have mobs with no scaling you can enable this setting.
+x_bows_attach_arrows_to_entities (Attach arrows to entities) bool false
+
+# Shows caused damage number flying out from the hit object/player.
+x_bows_show_damage_numbers (Show damage caused) bool false
+
+
+# Shows 3d quiver in 3rd person view (3d armor, and some skins MODs supported - see optional dependencies)
+x_bows_show_3d_quiver (Show 3D Quiver) bool true
+
+[Extras]
+# If enabled, arrow training will be disabled.
+x_bows_extras_arrow_training_enabled (Arrow Training) bool true
+
+# If enabled, arrow teleport will be disabled.
+x_bows_extras_arrow_teleport_enabled (Arrow Teleport) bool true
+
+# If enabled, arrow lightning will be disabled.
+x_bows_extras_arrow_lightning_enabled (Arrow Lightning) bool true
+
+[Xcam]
+xcam_dutch_angle (Xcam Dutch Angle) bool false
+xcam_photo_height (Xcam Photo Height) int 128 16 192
+xcam_photo_width (Xcam Photo Width) int 128 16 192
+xcam_render_distance (Xcam Render Distance) float 128.0 1.0 256.0
+xcam_supersampling_samples (Xcam Supersampling Samples) int 4 1 9
+
+[Hi, what are you doing here ?]
+# If Enable −·−· · ·−·· ·−  −· ·  ··−· ·− ·· −  ·−· ·· · −·  −·−· ·−−−−· · ··· −  ··− −· ·  −··· ·−·· ·− −−· ··− · ·−·−·− ·−·−·− ·−·−·−
+something_i_think (Something ???) bool false

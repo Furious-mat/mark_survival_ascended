@@ -1,0 +1,9 @@
+
+TODO:
+- add healing value for foods
+- show wear amount
+- show tooltip when text is longer than list width (or show in separate widget)
+- add food attributes
+- separate "emits light" values between nodes, tools, & armor
+- found errors when examining:
+	- default:ice: Ignoring out-of-bounds argument escape sequence in translation

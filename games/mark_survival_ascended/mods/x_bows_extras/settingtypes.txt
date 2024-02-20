@@ -1,0 +1,38 @@
+# If enabled, bow and all arrows will be disabled.
+x_bows_extras_bow_and_arrows_enabled (Bow and arrows) bool true
+
+# If enabled, arrow training will be disabled.
+x_bows_extras_arrow_training_enabled (Arrow Training) bool true
+
+# If enabled, arrow poison will be disabled.
+x_bows_extras_arrow_poison_enabled (Arrow Poison) bool true
+
+# If enabled, arrow rip will be disabled.
+x_bows_extras_arrow_rip_enabled (Arrow Rip) bool true
+
+# If enabled, arrow flyup will be disabled.
+x_bows_extras_arrow_flyup_enabled (Arrow Flyup) bool true
+
+# If enabled, arrow cluster will be disabled.
+x_bows_extras_arrow_cluster_enabled (Arrow Cluster) bool true
+
+# If enabled, arrow torch will be disabled.
+x_bows_extras_arrow_torch_enabled (Arrow Torch) bool true
+
+# If enabled, arrow teleport will be disabled.
+x_bows_extras_arrow_teleport_enabled (Arrow Teleport) bool true
+
+# If enabled, arrow knockback will be disabled.
+x_bows_extras_arrow_knockback_enabled (Arrow Knockback) bool true
+
+# If enabled, arrow healing will be disabled.
+x_bows_extras_arrow_healing_enabled (Arrow Healing) bool true
+
+# If enabled, arrow lightning will be disabled.
+x_bows_extras_arrow_lightning_enabled (Arrow Lightning) bool true
+
+# If enabled, bazooka will be disabled.
+x_bows_extras_bazooka_enabled (Bazooka) bool true
+
+# If enabled, bubble gun will be disabled.
+x_bows_extras_bubble_gun_enabled (Bubble Gun) bool true
