@@ -170,10 +170,6 @@ food_fuel (food waste) bool false
 # Disable recipe for bones:bones to craft into bonemeal
 bonemeal.disable_deathbones_recipe (Disable recipe for death bones into bonemeal) bool false
 
-[Cannon]
-# Allow cannon shells to destry nodes when exploding
-cannon73_node_destruction (Cannon shell node destruction) bool true
-
 [Ccompass]
 # If disabled each compass can be calibrated one time only
 ccompass_recalibrate (Allow compass recalibration) bool true
@@ -247,44 +243,10 @@ crafting_bench_crafting_rate (Crafting rate) int 5 1 60
 # Cryopod can be crafted.
 cryopod.craftable (Craftable Cryopod) bool true
 
-[Death Compass]
-# The number of seconds the death compass will remain active for.
-# Set this to 0 to let the death compass continue to be active indefinitely.
-death_compass_duration (Death compass duration) int 0
-
-# When a player dies they'll be given a death compass automatically, and it will
-# disappear when its duration expires or the player reaches the death location
-death_compass_automatic (Death compass given to players automatically) bool false
-
 [HUD properties]
 death_compass_hud_x (Relative X coordinate of HUD) float 0.5
 death_compass_hud_y (Relative Y coordinate of HUD) float 0.9
 death_compass_hud_color (Color string for HUD) string FFFF00
-
-[Doc]
-#This feature is experimental!
-#If enabled, the mod will show alternative group names which are a bit
-#more readable than the internally used (but canonical) group names. For
-#example, the group “wood” may be rendered as “Wood”, “leaves” as
-#“Leaves and Needles”, “oddly_breakable_by_hand” as “Hand-breakable”,
-#and so on. Note that these alternative names are only used for better
-#understanding, they are not official.
-#This feature might be removed in later versions if it becomes obsolete.
-doc_items_friendly_group_names (Show “friendly” group names) bool false
-
-#If enabled, the mod will show the itemstring of the entry for each item to
-#all players. If disabled, the itemstring will only be shown to players
-#with the “give” or “debug” privilege.
-#The itemstring is useful to power users and programmers and
-#is used e.g. for the /give and /giveme commands.
-doc_items_show_itemstrings (Always show itemstrings) bool false
-
-[Double Jump]
-# Extra jumps. This does NOT count the builtin jump.
-double_jump.max_jump (The maximum number of player jumps) int 1
-
-double_jump.infinite_jumps (Whether to have infinite jumps or not) bool false
-double_jump.max_height (The maximum height of a player jump after the first jump) float 6.5
 
 [Hotbar]
 # default hotbar size
@@ -671,11 +633,6 @@ dinos_block_breaking (Dinos Block Breaking) bool true
 
 #    Allows creatures to appear naturally (Caution: too many creatures on less powerful PC = Lag)
 creature_spawning (Creature Spawning) bool true
-
-[Punch and Place Particles]
-punch_particles (Show particles when a node is punched) bool true
-place_particles (Show particles when a node is placed) bool true
-dug_particles (Show particles of the surrounding nodes when a node is dug) bool true
 
 [Quartz]
 # Set this to true to allow usage of the stairsplus mod in moreblocks
