@@ -1,7 +1,0 @@
-V1 :
-
-All of the game LOL
-
-v1.1 :
-
-Normally, version 1.1 should change a lot of 3D models, bring in new feeders as well as dinos not present in 1.0 (Megatherium, Pegomastax, Diplocaulus and Moschops) and, I suppose, plenty of bug fixes, as well as new features.
