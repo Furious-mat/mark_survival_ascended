@@ -200,7 +200,7 @@ if minetest.get_modpath("farming") then
 			recipe = {
 				{"paleotest:angler_gel", "farming:string", "paleotest:angler_gel"},
 				{"farming:string", "default:mese_crystal", "farming:string"},
-				{"farming:string", "techage:ta4_battery", "farming:string"},
+				{"farming:string", "battery:battery", "farming:string"},
 			}
 		})
 	end
