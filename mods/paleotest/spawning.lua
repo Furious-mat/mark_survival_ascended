@@ -413,8 +413,8 @@ mob_core.register_spawn({
 	max_height = 50,
 	min_rad = 50,
 	max_rad = 100,
-	group = 2,
-}, 150, 20)
+	group = 0,
+}, 300, 20)
 
 mob_core.register_spawn({
 	name = "paleotest:kaprosuchus",
@@ -711,18 +711,7 @@ mob_core.register_spawn({
 	min_rad = 50,
 	max_rad = 100,
 	group = 0,
-}, 150, 15)
-
-mob_core.register_spawn({
-	name = "paleotest:rhyniognatha",
-	min_light = 0,
-	max_light = 15,
-	min_height = -100,
-	max_height = -50,
-	min_rad = 50,
-	max_rad = 100,
-	group = 0,
-}, 60, 20)
+}, 150, 20)
 
 mob_core.register_spawn({
 	name = "paleotest:sarcosuchus",
