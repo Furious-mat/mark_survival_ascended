@@ -23,5 +23,3 @@ DEALINGS IN THE SOFTWARE.
 
 For more details:
 https://opensource.org/licenses/MIT
-
-Spawn In = https://freesound.org/people/colorsCrimsonTears/sounds/607408/
