@@ -93,7 +93,7 @@ minetest.register_craftitem("shooter:gunpowder", {
 })
 
 	minetest.register_craft({
-		output = "shooter:gunpowder 5",
+		output = "shooter:gunpowder 15",
 		type = "shapeless",
-		recipe = {"default:coal_lump", "default:clay_lump"},
+		recipe = {"default:coal_lump", "default:Brick"},
 	})

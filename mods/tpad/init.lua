@@ -114,21 +114,6 @@ end
 dofile(tpad.mod_path .. "/storage.lua")
 
 -- ========================================================================
--- load custom recipe
--- ========================================================================
-
-local recipes_filename = custom_or_default(tpad.mod_name, tpad.mod_path, "recipes.lua")
-if recipes_filename then
-	local recipes = dofile(recipes_filename)	
-	if type(recipes) == "table" and recipes[tpad.nodename] then
-		minetest.register_craft({
-			output = tpad.nodename,
-			recipe = recipes[tpad.nodename],
-		})
-	end
-end
-
--- ========================================================================
 -- callback bound in register_chatcommand("tpad")
 -- ========================================================================
 
@@ -219,7 +204,6 @@ function tpad.set_max_total_pads(max)
 	if not max then max = 0 end
 	local settings = Settings(tpad.settings_file)
 	settings:set("max_total_pads_per_player", max)
-	settings:write()
 end
 
 function tpad.get_max_total_pads()
@@ -237,7 +221,6 @@ function tpad.set_max_global_pads(max)
 	if not max then max = 0 end
 	local settings = Settings(tpad.settings_file)
 	settings:set("max_global_pads_per_player", max)
-	settings:write()
 end
 
 function tpad.get_max_global_pads()

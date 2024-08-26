@@ -24,6 +24,10 @@ end
 
 local function ammonite_logic(self)
 
+    if not self.isinliquid then
+        self.hp = 0
+    end
+
     if self.hp <= 0 then
         mob_core.on_die(self)
         return
@@ -170,4 +174,9 @@ minetest.register_craftitem("paleotest:ammonite_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_ammonite_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

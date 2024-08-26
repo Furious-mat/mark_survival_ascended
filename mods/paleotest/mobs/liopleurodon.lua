@@ -6,7 +6,27 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:alpha_megalodon" and
+            name ~= "paleotest:ammonite" and
+            name ~= "paleotest:cnidaria" and
+            name ~= "paleotest:coelacanth" and
+            name ~= "paleotest:dunkleosteus" and
+            name ~= "paleotest:ichthyosaurus" and
+            name ~= "paleotest:electrophorus" and
+            name ~= "paleotest:leedsichthys" and
+            name ~= "paleotest:alpha_leedsichthys" and
+            name ~= "paleotest:piranha" and
+            name ~= "paleotest:plesiosaurus" and
+            name ~= "paleotest:angler" and
+            name ~= "paleotest:alpha_mosasaurus" and
+            name ~= "paleotest:alpha_tusoteuthis" and
+            name ~= "paleotest:manta" and
+            name ~= "paleotest:basilosaurus" and
+            name ~= "paleotest:salmon" and
+            name ~= "paleotest:megalodon" and
+            name ~= "paleotest:mosasaurus" and
+            name ~= "paleotest:tusoteuthis" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name)
             and (height and height < 1.5)
@@ -24,6 +44,10 @@ end
 
 local function liopleurodon_logic(self)
 
+    if not self.isinliquid then
+        self.hp = 0
+    end
+
     if self.hp <= 0 then
         mob_core.on_die(self)
         return
@@ -35,17 +59,16 @@ local function liopleurodon_logic(self)
     local player = mobkit.get_nearby_player(self)
 
     if mobkit.timer(self, 1) then
+    
+    if self.tamed then
+		mob_core.random_loot_drop(self, 300, 600, "loot_crates:rare")
+		mob_core.random_loot_drop(self, 60, 300, "loot_crates:uncommon")
+		mob_core.random_loot_drop(self, 30, 60, "loot_crates:common")
+    end
 
-		mob_core.random_loot_drop(self, 1800, 3600, "loot_crates:rare")
-		
-		mob_core.random_loot_drop(self, 900, 1800, "loot_crates:uncommon")
-				
-		mob_core.random_loot_drop(self, 300, 600, "loot_crates:common")
-
-        if prty < 20 then
+        if prty < 22 then
             if self.driver then
-                mob_core.hq_mount_logic(self, 20)
-                return
+                paleotest.hq_aquatic_mount_logic(self, 22)
             end
         end
 
@@ -122,7 +145,6 @@ minetest.register_entity("paleotest:liopleurodon", {
     driver_attach_at = {x = 0, y = 1, z = 0},
     driver_eye_offset = {{x = 0, y = 5, z = 5}, {x = 0, y = 50, z = 55}},
     max_speed_forward = 8,
-    max_speed_reverse = 4,
     -- Sound
     sounds = {
         alter_child_pitch = true,
@@ -149,6 +171,7 @@ minetest.register_entity("paleotest:liopleurodon", {
     needs_enrichment = false,
     live_birth = true,
     max_hunger = 2000,
+    aquatic_follow = true,
     punch_cooldown = 1,
     defend_owner = true,
     targets = {},
@@ -177,7 +200,7 @@ minetest.register_entity("paleotest:liopleurodon", {
                 temper = "Elusive"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "" then
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
         mob_core.protect(self, clicker, true)
@@ -201,4 +224,9 @@ minetest.register_craftitem("paleotest:liopleurodon_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_liopleurodon_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

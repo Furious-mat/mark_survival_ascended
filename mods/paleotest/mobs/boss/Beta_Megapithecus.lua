@@ -37,6 +37,8 @@ local function megapithecus_logic(self)
     end
 
     set_mob_tables(self)
+    
+    if self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -161,6 +163,14 @@ minetest.register_entity("paleotest:beta_megapithecus", {
     female_textures = {"paleotest_beta_megapithecus.png"},
     male_textures = {"paleotest_beta_megapithecus.png"},
     child_textures = {"paleotest_beta_megapithecus.png"},
+    animation = {
+        stand = {range = {x = 1, y = 59}, speed = 15, loop = true},
+        walk = {range = {x = 70, y = 100}, speed = 20, loop = true},
+        run = {range = {x = 70, y = 100}, speed = 25, loop = true},
+        punch = {range = {x = 110, y = 125}, speed = 15, loop = false},
+        roar = {range = {x = 130, y = 160}, speed = 8, loop = false},
+        sleep = {range = {x = 170, y = 230}, speed = 15, loop = true}
+    },
     -- Sound
     sounds = {
         alter_child_pitch = true,
@@ -170,7 +180,7 @@ minetest.register_entity("paleotest:beta_megapithecus", {
             distance = 16
         },
         roar = {
-            name = "Gorillasound",
+            name = "paleotest_megapithecus_roar",
             gain = 1.0,
             distance = 32
         },
@@ -180,7 +190,7 @@ minetest.register_entity("paleotest:beta_megapithecus", {
             distance = 16
         },
         death = {
-            name = "paleotest_gigantopithecus1",
+            name = "paleotest_boss_death",
             gain = 1.0,
             distance = 16
         }
@@ -209,8 +219,24 @@ minetest.register_entity("paleotest:beta_megapithecus", {
     timeout = 0,
     logic = megapithecus_logic,
     get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
-    on_step = paleotest.on_step,
+    on_activate = function(self, staticdata, dtime_s)
+        self.timer = 0
+        paleotest.on_activate(self, staticdata, dtime_s)
+    end,
+    on_step = function(self, dtime)
+        paleotest.on_step(self, dtime)
+        self.timer = self.timer + dtime
+        if self.timer > 150 then
+            local pos = self.object:get_pos()
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:yeti")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:yeti")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:yeti")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:yeti")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:yeti")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:yeti")
+            self.timer = 0
+        end
+    end,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 100, false, false) then
             return
@@ -220,8 +246,8 @@ minetest.register_entity("paleotest:beta_megapithecus", {
             minetest.show_formspec(clicker:get_player_name(),
                                    "paleotest:megapithecus_guide",
                                    paleotest.register_fg_entry(self, {
-                female_image = "paleotest_megapithecus_fg.png",
-                male_image = "paleotest_megapithecus_fg.png",
+                female_image = "Megapithecus_Dossier_Item.png",
+                male_image = "Megapithecus_Dossier_Item.png",
                 diet = "Carnivore",
                 temper = "Aggressive (Boss)"
             }))

@@ -6,6 +6,17 @@
 local creative = minetest.settings:get_bool("creative")
 
 ----------
+-- Gigantoraptor Saddle --
+----------
+
+minetest.register_tool("paleotest:gigantoraptor_saddle", {
+	description = "Gigantoraptor Saddle",
+	inventory_image = "paleotest_gigantoraptor_saddle.png",
+	wield_image = "paleotest_gigantoraptor_saddle.png^[transformFYR90",
+	groups = {flammable = 1},
+})
+
+----------
 -- Allosaurus Saddle --
 ----------
 
@@ -90,6 +101,17 @@ minetest.register_tool("paleotest:brachiosaurus_saddle", {
 	description = "Brachiosaurus Saddle",
 	inventory_image = "paleotest_brachiosaurus_saddle.png",
 	wield_image = "paleotest_brachiosaurus_saddle.png^[transformFYR90",
+	groups = {flammable = 1},
+})
+
+----------
+-- Brontosaurus Saddle --
+----------
+
+minetest.register_tool("paleotest:brontosaurus_saddle", {
+	description = "Brontosaurus Saddle",
+	inventory_image = "paleotest_brontosaurus_saddle.png",
+	wield_image = "paleotest_brontosaurus_saddle.png^[transformFYR90",
 	groups = {flammable = 1},
 })
 
@@ -332,6 +354,17 @@ minetest.register_tool("paleotest:megalosaurus_saddle", {
 	description = "Megalosaurus Saddle",
 	inventory_image = "paleotest_megalosaurus_saddle.png",
 	wield_image = "paleotest_megalosaurus_saddle.png^[transformFYR90",
+	groups = {flammable = 1},
+})
+
+----------
+-- Megatherium Saddle --
+----------
+
+minetest.register_tool("paleotest:megatherium_saddle", {
+	description = "Megatherium Saddle",
+	inventory_image = "paleotest_megatherium_saddle.png",
+	wield_image = "paleotest_megatherium_saddle.png^[transformFYR90",
 	groups = {flammable = 1},
 })
 
@@ -949,7 +982,7 @@ minetest.register_craftitem("paleotest:oil", {
 ----------
 
 minetest.register_craftitem("paleotest:organic_oil", {
-	description = "Organic oil",
+	description = "Organic Oil",
 	stack_max= 100,
 	groups = {oil = 1},
 	inventory_image = "paleotest_organic_oil.png",
@@ -1403,6 +1436,12 @@ minetest.register_craftitem("paleotest:dna_brachiosaurus", { -- Brachiosaurus DN
 	groups = {dna = 1},
 })
 
+minetest.register_craftitem("paleotest:dna_brontosaurus", { -- Brontosaurus DNA
+	description = "Brontosaurus DNA",
+	inventory_image = "paleotest_dna.png",
+	groups = {dna = 1},
+})
+
 minetest.register_craftitem("paleotest:dna_castoroides", { -- Castoroides DNA
 	description = "Castoroides DNA",
 	inventory_image = "paleotest_dna.png",
@@ -1793,6 +1832,8 @@ paleotest.register_egg("paleotest:beelzebufo", 0.75, true)
 
 paleotest.register_egg("paleotest:brachiosaurus", 1.25, true)
 
+paleotest.register_egg("paleotest:brontosaurus", 1.25, true)
+
 paleotest.register_egg("paleotest:carbonemys", 1, true)
 
 paleotest.register_egg("paleotest:carcharodontosaurus", 1.50, true)
@@ -1877,6 +1918,13 @@ paleotest.register_egg("paleotest:velociraptor", 0.5, true)
 
 paleotest.register_egg("paleotest:yutyrannus", 1.5, true)
 
+paleotest.register_egg("paleotest:gigantoraptor", 1, true)
+
+paleotest.register_egg("paleotest:pegomastax", 1, true)
+
+paleotest.register_egg("paleotest:moschops", 1, true)
+
+
 --------------
 -- Syringes --
 --------------
@@ -1910,8 +1958,6 @@ paleotest.register_syringe("paleotest:phiomia",true)
 paleotest.register_syringe("paleotest:procoptodon",true)
 
 paleotest.register_syringe("paleotest:purlovia",true)
-
-paleotest.register_syringe("paleotest:tamable_rhyniognatha",false)
 
 paleotest.register_syringe("paleotest:smilodon",true)
 

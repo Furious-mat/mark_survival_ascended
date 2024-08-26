@@ -6,7 +6,27 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:alpha_megalodon" and
+            name ~= "paleotest:ammonite" and
+            name ~= "paleotest:basilosaurus" and
+            name ~= "paleotest:coelacanth" and
+            name ~= "paleotest:dunkleosteus" and
+            name ~= "paleotest:ichthyosaurus" and
+            name ~= "paleotest:electrophorus" and
+            name ~= "paleotest:leedsichthys" and
+            name ~= "paleotest:liopleurodon" and
+            name ~= "paleotest:piranha" and
+            name ~= "paleotest:plesiosaurus" and
+            name ~= "paleotest:angler" and
+            name ~= "paleotest:alpha_mosasaurus" and
+            name ~= "paleotest:alpha_tusoteuthis" and
+            name ~= "paleotest:manta" and
+            name ~= "paleotest:salmon" and
+            name ~= "paleotest:alpha_leedsichthys" and
+            name ~= "paleotest:megalodon" and
+            name ~= "paleotest:mosasaurus" and
+            name ~= "paleotest:tusoteuthis" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name)
             and (height and height < 1.5)
@@ -23,6 +43,10 @@ local function set_mob_tables(self)
 end
 
 local function cnidaria_logic(self)
+
+    if not self.isinliquid then
+        self.hp = 0
+    end
 
     if self.hp <= 0 then
         mob_core.on_die(self)
@@ -90,6 +114,7 @@ minetest.register_entity("paleotest:cnidaria", {
     scale_stage1 = 0.25,
     scale_stage2 = 0.5,
     scale_stage3 = 0.75,
+    glow = 16,
     visual = "mesh",
     mesh = "paleotest_cnidaria.b3d",
     textures = {"paleotest_cnidaria.png"},
@@ -102,7 +127,7 @@ minetest.register_entity("paleotest:cnidaria", {
     sounds = {
         alter_child_pitch = true,
         random = {
-            name = "Cnidariasound",
+            name = "",
             gain = 1.0,
             distance = 16
         },
@@ -112,7 +137,7 @@ minetest.register_entity("paleotest:cnidaria", {
             distance = 16
         },
         death = {
-            name = "Cnidariasound",
+            name = "",
             gain = 1.0,
             distance = 16
         }
@@ -128,7 +153,7 @@ minetest.register_entity("paleotest:cnidaria", {
     defend_owner = false,
     targets = {},
     follow = paleotest.global_meat,
-    drops = {{name = "paleotest:bio_toxin", chance = 1, min = 1, max = 3}},
+    drops = {{name = "paleotest:bio_toxin", chance = 1, min = 15, max = 30}},
     timeout = 0,
     logic = cnidaria_logic,
     get_staticdata = mobkit.statfunc,
@@ -163,4 +188,9 @@ minetest.register_craftitem("paleotest:cnidaria_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_cnidaria_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

@@ -23,7 +23,6 @@ xconnected.register_wall( 'xconnected:wall_stone_brick',        'default_stone_b
 xconnected.register_wall( 'xconnected:wall_sandstone_brick',    'default_sandstone_brick.png',    'default:sandstonebrick' );
 xconnected.register_wall( 'xconnected:wall_obsidian_brick',     'default_obsidian_brick.png',     'default:obsidianbrick' );
 xconnected.register_wall( 'xconnected:wall_hedge',              'default_leaves.png',             'default:leaves' );
-xconnected.register_wall( 'xconnected:wall_clay',               'default_clay.png',               'default:clay' );
 xconnected.register_wall( 'xconnected:wall_coal_block',         'default_coal_block.png',         'default:coalblock' );
 
 -- xfences can also be emulated

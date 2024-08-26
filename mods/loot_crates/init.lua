@@ -74,8 +74,8 @@ local function create_detached_inv(name)
 			return stack:get_count()
 		end,
 	})
-	inv:set_size(name .. "_inv", 3)
-	inv:set_width(name .. "_inv", 3)
+	inv:set_size(name .. "_inv", 6)
+	inv:set_width(name .. "_inv", 6)
 end
 
 create_detached_inv("loot_crate_common")
@@ -135,6 +135,7 @@ if minetest.get_modpath("default") then
     loot_crates.register_loot("common", {name = "farming:verdberry", max_count = 30})
     loot_crates.register_loot("common", {name = "farming:magenberry", max_count = 30})
     loot_crates.register_loot("common", {name = "farming:cianberry", max_count = 30})
+    loot_crates.register_loot("common", {name = "default:steel_ingot", max_count = 30})
     loot_crates.register_loot("uncommon", {name = "x_bows:bow_wood", max_count = 1})
     loot_crates.register_loot("uncommon", {name = "x_bows:crossbow", max_count = 1})
     loot_crates.register_loot("uncommon", {name = "rangedweapons:python", max_count = 1})
@@ -142,6 +143,7 @@ if minetest.get_modpath("default") then
     loot_crates.register_loot("uncommon", {name = "x_bows:slingshot", max_count = 1})
     loot_crates.register_loot("uncommon", {name = "multiplant:diamond", max_count = 5})
     loot_crates.register_loot("uncommon", {name = "default:wooden_club", max_count = 1})
+    loot_crates.register_loot("uncommon", {name = "default:steel_ingot", max_count = 60})
     loot_crates.register_loot("rare", {name = "x_bows:bow_wood", max_count = 1})
     loot_crates.register_loot("rare", {name = "rangedweapons:m16", max_count = 1})
     loot_crates.register_loot("rare", {name = "x_bows:compound_bow", max_count = 1})
@@ -151,8 +153,8 @@ if minetest.get_modpath("default") then
     loot_crates.register_loot("rare", {name = "rangedweapons:python", max_count = 1})
     loot_crates.register_loot("rare", {name = "rangedweapons:m79", max_count = 1})
     loot_crates.register_loot("rare", {name = "default:wooden_club", max_count = 1})
-    loot_crates.register_loot("rare", {name = "techage:ta4_battery", max_count = 3})
     loot_crates.register_loot("rare", {name = "headlamp:headlamp_off", max_count = 1})
+    loot_crates.register_loot("rare", {name = "default:steel_ingot", max_count = 90})
 end
 
 local function update_emission(self, texture, overlay)
@@ -225,7 +227,7 @@ minetest.register_entity("loot_crates:common", {
         self.loot_table = mobkit.recall(self, "loot_table") or {}
         self.loot_init = mobkit.recall(self, "loot_init") or false
         if not self.loot_init then
-            for i = 1, 3 do
+            for i = 1, 6 do
                 local random = math.random(#loot_crates.common_loot)
                 local loot = loot_crates.common_loot[random]
                 self.loot_table[i] = {name = loot.name, count = math.random(loot.max_count), wear=0, metadata=""}
@@ -235,6 +237,10 @@ minetest.register_entity("loot_crates:common", {
         end
     end,
     on_rightclick = function(self, clicker)
+        if clicker:get_wielded_item():get_name() == "feather_fall:feather" then
+	mob_core.random_loot_drop(self, 1, 1, "default:steelblock")
+	self.object:remove()
+        end
         loot_crates.ent[clicker:get_player_name()] = self.object
         local inv = minetest.get_inventory({type = "detached", name = "loot_crate_common"})
         inv:set_list("loot_crate_common_inv", {})
@@ -308,7 +314,7 @@ minetest.register_entity("loot_crates:uncommon", {
         self.loot_table = mobkit.recall(self, "loot_table") or {}
         self.loot_init = mobkit.recall(self, "loot_init") or false
         if not self.loot_init then
-            for i = 1, 3 do
+            for i = 1, 6 do
                 local random = math.random(#loot_crates.uncommon_loot)
                 local loot = loot_crates.uncommon_loot[random]
                 self.loot_table[i] = {name = loot.name, count = math.random(loot.max_count), wear=0, metadata=""}
@@ -318,6 +324,10 @@ minetest.register_entity("loot_crates:uncommon", {
         end
     end,
     on_rightclick = function(self, clicker)
+        if clicker:get_wielded_item():get_name() == "feather_fall:feather" then
+	mob_core.random_loot_drop(self, 1, 1, "default:steelblock")
+	self.object:remove()
+        end
         loot_crates.ent[clicker:get_player_name()] = self.object
         local inv = minetest.get_inventory({type = "detached", name = "loot_crate_uncommon"})
         inv:set_list("loot_crate_uncommon_inv", {})
@@ -391,7 +401,7 @@ minetest.register_entity("loot_crates:rare", {
         self.loot_table = mobkit.recall(self, "loot_table") or {}
         self.loot_init = mobkit.recall(self, "loot_init") or false
         if not self.loot_init then
-            for i = 1, 3 do
+            for i = 1, 6 do
                 local random = math.random(#loot_crates.rare_loot)
                 local loot = loot_crates.rare_loot[random]
                 self.loot_table[i] = {name = loot.name, count = math.random(loot.max_count), wear=0, metadata=""}
@@ -401,6 +411,10 @@ minetest.register_entity("loot_crates:rare", {
         end
     end,
     on_rightclick = function(self, clicker)
+        if clicker:get_wielded_item():get_name() == "feather_fall:feather" then
+	mob_core.random_loot_drop(self, 1, 1, "default:steelblock")
+	self.object:remove()
+        end
         loot_crates.ent[clicker:get_player_name()] = self.object
         local inv = minetest.get_inventory({type = "detached", name = "loot_crate_rare"})
         inv:set_list("loot_crate_rare_inv", {})
@@ -436,10 +450,10 @@ mob_core.register_spawn({
 	max_light = 15,
 	min_height = -50,
 	max_height = -5,
-	min_rad = 1,
-	max_rad = 256,
+	min_rad = 50,
+	max_rad = 100,
 	group = 0,
-}, 100, 5)
+}, 50, 5)
 
 mob_core.register_spawn({
 	name = "loot_crates:rare",
@@ -447,7 +461,7 @@ mob_core.register_spawn({
 	max_light = 15,
 	min_height = -100,
 	max_height = -55,
-	min_rad = 1,
-	max_rad = 256,
+	min_rad = 50,
+	max_rad = 100,
 	group = 0,
-}, 50, 3)
+}, 50, 2)

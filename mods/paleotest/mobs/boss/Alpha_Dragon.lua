@@ -186,17 +186,17 @@ minetest.register_entity("paleotest:alpha_dragon", {
     sounds = {
         alter_child_pitch = true,
         random = {
-            name = "Dragon_mumble_2",
+            name = "paleotest_dragon_idle",
             gain = 0.6,
             distance = 32
         },
         hurt = {
-            name = "player_damage",
+            name = "paleotest_dragon_hurt",
             gain = 1.0,
             distance = 16
         },
         death = {
-            name = "Dragon_mumble_2",
+            name = "paleotest_dragon_death",
             gain = 1.0,
             distance = 16
         }
@@ -222,9 +222,29 @@ minetest.register_entity("paleotest:alpha_dragon", {
     },
     timeout = 0,
     logic = dragon_logic,
-    on_step = paleotest.on_step,
+    on_step = function(self, dtime)
+        paleotest.on_step(self, dtime)
+        self.timer = self.timer + dtime
+        if self.timer > 300 then
+            local pos = self.object:get_pos()
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "attack_drone:pteranodon")
+            self.timer = 0
+        end
+    end,
     get_staticdata = mobkit.statfunc,
     on_activate = function(self, staticdata, dtime_s)
+        self.timer = 0
         paleotest.on_activate(self, staticdata, dtime_s)
         self.flight_timer = mobkit.recall(self, "flight_timer") or 1
         self.finding_feeder = mobkit.recall(self, "finding_feeder") or false
@@ -237,8 +257,8 @@ minetest.register_entity("paleotest:alpha_dragon", {
             minetest.show_formspec(clicker:get_player_name(),
                                    "paleotest:dragon_guide",
                                    paleotest.register_fg_entry(self, {
-                female_image = "paleotest_dragon_fg.png",
-                male_image = "paleotest_dragon_fg.png",
+                female_image = "Dragon_Dossier_Item.png",
+                male_image = "Dragon_Dossier_Item.png",
                 diet = "Carnivore",
                 temper = "Aggressive (Boss)"
             }))

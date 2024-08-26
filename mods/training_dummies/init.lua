@@ -113,9 +113,9 @@ minetest.register_craftitem("training_dummies:training_dummies", {
 minetest.register_craft({
     output = "training_dummies:training_dummies",
     recipe = {
-        {"", "default:tree", ""},
-        {"farming:straw", "default:tree", "farming:straw"},
-        {"default:tree", "default:tree", "default:tree"},
+        {"", "default:wood", ""},
+        {"paleotest:hide", "default:fiber", "paleotest:hide"},
+        {"default:wood", "default:thatch", "default:wood"},
     }
 })
 

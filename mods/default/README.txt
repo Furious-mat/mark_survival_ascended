@@ -19,7 +19,7 @@ celeron55, Perttu Ahola <celeron55@gmail.com> (CC BY-SA 3.0)
 Textures
 --------
 
-Magma Block (Used in Cunning Cave and Tek Cave) = License: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
+Magma Block (Used in Cunning Cave and Tek Cave) = License: CC BY-SA 3.0
 Wooden Club - TEXTURE : CC-BY-4.0
 
 Cisoun's texture pack (CC BY-SA 3.0):

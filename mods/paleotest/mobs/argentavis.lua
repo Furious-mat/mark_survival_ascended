@@ -2,6 +2,30 @@
 -- Argentavis --
 --------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local argentavis_inv_size = 10 * 10
+local inv_argentavis = {}
+inv_argentavis.argentavis_number = tonumber(storage:get("argentavis_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, argentavis_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function find_feeder(self)
     local pos = self.object:get_pos()
     local pos1 = {x = pos.x + 32, y = pos.y + 32, z = pos.z + 32}
@@ -32,6 +56,20 @@ end
 local function argentavis_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:argentavis_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("argentavis_" .. self.argentavis_number)
         mob_core.on_die(self)
         return
     end
@@ -165,7 +203,7 @@ minetest.register_entity("paleotest:argentavis", {
     soar_height = 12,
     turn_rate = 3.5,
     -- Movement & Physics
-    max_speed = 6,
+    max_speed = 8,
     stepheight = 1.1,
     jump_height = 1.26,
     max_fall = 3,
@@ -199,7 +237,7 @@ minetest.register_entity("paleotest:argentavis", {
     driver_attach_at = {x = 0, y = 1.300, z = 0.15},
     player_rotation = {x = 90, y = 0., z = 180},
     driver_eye_offset = {{x = 0, y = 20, z = 5}, {x = 0, y = 45, z = 55}},
-    max_speed_forward = 6,
+    max_speed_forward = 9,
     -- Sound
     sounds = {
         alter_child_pitch = true,
@@ -228,36 +266,115 @@ minetest.register_entity("paleotest:argentavis", {
     max_hunger = 2000,
     aerial_follow = true,
     defend_owner = true,
-    targets = {},
+    targets = {
+    "paleotest:polar_bear",
+    "paleotest:polar_purlovia",
+    "paleotest:yeti",
+    "paleotest:ankylosaurus",
+    "paleotest:baryonyx",
+    "paleotest:brachiosaurus",
+    "paleotest:carnotaurus",
+    "paleotest:compy",
+    "paleotest:diplodocus",
+    "paleotest:dilophosaur",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:kentrosaurus",
+    "paleotest:megalosaurus",
+    "paleotest:microraptor",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:stegosaurus",
+    "paleotest:therizinosaur",
+    "paleotest:triceratops",
+    "paleotest:troodon",
+    "paleotest:tyrannosaurus",
+    "paleotest:velociraptor",
+    "paleotest:gigantoraptor",
+    "paleotest:carbonemys",
+    "paleotest:dimorphodon",
+    "paleotest:kaprosuchus",
+    "paleotest:megalania",
+    "paleotest:pteranodon",
+    "paleotest:quetzalcoatlus",
+    "paleotest:sarcosuchus",
+    "paleotest:tapejara",
+    "paleotest:titanoboa",
+    "paleotest:castoroides",
+    "paleotest:chalicotherium",
+    "paleotest:daeodon",
+    "paleotest:dire_bear",
+    "paleotest:dire_wolf",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:hyaenodon",
+    "paleotest:elasmotherium",
+    "paleotest:mammoth",
+    "paleotest:megaloceros",
+    "paleotest:megatherium",
+    "paleotest:mesopithecus",
+    "paleotest:onyc",
+    "paleotest:ovis",
+    "paleotest:paraceratherium",
+    "paleotest:phiomia",
+    "paleotest:procoptodon",
+    "paleotest:smilodon",
+    "paleotest:thylacoleo",
+    "paleotest:achatina",
+    "paleotest:araneo",
+    "paleotest:arthropluera",
+    "paleotest:dung_beetle",
+    "paleotest:pulmonoscorpius",
+    "paleotest:dodo",
+    "paleotest:ichthyornis",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:terror_bird",
+    "paleotest:beelzebufo",
+    "paleotest:diplocaulus",
+    "paleotest:dimetrodon",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:purlovia",
+    "paleotest:unicorn"
+    },
     follow = paleotest.global_meat,
     drops = {
         {name = "paleotest:meat_raw", chance = 1, min = 10, max = 20},
         {name = "paleotest:raw_prime_meat", chance = 1, min = 5, max = 10},
         {name = "paleotest:hide", chance = 1, min = 10, max = 20},
-        {name = "paleotest:argentavis_talon", chance = 1, min = 1, max = 1}
+        {name = "paleotest:argentavis_talon", chance = 1, min = 2, max = 2}
     },
     timeout = 0,
     logic = argentavis_logic,
     on_step = paleotest.on_step,
-    get_staticdata = mobkit.statfunc,
-    on_activate = function(self, staticdata, dtime_s)
-        paleotest.on_activate(self, staticdata, dtime_s)
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.argentavis_number = inv_argentavis.argentavis_number
+    inv_argentavis.argentavis_number = inv_argentavis.argentavis_number + 1
+    storage:set_int("argentavis_number", inv_argentavis.argentavis_number)
+    local inv = minetest.create_detached_inventory("paleotest:argentavis_" .. self.argentavis_number, {})
+    inv:set_size("main", argentavis_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
         self.flight_timer = mobkit.recall(self, "flight_timer") or 1
         self.finding_feeder = mobkit.recall(self, "finding_feeder") or false
-    end,
+end,
     on_rightclick = function(self, clicker)
-            if clicker:is_player() then
-            local player_inv = clicker:get_inventory()
-            if player_inv then
-                minetest.show_formspec(clicker:get_player_name(), "paleotest:argentavis_inventory",
-                    "size[8,9]" ..
-                    "list[current_player;main;0,5;8,4;]" ..
-                    "list[current_name;argentavis_inventory;0,0;8,4;]" ..
-                    "listring[current_player;main]" ..
-                    "listring[current_name;argentavis_inventory]"
-                )
-            end
-        end
         if paleotest.feed_tame(self, clicker, 50, true, true) then
             return
         end
@@ -271,16 +388,24 @@ minetest.register_entity("paleotest:argentavis", {
                 temper = "Territorial"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "crafting:argentavis_saddle" then
+        if clicker:get_wielded_item():get_name() == "crafting:argentavis_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
+    if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:argentavis_inv",
+            "size[15,15]" ..
+            "list[detached:paleotest:argentavis_" .. self.argentavis_number .. ";main;0,0;10,10;]" ..
+            "list[current_player;main;0,10;9,4;]" ..
+            "listring[detached:paleotest:argentavis_" .. self.argentavis_number .. ";main]" ..
+            "listring[current_player;main]")
+    end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
-    end,
+  end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
             paleotest.set_attack(self, puncher)
@@ -306,4 +431,9 @@ minetest.register_craftitem("paleotest:argentavis_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_argentavis_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

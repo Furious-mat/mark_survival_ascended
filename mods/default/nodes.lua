@@ -58,8 +58,6 @@ default:silver_sand
 
 default:gravel
 
-default:clay
-
 default:snow
 default:snowblock
 default:ice
@@ -325,7 +323,6 @@ minetest.register_node("default:mossycobble", {
 		max_items = 5,
 		items = {
 			{items = {"default:gravel"}, rarity = 8},
-			{items = {"default:clay"}, rarity = 16},
 			{items = {"loose_rocks:loose_rocks_1"}}
 		}
 	}
@@ -648,15 +645,6 @@ minetest.register_node("default:gravel", {
 	drop = "default:flint",
 })
 
-minetest.register_node("default:clay", {
-	description = S("Clay"),
-	tiles = {"default_clay.png"},
-	groups = {crumbly = 3},
-	drop = "default:clay_lump 4",
-	sounds = default.node_sound_dirt_defaults(),
-})
-
-
 minetest.register_node("default:snow", {
 	description = S("Snow"),
 	tiles = {"default_snow.png"},
@@ -693,7 +681,7 @@ minetest.register_node("default:snow", {
 minetest.register_node("default:snowblock", {
 	description = S("Snow Block"),
 	tiles = {"default_snow.png"},
-	groups = {unbreakable = 1, immortal = 1, immovable = 2},
+	groups = {unbreakable = 1, immortal = 1, immovable = 2, soil = 1, snowy = 1},
 	sounds = default.node_sound_snow_defaults(),
 	is_ground_content = false,
 	on_blast = function() end,
@@ -702,7 +690,18 @@ minetest.register_node("default:snowblock", {
 	diggable = false,
 })
 
--- 'is ground content = false' to avoid tunnels in sea ice or ice rivers
+minetest.register_node("default:spawn_snowblock", {
+	description = S("Spawn Snow Block"),
+	tiles = {"default_snow.png"},
+	groups = {unbreakable = 1, immortal = 1, immovable = 2, snowy = 1},
+	sounds = default.node_sound_snow_defaults(),
+	is_ground_content = false,
+	on_blast = function() end,
+	can_dig = function() return false end,
+	on_destruct = function() end,
+	diggable = false,
+})
+
 minetest.register_node("default:ice", {
 	description = S("Ice"),
 	tiles = {"default_ice.png"},
@@ -717,13 +716,26 @@ minetest.register_node("default:ice", {
 	diggable = false,
 })
 
--- Mapgen-placed ice with 'is ground content = true' to contain tunnels
 minetest.register_node("default:cave_ice", {
 	description = S("Cave Ice"),
 	tiles = {"default_cave_ice.png"},
 	paramtype = "light",
 	groups = {cools_lava = 1, slippery = 3, unbreakable = 1, immortal = 1, immovable = 2},
 	drop = "default:ice",
+	sounds = default.node_sound_ice_defaults(),
+	is_ground_content = false,
+	on_blast = function() end,
+	can_dig = function() return false end,
+	on_destruct = function() end,
+	diggable = false,
+})
+
+minetest.register_node("default:spawn_ice", {
+	description = S("Spawn Ice (Kairuku)"),
+	tiles = {"default_ice.png"},
+	is_ground_content = false,
+	paramtype = "light",
+	groups = {cools_lava = 1, slippery = 3, unbreakable = 1, immortal = 1, immovable = 2},
 	sounds = default.node_sound_ice_defaults(),
 	is_ground_content = false,
 	on_blast = function() end,
@@ -1313,6 +1325,7 @@ minetest.register_node("default:mese", {
 	can_dig = function() return false end,
 	on_destruct = function() end,
 	diggable = false,
+	pointable = false,
 	light_source = 3,
 })
 
@@ -2525,9 +2538,9 @@ minetest.register_node("default:lava_flowing", {
 		not_in_creative_inventory = 1},
 })
 
-minetest.register_node("default:magma", { -- License: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
+minetest.register_node("default:magma", { -- License: CC BY-SA 3.0
 	description = S("Magma"),
-	tiles = {{name="default_magma.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.5}}},
+	tiles = {"default_magma.png"},
 	groups = {unbreakable = 1, immortal = 1, immovable = 2},
 	light_source = 10,
 	legacy_mineral = true,

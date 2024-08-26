@@ -112,7 +112,7 @@ minetest.register_node("crafting:argentavis_saddle", {
 	paramtype2 = "facedir",
 	stack_max= 1,
 	is_ground_content = false,
-	groups = {oddly_breakable_by_hand = 1},
+	groups = {oddly_breakable_by_hand = 1, choppy=3},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()

@@ -75,6 +75,7 @@ minetest.register_node("bones:bones", {
 			local inv = player:get_inventory()
 			if inv:room_for_item("main", {name = "bones:bones"}) then
 				inv:add_item("main", {name = "bones:bones"})
+				inv:add_item("main", {name = "msa_implant:specimen_implant"})
 			else
 				minetest.add_item(pos, "bones:bones")
 			end
@@ -110,6 +111,7 @@ minetest.register_node("bones:bones", {
 		if has_space then
 			if player_inv:room_for_item("main", {name = "bones:bones"}) then
 				player_inv:add_item("main", {name = "bones:bones"})
+				player_inv:add_item("main", {name = "msa_implant:specimen_implant"})
 			else
 				minetest.add_item(pos,"bones:bones")
 			end

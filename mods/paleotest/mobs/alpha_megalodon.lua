@@ -6,7 +6,27 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:angler" and
+            name ~= "paleotest:ammonite" and
+            name ~= "paleotest:basilosaurus" and
+            name ~= "paleotest:cnidaria" and
+            name ~= "paleotest:coelacanth" and
+            name ~= "paleotest:dunkleosteus" and
+            name ~= "paleotest:ichthyosaurus" and
+            name ~= "paleotest:electrophorus" and
+            name ~= "paleotest:leedsichthys" and
+            name ~= "paleotest:liopleurodon" and
+            name ~= "paleotest:piranha" and
+            name ~= "paleotest:manta" and
+            name ~= "paleotest:alpha_mosasaurus" and
+            name ~= "paleotest:alpha_tusoteuthis" and
+            name ~= "paleotest:plesiosaurus" and
+            name ~= "paleotest:salmon" and
+            name ~= "paleotest:alpha_leedsichthys" and
+            name ~= "paleotest:megalodon" and
+            name ~= "paleotest:mosasaurus" and
+            name ~= "paleotest:tusoteuthis" then
             if not paleotest.find_string(self.targets, name) then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
@@ -20,6 +40,10 @@ local function set_mob_tables(self)
 end
 
 local function megalodon_logic(self)
+
+    if not self.isinliquid then
+        self.hp = 0
+    end
 
     if self.hp <= 0 then
         mob_core.on_die(self)

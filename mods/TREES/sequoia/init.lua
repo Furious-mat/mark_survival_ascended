@@ -104,9 +104,9 @@ end
 minetest.register_node("sequoia:sapling", {
 	description = S("Sequoia Tree Sapling"),
 	drawtype = "plantlike",
-	tiles = {"sequoia_sapling.png"},
-	inventory_image = "sequoia_sapling.png",
-	wield_image = "sequoia_sapling.png",
+	tiles = {"moretrees_sequoia_sapling.png"},
+	inventory_image = "moretrees_sequoia_sapling.png",
+	wield_image = "moretrees_sequoia_sapling.png",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -140,9 +140,9 @@ minetest.register_node("sequoia:sapling", {
 minetest.register_node("sequoia:trunk", {
 	description = S("Sequoia Trunk"),
 	tiles = {
-		"sequoia_trunk_top.png",
-		"sequoia_trunk_top.png",
-		"sequoia_trunk.png"
+		"moretrees_sequoia_trunk_top.png",
+		"moretrees_sequoia_trunk_top.png",
+		"moretrees_sequoia_trunk.png"
 	},
 	groups = {tree = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
@@ -160,7 +160,7 @@ minetest.register_node("sequoia:trunk", {
 -- Sequoia wood
 minetest.register_node("sequoia:wood", {
 	description = S("Sequoia Wood Planks"),
-	tiles = {"sequoia_wood.png"},
+	tiles = {"moretrees_sequoia_wood.png"},
 	is_ground_content = false,
 	groups = {wood = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 3},
 	sounds = default.node_sound_wood_defaults(),
@@ -170,7 +170,7 @@ minetest.register_node("sequoia:wood", {
 minetest.register_node("sequoia:leaves", {
 	description = S("Sequoia Leaves"),
 	drawtype = "allfaces_optional",
-	tiles = {"sequoia_leaves.png"},
+	tiles = {"moretrees_sequoia_leaves.png"},
 	paramtype = "light",
 	walkable = false,
 	waving = 1,
@@ -230,7 +230,7 @@ default.register_leafdecay({
 if minetest.settings:get_bool("cool_fences", true) then
 	local fence = {
 		description = S("Sequoia Wood Fence"),
-		texture =  "sequoia_wood.png",
+		texture =  "moretrees_sequoia_wood.png",
 		material = "sequoia:wood",
 		groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
 		sounds = default.node_sound_wood_defaults(),
@@ -245,7 +245,7 @@ end
 if minetest.get_modpath("moreblocks") then -- stairsplus/moreblocks
 	stairsplus:register_all("sequoia", "wood", "sequoia:wood", {
 		description = S("Sequoia Wood"),
-		tiles = {"sequoia_wood.png"},
+		tiles = {"moretrees_sequoia_wood.png"},
 		sunlight_propagates = true,
 		groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 3},
 		sounds = default.node_sound_wood_defaults()
@@ -265,7 +265,7 @@ elseif minetest.get_modpath("stairs") then
 		"sequoia_wood",
 		"sequoia:wood",
 		{choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-		{"sequoia_wood.png"},
+		{"moretrees_sequoia_wood.png"},
 		S("Sequoia Wood Stair"),
 		S("Sequoia Wood Slab"),
 		default.node_sound_wood_defaults()

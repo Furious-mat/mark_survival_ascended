@@ -733,3 +733,158 @@ function paleotest.hq_aerial_follow(self, prty, target)
     end
     mobkit.queue_high(self, func, prty)
 end
+
+------------------
+-- Aquatic Mount --
+------------------
+
+function paleotest.hq_aquatic_mount_logic(self, prty)
+    local forward_speed = minetest.registered_entities[self.name].max_speed_forward
+    local y = 0
+    local tvel = 0
+    local jump_meter = 0
+    local last_pos = {}
+    local mount_state = "ground"
+    local anim = "stand"
+    local timer = 0.25
+    local init = false
+    local func = function(self)
+        if not self.driver then return true end
+        if not init then
+            self.driver:set_attach(self.object, "Torso.2", self.driver_attach_at, self.player_rotation)
+        end
+        local pos = mobkit.get_stand_pos(self)
+
+        if timer <= 0 then
+            last_pos = pos
+            timer = 0.25
+        end
+
+        local ctrl = self.driver:get_player_control()
+        local tyaw = self.driver:get_look_horizontal() or 0
+        local yaw = self.object:get_yaw()
+        local cur_vel = self.object:get_velocity()
+
+        if math.abs(tyaw - yaw) > 0.1 then self.object:set_yaw(tyaw) end
+        local vel = vector.multiply(minetest.yaw_to_dir(yaw), tvel)
+        vel.y = y
+
+        self.object:set_velocity(vel)
+
+        if mount_state == "ground" then
+
+            -- Move Forward
+            if ctrl.up then
+                tvel = forward_speed/3
+            end
+
+            -- Jump
+            if ctrl.jump then
+                if self.isinliquid then
+                    y = (self.jump_height) + 4
+                end
+                jump_meter = jump_meter + self.dtime
+                if jump_meter > 0.5 then -- Takeoff
+                    y = 6
+                    mount_state = "flight"
+                end
+            else
+                jump_meter = 0
+                y = cur_vel.y
+            end
+
+            if tvel > 0 then
+                anim = "walk"
+            else
+                anim = "stand"
+            end
+        end
+
+        if mount_state == "flight" then
+
+            tvel = forward_speed
+
+            if ctrl.down then
+                y = -forward_speed
+                pos.y = pos.y - 1
+                timer = timer - self.dtime
+                if timer <= 0 and last_pos and last_pos.y == pos.y then
+                    mount_state = "ground"
+                end
+            elseif ctrl.jump then
+                y = forward_speed
+            elseif not ctrl.jump and not ctrl.down then
+                y = 0
+            end
+
+            if self.object:get_acceleration().y < 0 then
+                self.object:set_acceleration({x = 0, y = 0, z = 0}) -- Defy Gravity
+            end
+
+            anim = "fly"
+
+        end
+
+        mobkit.animate(self, anim)
+
+        -- Velocity Control
+
+        if mount_state == "ground"
+        and tvel ~= 0
+        and not ctrl.up then tvel = 0 end
+
+        if not ctrl.down and not ctrl.jump then
+            if mount_state == "ground" then
+                y = cur_vel.y
+            else
+                y = 0
+            end
+        end
+
+        if ctrl.sneak then
+            mobkit.clear_queue_low(self)
+            mobkit.clear_queue_high(self)
+            mob_core.detach(self.driver, {x = -1, y = 0, z = 0})
+        end
+    end
+    mobkit.queue_high(self, func, prty)
+end
+
+-------------------
+-- Aquatic Follow --
+-------------------
+
+function paleotest.hq_aquatic_follow(self, prty, target)
+    local center = self.object:get_pos()
+    local timer = 5
+    local func = function(self)
+        if not mobkit.is_alive(target) then
+            return true
+        end
+        if mobkit.is_queue_empty_low(self) and not self.isinliquid then
+            local pos = mobkit.get_stand_pos(self)
+            local pos2 = target:get_pos()
+            if vector.distance(pos, pos2) > 12 then
+                timer = timer - self.dtime
+            end
+            if timer <= 0
+            and vector.distance(pos, center) < 12 then
+                self.object:add_velocity({x = 0, y = 2, z = 0})
+            end
+            if self.isinliquid then
+                if pos2.y - pos.y > 4 then
+                    self.object:add_velocity({x = 0, y = 2, z = 0})
+                end
+                if vector.distance(pos, pos2) > 1.5*self.growth_stage then
+                    mob_core.goto_next_waypoint(self, pos2)
+                else
+                    mobkit.lq_idle(self, 1)
+                end
+            end
+            if not self.isinliquid then
+                mob_core.fly_to_next_waypoint(self, pos2)
+            end
+        end
+    end
+    mobkit.queue_high(self, func, prty)
+end

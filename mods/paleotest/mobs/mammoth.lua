@@ -2,11 +2,29 @@
 -- Mammoth --
 -------------
 
-local notes = {"banjo_0", "banjo_3", "banjo_5", "banjo_3", "banjo_6", "banjo_5", "banjo_4", "banjo_3", "banjo_4", "banjo_5", "banjo_3",
-"banjo_1", "banjo_3", "banjo_5", "banjo_3", "banjo_6", "banjo_5", "banjo_4", "banjo_3", "banjo_4", "banjo_5", "banjo_7", "banjo_5",
-"banjo_2", "banjo_3", "banjo_5", "banjo_3", "banjo_6", "banjo_5", "banjo_4", "banjo_3", "banjo_4", "banjo_5", "banjo_3",
-"banjo_1", "banjo_3", "banjo_5", "banjo_3", "banjo_6", "banjo_5", "banjo_4", "banjo_3", "banjo_4", "banjo_5", "banjo_7", "banjo_5"}
-local current_note = 0
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local mammoth_inv_size = 7 * 8
+local inv_mammoth = {}
+inv_mammoth.mammoth_number = tonumber(storage:get("mammoth_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, mammoth_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
 
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
@@ -38,13 +56,27 @@ end
 local function mammoth_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:mammoth_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("mammoth_" .. self.mammoth_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 50 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -223,8 +255,27 @@ minetest.register_entity("paleotest:mammoth", {
     },
     timeout = 0,
     logic = mammoth_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.mammoth_number = inv_mammoth.mammoth_number
+    inv_mammoth.mammoth_number = inv_mammoth.mammoth_number + 1
+    storage:set_int("mammoth_number", inv_mammoth.mammoth_number)
+    local inv = minetest.create_detached_inventory("paleotest:mammoth_" .. self.mammoth_number, {})
+    inv:set_size("main", mammoth_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 66, true, true) then
@@ -246,15 +297,22 @@ minetest.register_entity("paleotest:mammoth", {
                 temper = "Docile"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:mammoth_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:mammoth_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:mammoth_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:mammoth_" .. self.mammoth_number .. ";main;0,0;8,7;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:mammoth_" .. self.mammoth_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         paleotest.set_order(self, clicker)
         mob_core.protect(self, clicker, true)
-        minetest.sound_play(notes[current_note], {gain = 1}, self, clicker)
         mob_core.nametag(self, clicker)
     end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
@@ -278,4 +336,9 @@ minetest.register_craftitem("paleotest:mammoth_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_mammoth_fg_female.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

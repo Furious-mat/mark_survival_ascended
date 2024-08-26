@@ -55,9 +55,9 @@ minetest.register_craft({
 		{'paleotest:black_pearl', 'default:steel_ingot', 'default:fiber'},
 		{'quartz:quartz_crystal', 'default:chest_locked', 'default:thatch'},
 		{'default:chest', 'overpowered:beta_dragon_lock', 'overpowered:untreatedingot'},
-		{'group:polymer', 'cryopod:cryopod', 'default:steelblock'},
+		{'group:polymer', 'msa_cryopod:cryopod', 'default:steelblock'},
 		{'group:polymer', 'overpowered:glass', 'overpowered:ingot'},
-		{'group:polymer', 'cryopod:cryopod', 'overpowered:ingot'},
+		{'group:polymer', 'msa_cryopod:cryopod', 'overpowered:ingot'},
 	}
 })
 minetest.register_craft({

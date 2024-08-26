@@ -146,9 +146,9 @@ XBows:register_arrow('arrow_diamond', {
     custom = {
         recipe = {
             { 'default:flint' },
-            { 'multiplant:diamond' },
-            { 'multiplant:diamond' },
-            { 'multiplant:diamond' },
+            { 'default:diamond' },
+            { 'default:diamond' },
+            { 'default:diamond' },
             { 'default:wood_stick' }
         },
         tool_capabilities = {

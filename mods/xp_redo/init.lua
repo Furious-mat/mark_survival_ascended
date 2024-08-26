@@ -7,13 +7,13 @@ xp_redo = {
 	disable_nametag = minetest.settings:get_bool("xp.display_nametag"),
 
 	-- rank entity on top of player
-	disable_hover_entity = minetest.settings:get_bool("xp.disable_hover_entity"),
+	disable_hover_entity = minetest.settings:get_bool("xp.disable_hover_entity", true),
 
 	-- various different xp rewards per ore
 	enable_dignode_rewards = minetest.settings:get_bool("xp.enable_dignode_rewards"),
 
 	-- xp penalty on player death
-	enable_death_malus = minetest.settings:get_bool("xp.enable_death_malus", true),
+	enable_death_malus = minetest.settings:get_bool("xp.enable_death_malus", false),
 
 	-- digging rate limiter
 	limit_dig_rate = tonumber(minetest.settings:get("xp.limit_dig_rate")),

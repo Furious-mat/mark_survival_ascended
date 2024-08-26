@@ -2,6 +2,30 @@
 -- Spinosaurus --
 -----------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local spinosaurus_inv_size = 6 * 8
+local inv_spinosaurus = {}
+inv_spinosaurus.spinosaurus_number = tonumber(storage:get("spinosaurus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, spinosaurus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -31,13 +55,27 @@ end
 local function spinosaurus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:spinosaurus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("spinosaurus_" .. self.spinosaurus_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 50 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -65,7 +103,7 @@ local function spinosaurus_logic(self)
             end
         end
 
-        if self.order == "stand" and not self.isinliquid and self.mood > 50 then
+        if self.order == "stand" and not self.isinliquid then
             mobkit.animate(self, "stand")
             return
         end
@@ -100,13 +138,11 @@ local function spinosaurus_logic(self)
                         mob_core.logic_attack_mobs(self, 10)
                     end
                 end
-                if self.mood < 50 then
                     if self.is_in_deep then
                         mob_core.logic_aqua_attack_mob(self, 10)
                     else
                         mob_core.logic_attack_mobs(self, 10)
                     end
-                end
                 if #self.rivals >= 1 then
                     if self.is_in_deep then
                         mob_core.logic_aqua_attack_mob(self, 10, self.rivals)
@@ -120,20 +156,18 @@ local function spinosaurus_logic(self)
         if prty < 8 then
             if player
             and not self.child then
-                if self.mood < 75 and player:get_player_name() ~= self.owner then
+                if player:get_player_name() ~= self.owner then
                     if self.is_in_deep then
                         mob_core.logic_aqua_attack_player(self, 8, player)
                     else
                         mob_core.logic_attack_player(self, 8, player)
                     end
                 end
-                if self.mood < 50 then
                     if self.is_in_deep then
                         mob_core.logic_aqua_attack_player(self, 8, player)
                     else
                         mob_core.logic_attack_player(self, 8, player)
                     end
-                end
             end
         end
 
@@ -244,7 +278,64 @@ minetest.register_entity("paleotest:spinosaurus", {
     punch_cooldown = 2,
     defend_owner = true,
     imprint_tame = true,
-    targets = {},
+    targets = {
+    "paleotest:polar_bear",
+    "paleotest:polar_purlovia",
+    "paleotest:yeti",
+    "paleotest:ankylosaurus",
+    "paleotest:compy",
+    "paleotest:diplodocus",
+    "paleotest:dilophosaur",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:kentrosaurus",
+    "paleotest:microraptor",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:stegosaurus",
+    "paleotest:therizinosaur",
+    "paleotest:triceratops",
+    "paleotest:velociraptor",
+    "paleotest:carbonemys",
+    "paleotest:dimorphodon",
+    "paleotest:pteranodon",
+    "paleotest:tapejara",
+    "paleotest:castoroides",
+    "paleotest:chalicotherium",
+    "paleotest:daeodon",
+    "paleotest:dire_bear",
+    "paleotest:dire_wolf",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:hyaenodon",
+    "paleotest:elasmotherium",
+    "paleotest:mammoth",
+    "paleotest:megaloceros",
+    "paleotest:megatherium",
+    "paleotest:mesopithecus",
+    "paleotest:ovis",
+    "paleotest:paraceratherium",
+    "paleotest:phiomia",
+    "paleotest:procoptodon",
+    "paleotest:smilodon",
+    "paleotest:thylacoleo",
+    "paleotest:achatina",
+    "paleotest:argentavis",
+    "paleotest:dodo",
+    "paleotest:ichthyornis",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:terror_bird",
+    "paleotest:diplocaulus",
+    "paleotest:dimetrodon",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:purlovia",
+    "paleotest:unicorn"
+    },
     rivals = {},
     follow = paleotest.global_fish,
     drops = {
@@ -255,11 +346,28 @@ minetest.register_entity("paleotest:spinosaurus", {
     },
     timeout = 0,
     logic = spinosaurus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = function(self, staticdata, dtime_s)
-        paleotest.on_activate(self, staticdata, dtime_s)
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.spinosaurus_number = inv_spinosaurus.spinosaurus_number
+    inv_spinosaurus.spinosaurus_number = inv_spinosaurus.spinosaurus_number + 1
+    storage:set_int("spinosaurus_number", inv_spinosaurus.spinosaurus_number)
+    local inv = minetest.create_detached_inventory("paleotest:spinosaurus_" .. self.spinosaurus_number, {})
+    inv:set_size("main", spinosaurus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
         self.swim_timer = mobkit.recall(self, "swim_timer") or 40
-    end,
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 75, true, true) then
@@ -275,14 +383,21 @@ minetest.register_entity("paleotest:spinosaurus", {
                 temper = "Territorial"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:spinosaurus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:spinosaurus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
-        if self.mood > 50 then paleotest.set_order(self, clicker) end
-            paleotest.set_order(self, clicker)
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:spinosaurus_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:spinosaurus_" .. self.spinosaurus_number .. ";main;0,0;8,6;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:spinosaurus_" .. self.spinosaurus_number .. ";main]" ..
+            "listring[current_player;main]")
+        end
+        paleotest.set_order(self, clicker)
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
     end,
@@ -292,7 +407,7 @@ minetest.register_entity("paleotest:spinosaurus", {
         else
             paleotest.on_punch(self)
             mob_core.on_punch_basic(self, puncher, tool_capabilities, dir)
-            if puncher:get_player_name() == self.owner and self.mood > 50 then
+            if puncher:get_player_name() == self.owner then
                 return
             end
             mob_core.on_punch_retaliate(self, puncher, true, false)
@@ -307,4 +422,9 @@ minetest.register_craftitem("paleotest:spinosaurus_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_spinosaurus_fg_female.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

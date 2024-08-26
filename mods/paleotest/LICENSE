@@ -8,13 +8,13 @@ Allosaurus = https://github.com/AntumMT/mod-prehistoric_life
 Ankylosaurus = https://content.minetest.net/packages/Liil/livingfloatlands/
 Archaeopteryx = OLD Paleotest
 Baryonyx = "Baryonyx" (https://skfb.ly/opXFJ) by Growlett44 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
-Carcharodontosaurus = "T-rex Minecraft" (https://skfb.ly/6Ros7) by Sprint is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+Carcharodontosaurus = "giganotosaurus mcpe" (https://skfb.ly/p7S7o) by 20151009 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 Compy = https://github.com/AntumMT/mod-prehistoric_life
 Diplodocus = "Diplodocus" (https://skfb.ly/oFqWr) by Master Galanodel is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 Dilophosaur = OLD Paleotest
 Gallimimus = https://github.com/Christian9akaCeej/prehistoric_life
 Giganotosaurus = OLD Paleotest
-Iguanodon = "Iguanodon" (https://skfb.ly/oDpxn) by crystalbluebox is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). (Will be changed in the future)
+Iguanodon = Me
 Kentrosaurus = https://content.minetest.net/packages/Liil/livingfloatlands/
 Megalosaurus = https://github.com/AntumMT/mod-prehistoric_life
 Microraptor = https://content.minetest.net/packages/Liil/livingfloatlands/
@@ -22,12 +22,12 @@ Oviraptor = https://content.minetest.net/packages/Liil/livingfloatlands/
 Pachycephalosaurus = https://github.com/Christian9akaCeej/prehistoric_life
 Pachyrhinosaurus = https://github.com/AntumMT/mod-prehistoric_life
 Parasaurolophus = https://content.minetest.net/packages/Liil/livingfloatlands/
-Therizinosaurus = "ARK Therizinosaurus" (https://skfb.ly/o6FJN) by Xenomorph636 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). (Will be changed in the future)
+Therizinosaurus = Me
 Titanosaur = OLD Paleotest
 Troodon = https://github.com/D00Med/farlands/tree/master {CC BY-SA 3.0 for Troodon}
 Yutyrannus = https://github.com/Christian9akaCeej/prehistoric_life
 Carbonemys = https://content.minetest.net/packages/TenPlus1/dmobs/
-Dimorphodon = "Dimoprhodon Jwe 2" (https://skfb.ly/oyuXs) by HasanBODOAMAT is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+Dimorphodon = Me
 Ichthyosaurus =  -- https://github.com/D00Med/farlands/tree/master {CC BY-SA 3.0 for ichthyosaurus}
 Kaprosuchus and Liopleurodon and Tapejara = OLD Paleotest
 Megalania = https://content.minetest.net/packages/Liil/animalworld/
@@ -49,12 +49,11 @@ Doedicurus = "Blocky Armadillo" (https://skfb.ly/6VGrJ) by YourPalPika is licens
 Equus = https://content.minetest.net/packages/Liil/livingfloatlands/
 Gigantopithecus = https://content.minetest.net/packages/Liil/livingfloatlands/
 Hyaenodon = https://content.minetest.net/packages/Liil/animalworld/
-Megaloceros = -- "Minecraft Deer ⛏" (https://skfb.ly/oGGSr) by Catnim is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+Megaloceros = -- "Minecraft Deer" (https://skfb.ly/oGGSr) by Catnim is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 Mesopithecus = https://content.minetest.net/packages/Liil/animalworld/
 Onyc = https://content.minetest.net/packages/Liil/animalworld/
 Otter = https://content.minetest.net/packages/Liil/animalworld/
 Ovis = https://content.minetest.net/packages/TenPlus1/mobs_animal/
-Deinotherium = https://content.minetest.net/packages/Liil/livingfloatlands/ (PARACER)
 Phiomia = https://content.minetest.net/packages/Liil/animalworld/
 Achatina = https://content.minetest.net/packages/Liil/animalworld/
 Ammonite = https://github.com/AntumMT/mod-prehistoric_life
@@ -67,24 +66,29 @@ Bee = "Bee Blade" (https://skfb.ly/or8rt) by Saksham12S is licensed under Creati
 Leech and Leech diseased = https://content.minetest.net/packages/Liil/livingcavesmobs/
 Meganeura = https://content.minetest.net/packages/Liil/animalworld/
 Pulmonoscorpius = https://content.minetest.net/packages/Liil/animalworld/
-Rhyniognatha = "Minecraft Mosquito" (https://skfb.ly/oJXSA) by GMDb3 on CG is licensed under Creative Commons Attribution-ShareAlike (http://creativecommons.org/licenses/by-sa/4.0/).
+Rhyniognatha = CC-BY-SA-4.0
 Titanomyrma = "Red Insect Minecraft" (https://skfb.ly/on9rI) by zsolteon is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 "Ant" (https://skfb.ly/owuI7) by Gyric is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 Trilobite = https://github.com/D00Med/farlands/tree/master {CC BY-SA 3.0 for Trilobite}
-OLD Tusoteuthis = "Pixel Kraken" (https://skfb.ly/6VqGw) by Ycar is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
-New Tusoteuthis = "Giant Squid" (https://skfb.ly/6XvqY) by 3XH6R is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+Tusoteuthis = "Giant Squid" (https://skfb.ly/6XvqY) by 3XH6R is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 Argentavis = "Crystal_Feathere_Eagle" (https://skfb.ly/ooGES) by Amyser is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/). (May change in the Future)
-Dodo = https://content.minetest.net/packages/TenPlus1/mobs_animal/
-Hesperornis = CC-by-SA 4.0 DuckGo
+Dodo = CC0 1.0 Universal
+Hesperornis = "Minecraft Swan Model (Version 1)" (https://skfb.ly/6Z77Q) by James Matthews is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 Ichthyornis = CC0 https://forum.minetest.net/viewtopic.php?t=25134&hilit=Seagull
 Kairuku = https://github.com/GreenXenith/mobs_penguin MIT License
 Pelagornis = https://content.minetest.net/packages/TenPlus1/mobs_sky/
 Terror Bird = https://content.minetest.net/packages/Liil/livingfloatlands/
 Beelzebufo = https://content.minetest.net/packages/Liil/animalworld/
-Dimetrodon = https://github.com/AntumMT/mod-prehistoric_life
+Dimetrodon = CC0 1.0 Universal
+Diplocaulus = Me
 Lystrosaurus = https://content.minetest.net/packages/Liil/livingfloatlands/
 Purlovia (Terror of ARK Player) = OLD Paleotest
 Unicorn = "Unicorn" (https://skfb.ly/6YCqx) by Smaug is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+Pegomastax = Me
+Moschops = CC-BY-SA-4.0
+Gigantoraptor = https://github.com/Christian9akaCeej/prehistoric_life
+Brontosaurus = "sauropod mcpe" (https://skfb.ly/oZNWU) by 20151009 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+Megatherium = Me
 
 Items Models And Textures
 -------------------------
@@ -93,7 +97,7 @@ Electronics = MIT https://minecraft.novaskin.me/skin/5997546912612352/Electronic
 Oil = CC0-1.0 = https://content.minetest.net/packages/pl608/more_fuels/
 Organic Oil = CC0-1.0 = https://content.minetest.net/packages/pl608/more_fuels/
 Oil Ore = CC0-1.0 = https://content.minetest.net/packages/pl608/more_fuels/
-EVERY Saddle =
+EVERY Saddle = https://content.minetest.net/packages/TenPlus1/mobs/ (MIT)
 Allosaurus Brain = MIT https://minecraft.novaskin.me/skin/4755113893/brain
 Argentavis Talon = Me
 Basilosaurus Blubber = Me
@@ -124,8 +128,9 @@ Sweet Vegetable Cake = https://minecraft.novaskin.me/skin/5750664163/carrot-cake
 Bio Toxin and Broth Of Enlightenment and Spoiled Meat = Me
 Golden Hesperornis Egg = CC-by-SA 4.0 DuckGo
 Pete Moss = https://github.com/AntumMT/mod-prehistoric_life
-Gravestone =
+Gravestone = GPL-3.0-only
 Feed and Resin (Rhyniognatha Stuff) = by Mossmaniki License : WTFPL
+Rhynio Pheromone = CC-BY-SA-4.0
 Giant Bee Stuff = https://content.minetest.net/packages/TenPlus1/mobs_animal/
 Spider Web = MIT License
 
@@ -140,18 +145,111 @@ Argentavis = https://freesound.org/people/AntumDeluge/sounds/188041/ ( CC0 1.0 D
 Dimetrodon = https://freesound.org/people/Scpsea/sounds/709813/ ( CC0 1.0 Deed )
 Terror Bird = https://freesound.org/people/Scpsea/sounds/719368/ ( CC0 1.0 Deed )
 Gigantopithecus = https://freesound.org/people/Jofae/sounds/366837/ ( CC0 1.0 Deed )
-Carcharodontosaurus = https://freesound.org/people/GreatNate98/sounds/586547/ ( CC BY 4.0 Deed )
 Megalodon = https://freesound.org/people/Shaddius/sounds/450619/ ( CC0 1.0 Deed )
 Pulmonoscorpius = https://notabug.org/NathanS21/Scorpion (CC by SA 3.0)
 Mesopithecus = https://freesound.org/people/AntumDeluge/sounds/417823/ ( CC0 1.0 Deed )
 Dilophosaurus = https://freesound.org/people/JhennaSide/sounds/455906/ ( CC0 1.0 )
 Alpha Tyrannosaurus = https://freesound.org/people/Mastersoundboy2005/sounds/720150/ ( CC0 1.0 Deed )
+Egg Hatching = https://freesound.org/people/nayahnaidoo/sounds/656049/ ( CC0 1.0 Deed )
+Therizinosaurus = CC-BY-SA
+Yawn = https://freesound.org/people/amorralteixe/sounds/238399/
+Kairuku =
+https://freesound.org/people/Vortichez/sounds/545415/
+https://freesound.org/people/MATRIXXX_/sounds/459156/
+https://freesound.org/people/MATRIXXX_/sounds/459341/
+https://freesound.org/people/Breviceps/sounds/705839/
+Kaprosuchus =
+https://freesound.org/people/xdlxedgbrdkjgrunkk/sounds/672928/
+https://freesound.org/people/DeqstersLab/sounds/734900/
+https://freesound.org/people/craigsmith/sounds/675512/
+Megaloceros = https://content.minetest.net/packages/Termos/wildlife/ CC-BY-SA-3.0
+Yutyrannus = https://freesound.org/people/Scpsea/sounds/705142/
+Pegomastax =
+https://freesound.org/people/SieuAmThanh/sounds/509889/
+https://freesound.org/people/Mastersoundboy2005/sounds/721626/
+https://freesound.org/people/JoMungus/sounds/719670/
+Iguanodon =
+https://freesound.org/people/ShangASDFGuy123/sounds/736837/
+https://freesound.org/people/Scpsea/sounds/736928/
+https://freesound.org/people/ShangASDFGuy123/sounds/733765/
+Diplocaulus =
+https://freesound.org/people/AntumDeluge/sounds/417821/
+https://freesound.org/people/gnr588/sounds/730711/
+Dimorphodon =
+https://freesound.org/people/SieuAmThanh/sounds/701447/
+https://freesound.org/people/Scpsea/sounds/709469/
+https://freesound.org/people/SieuAmThanh/sounds/701456/
+Megatherium =
+https://freesound.org/people/Scpsea/sounds/717777/
+Brontosaurus =
+https://freesound.org/people/ShangASDFGuy123/sounds/740697/
+https://freesound.org/people/M4D3R0/sounds/238085/
+https://freesound.org/people/Scpsea/sounds/716418/ (Yes I know it's an argentinosaurus...)
+Troodon =
+https://freesound.org/people/FK_Prod/sounds/190504/
+https://freesound.org/people/reinsamba/sounds/15025/
+BOSS =
+https://freesound.org/people/Scpsea/sounds/712766/
+https://freesound.org/people/J0ck0/sounds/397054/
+https://freesound.org/people/celesti-whispers/sounds/466013/
+https://freesound.org/people/qubodup/sounds/442966/
+https://freesound.org/people/bevibeldesign/sounds/315795/
+
+
+MARK Additions: The Collection!
+-------------------------------
+Anomalocaris =
+"Anomalocaris Saron" (https://skfb.ly/orruN) by Sentient_Cale-Sherry is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+Idle = https://freesound.org/people/psychentist/sounds/168574/
+
+Hurt = https://freesound.org/people/vialgames/sounds/567488/
+
+Death = https://freesound.org/people/AxelTheCocker02/sounds/728563/
+
+Anomalocaris Saddle = https://minecraft.novaskin.me/skin/5915663298/Horse-Saddle
+
+Ceratosaurus =
+"Ceratosaurus MCPE" (https://skfb.ly/oXYKF) by 20151009 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+Ceratosaurus Venom Spine = https://minecraft.novaskin.me/skin/6814853972/spine
+
+Hemogoblin Cocktail = https://minecraft.novaskin.me/skin/6633413587/potion-syringe-blood
+
+Ceratosaurus Death = https://freesound.org/people/BESTROFLMAN/sounds/211971/ ( CC BY 3.0 Deed )
+
+Ceratosaurus Idle = https://freesound.org/people/ShangASDFGuy123/sounds/718655/ ( CC0 1.0 Deed )
+
+Ceratosaurus roar = https://freesound.org/people/Scpsea/sounds/721249/
+
+Ceratosaurus Saddle = https://minecraft.novaskin.me/skin/5915663298/Horse-Saddle
+
+Deinosuchus =
+Model = CC0 1.0 Universal
+
+Idle = https://freesound.org/people/ramattahatta/sounds/649003/
+
+Hurt = https://freesound.org/people/iut_Paris8/sounds/166886/
+
+Death = https://freesound.org/people/paulprit/sounds/507094/
+
+Deinosuchus Saddle = https://minecraft.novaskin.me/skin/5915663298/Horse-Saddle
+
+Xiphactinus =
+"Xiphatinus MCPE" (https://skfb.ly/oYAXS) by 20151009 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+Idle = https://freesound.org/people/ramattahatta/sounds/649003/
+
+Hurt = https://freesound.org/people/iut_Paris8/sounds/166886/
+
+Death = https://freesound.org/people/paulprit/sounds/507094/
+
+Xiphactinus Saddle = https://minecraft.novaskin.me/skin/5915663298/Horse-Saddle
 
 
 
 Code
 ----
-
 
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

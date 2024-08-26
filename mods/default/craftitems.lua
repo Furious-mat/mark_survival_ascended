@@ -249,20 +249,16 @@ minetest.register_craftitem("default:book_written", {
 	on_use = book_on_use,
 })
 
-minetest.register_craftitem("default:clay_brick", {
-	description = S("Clay Brick"),
+minetest.register_craftitem("default:Brick", {
+	description = S("Brick"),
 	inventory_image = "default_clay_brick.png",
-})
-
-minetest.register_craftitem("default:clay_lump", {
-	description = S("Clay Lump"),
-	inventory_image = "default_clay_lump.png",
 })
 
 minetest.register_craftitem("default:coal_lump", {
 	description = S("Coal Lump"),
 	inventory_image = "default_coal_lump.png",
-	groups = {coal = 1, flammable = 1}
+	groups = {coal = 1, flammable = 1},
+	stack_max= 100
 })
 
 minetest.register_craftitem("default:diamond", {
@@ -273,16 +269,19 @@ minetest.register_craftitem("default:diamond", {
 minetest.register_craftitem("default:fiber", {
 	description = S("Fiber"),
 	inventory_image = "default_fiber.png",
+	stack_max= 300
 })
 
 minetest.register_craftitem("default:flint", {
 	description = S("Flint"),
-	inventory_image = "default_flint.png"
+	inventory_image = "default_flint.png",
+	stack_max= 100
 })
 
 minetest.register_craftitem("default:iron_lump", {
 	description = S("Iron Lump"),
-	inventory_image = "default_iron_lump.png"
+	inventory_image = "default_iron_lump.png",
+	stack_max= 300
 })
 
 minetest.register_craftitem("default:mese_crystal", {
@@ -308,19 +307,22 @@ minetest.register_craftitem("default:paper", {
 
 minetest.register_craftitem("default:steel_ingot", {
 	description = S("Steel Ingot"),
-	inventory_image = "default_steel_ingot.png"
+	inventory_image = "default_steel_ingot.png",
+	stack_max= 300
 })
 
 minetest.register_craftitem("default:wood_stick", {
 	description = S("Stick of Wood"),
 	inventory_image = "default_stick.png",
 	groups = {flammable = 2, stick = 1},
+	stack_max= 100
 })
 
 minetest.register_craftitem("default:thatch", {
 	description = S("Thatch"),
 	inventory_image = "default_thatch.png",
 	groups = {flammable = 2},
+	stack_max= 200
 })
 
 --
@@ -416,8 +418,8 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "default:clay_brick",
-	recipe = "default:clay_lump",
+	output = "default:Brick",
+	recipe = "default:coal_lump",
 })
 
 minetest.register_craft({
@@ -450,5 +452,6 @@ minetest.register_craftitem("default:scroll", {
 	description = S("Explorer Note"),
 	inventory_image = "default_scroll.png",
 	stack_max= 125,
+	groups = {eatable = 1},
 	on_use = minetest.item_eat(0),
 })

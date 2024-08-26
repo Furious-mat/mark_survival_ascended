@@ -28,7 +28,7 @@ minetest.register_node("swamp:dirt_with_swamp_grass", {
 	groups = {crumbly = 3, soil = 1, spreading_dirt_type = 1},
 	drop = "swamp:mud",
 	sounds = default.node_sound_dirt_defaults({
-		footstep = {name = "default_grass_footstep", gain = 0.25},
+		footstep = {name = "sumpf", gain = 0.4},
 	}),
 	soil = {
 		base = "swamp:dirt_with_swamp_grass",

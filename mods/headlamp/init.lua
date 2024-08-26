@@ -180,28 +180,14 @@ else
 end
 
 -- Crafting recipe
---------------------------------------------------
 
-if minetest.get_modpath("farming") then
-	if has_technic then
-		-- Somewhat realistic recipe
-		minetest.register_craft({
-			output = "headlamp:headlamp_off",
-			recipe = {
-				{"farming:string", "technic:battery", "farming:string"},
-				{"technic:rubber", "technic:lv_led", "technic:rubber"},
-				{"farming:string", "technic:stainless_steel_ingot", "farming:string"},
-			}
-		})
-	elseif minetest.get_modpath("default") then
-		-- Magic mese powered headlamp
+if minetest.get_modpath("default") then
 		minetest.register_craft({
 			output = "headlamp:headlamp_off",
 			recipe = {
 				{"paleotest:angler_gel", "farming:string", "paleotest:angler_gel"},
 				{"farming:string", "default:mese_crystal", "farming:string"},
-				{"farming:string", "battery:battery", "farming:string"},
+				{"farming:string", "msa_battery:battery", "farming:string"},
 			}
 		})
-	end
 end

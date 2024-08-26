@@ -65,9 +65,9 @@ end
 minetest.register_node("willow:sapling", {
 	description = S("Willow Tree Sapling"),
 	drawtype = "plantlike",
-	tiles = {"willow_sapling.png"},
-	inventory_image = "willow_sapling.png",
-	wield_image = "willow_sapling.png",
+	tiles = {"moretrees_willow_sapling.png"},
+	inventory_image = "moretrees_willow_sapling.png",
+	wield_image = "moretrees_willow_sapling.png",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -101,9 +101,9 @@ minetest.register_node("willow:sapling", {
 minetest.register_node("willow:trunk", {
 	description = S("Willow Trunk"),
 	tiles = {
-		"willow_trunk_top.png",
-		"willow_trunk_top.png",
-		"willow_trunk.png"
+		"moretrees_willow_trunk_top.png",
+		"moretrees_willow_trunk_top.png",
+		"moretrees_willow_trunk.png"
 	},
 	groups = {tree = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
@@ -122,7 +122,7 @@ minetest.register_node("willow:trunk", {
 -- willow wood
 minetest.register_node("willow:wood", {
 	description = S("Willow Wood Planks"),
-	tiles = {"willow_wood.png"},
+	tiles = {"moretrees_willow_wood.png"},
 	paramtype2 = "facedir",
 	place_param2 = 0,
 	is_ground_content = false,
@@ -134,7 +134,7 @@ minetest.register_node("willow:wood", {
 minetest.register_node("willow:leaves", {
 	description = S("Willow Leaves"),
 	drawtype = "allfaces_optional",
-	tiles = {"willow_leaves.png"},
+	tiles = {"moretrees_willow_leaves.png"},
 	paramtype = "light",
 	walkable = false,
 	waving = 1,
@@ -194,7 +194,7 @@ default.register_leafdecay({
 if minetest.settings:get_bool("cool_fences", true) then
 	local fence = {
 		description = S("Willow Wood Fence"),
-		texture =  "willow_wood.png",
+		texture =  "moretrees_willow_wood.png",
 		material = "willow:wood",
 		groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
 		sounds = default.node_sound_wood_defaults(),
@@ -213,7 +213,7 @@ end
 if minetest.get_modpath("moreblocks") then -- stairsplus/moreblocks
 	stairsplus:register_all("willow", "wood", "willow:wood", {
 		description = S("Willow Wood"),
-		tiles = {"willow_wood.png"},
+		tiles = {"moretrees_willow_wood.png"},
 		sunlight_propagates = true,
 		groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 3},
 		sounds = default.node_sound_wood_defaults()
@@ -233,7 +233,7 @@ elseif minetest.get_modpath("stairs") then
 		"willow_wood",
 		"willow:wood",
 		{choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-		{"willow_wood.png"},
+		{"moretrees_willow_wood.png"},
 		S("Willow Wood Stair"),
 		S("Willow Wood Slab"),
 		default.node_sound_wood_defaults()

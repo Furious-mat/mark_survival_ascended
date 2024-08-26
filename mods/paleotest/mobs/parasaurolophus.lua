@@ -1,6 +1,31 @@
 -----------------
 -- Parasaurolophus --
 -----------------
+
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local parasaurolophus_inv_size = 3 * 8
+local inv_parasaurolophus = {}
+inv_parasaurolophus.parasaurolophus_number = tonumber(storage:get("parasaurolophus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, parasaurolophus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -31,6 +56,20 @@ end
 local function parasaurolophus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:parasaurolophus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("parasaurolophus_" .. self.parasaurolophus_number)
         mob_core.on_die(self)
         return
     end
@@ -211,18 +250,37 @@ minetest.register_entity("paleotest:parasaurolophus", {
     },
     timeout = 0,
     logic = parasaurolophus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.parasaurolophus_number = inv_parasaurolophus.parasaurolophus_number
+    inv_parasaurolophus.parasaurolophus_number = inv_parasaurolophus.parasaurolophus_number + 1
+    storage:set_int("parasaurolophus_number", inv_parasaurolophus.parasaurolophus_number)
+    local inv = minetest.create_detached_inventory("paleotest:parasaurolophus_" .. self.parasaurolophus_number, {})
+    inv:set_size("main", parasaurolophus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 5, true, true) then
             return
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:parasaurolophus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:parasaurolophus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         if clicker:get_wielded_item():get_name() == "paleotest:field_guide" then
             minetest.show_formspec(clicker:get_player_name(),
@@ -234,10 +292,18 @@ minetest.register_entity("paleotest:parasaurolophus", {
                 temper = "Skittish"
             }))
         end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:parasaurolophus_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:parasaurolophus_" .. self.parasaurolophus_number .. ";main;0,0;8,3;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:parasaurolophus_" .. self.parasaurolophus_number .. ";main]" ..
+            "listring[current_player;main]")
+        end
         paleotest.set_order(self, clicker)
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
-    end,
+  end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
             paleotest.set_attack(self, puncher)
@@ -259,4 +325,9 @@ minetest.register_craftitem("paleotest:parasaurolophus_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_parasaurolophus_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

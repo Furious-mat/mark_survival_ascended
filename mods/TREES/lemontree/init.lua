@@ -174,7 +174,11 @@ minetest.register_node("lemontree:wood", {
 minetest.register_node("lemontree:leaves", {
 	description = S("Lemon Tree Leaves"),
 	drawtype = "allfaces_optional",
-	tiles = {"lemontree_leaves.png"},
+	tiles = {
+		"lemontree_leaves.png",
+		"lemontree_leaves2.png",
+		"lemontree_leaves3.png",
+	},
 	paramtype = "light",
 	walkable = false,
 	waving = 1,
@@ -295,34 +299,6 @@ end
 if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"lemontree:sapling", grow_new_lemontree_tree, "soil"},
-	})
-end
-
--- Support for cork
-if minetest.get_modpath("cork") ~= nil then
-	minetest.register_node("lemontree:trunk_nobark", {
-		description = S("Lemon Tree Trunk"),
-		tiles = {
-			"lemontree_trunk_top.png",
-			"lemontree_trunk_top.png",
-			"lemontree_trunk_nobark.png"
-		},
-		groups = {tree = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
-		sounds = default.node_sound_wood_defaults(),
-		paramtype2 = "facedir",
-		is_ground_content = false,
-		on_place = minetest.rotate_node,
-	})
-
-	minetest.register_craft({
-		output = "lemontree:wood 4",
-		recipe = {{"lemontree:trunk_nobark"}}
-	})
-
-	minetest.register_craft({
-		type = "fuel",
-		recipe = "lemontree:trunk_nobark",
-		burntime = 25,
 	})
 end
 

@@ -76,20 +76,12 @@ minetest.register_craft({
     cooktime = 60,
 })
 minetest.register_craft({
-    type = "fuel",
-    recipe = "overpowered:block",
-    --OP Alloy Blocks can secretly be used as fuel, but only one lasts forever!
-    --Inspired by the cooking recipe typo that almost let ingots be used as fuel
-    burntime = 1000,
-    replacements = {{"overpowered:block", "overpowered:block"}},
-})
-minetest.register_craft({
     output = "overpowered:block 5",
     recipe = {
         {"default:steel_ingot", "default:steelblock", "default:steel_ingot"},
         {"overpowered:ingot", "paleotest:electronics", "overpowered:ingot"},
         {"group:polymer", "group:gamma_lock", "group:polymer"},
-        {"paleotest:oil", "overpowered:ingot", "paleotest:black_pearl"},
+        {"paleotest:oil", "overpowered:untreatedingot", "paleotest:black_pearl"},
         {"paleotest:cementing_paste", "quartz:quartz_crystal", "paleotest:pelt"},
     }
 })
@@ -135,12 +127,6 @@ minetest.register_craft({
         {"group:polymer", "group:beta_lock", "group:polymer"},
         {"paleotest:oil", "overpowered:glass", "paleotest:black_pearl"},
         {"paleotest:cementing_paste", "quartz:quartz_crystal", "paleotest:pelt"},
-    }
-})
-minetest.register_craft({
-    output = "overpowered:ingot 9",
-    recipe = {
-        {"overpowered:block"},
     }
 })
 minetest.register_craft({
@@ -212,7 +198,7 @@ if minetest.get_modpath("3d_armor") then
         recipe = {
             {"paleotest:hide", "quartz:quartz_crystal", "overpowered:block"},
             {"paleotest:pelt", "overpowered:ingot", "paleotest:black_pearl"},
-            {"group:polymer", "overpowered:gamma_endboss_lock", "overpowered:ingot"},
+            {"group:polymer", "overpowered:beta_endboss_lock", "overpowered:ingot"},
             {"default:steel_ingot", "paleotest:electronics", "paleotest:oil"},
             {"default:steelblock", "paleotest:electronics", "overpowered:ingot"},
             {"paleotest:hide", "quartz:quartz_crystal", "overpowered:block"},
@@ -248,16 +234,6 @@ if minetest.get_modpath("3d_armor") then
             {"default:steelblock", "overpowered:gamma_endboss_lock", "paleotest:black_pearl"},
             {"paleotest:oil", "paleotest:cementing_paste", "overpowered:glass"},
             {"overpowered:block", "overpowered:ingot", "overpowered:block"},
-        }
-    })
-        minetest.register_craft({
-        output = "overpowered:shield",
-        recipe = {
-            {"group:polymer", "paleotest:pelt", "paleotest:hide"},
-            {"default:steelblock", "overpowered:block", "paleotest:electronics"},
-            {"default:steel_ingot", "overpowered:beta_endboss_lock", "paleotest:black_pearl"},
-            {"paleotest:oil", "paleotest:cementing_paste", "overpowered:glass"},
-            {"overpowered:block", "overpowered:ingot", "overpowered:ingot"},
         }
     })
     --## Register armor values with API ##
@@ -308,14 +284,6 @@ if minetest.get_modpath("3d_armor") then
         --36 Diamonds, the uses were raised to 9362 (exact is 6.75).
         --Since this is the lowest cost, the speed multiplier was moved to the legs.
         armor_groups = {fleshy=30},
-        sound = {breaks = "default_tool_breaks", gain = 2.0},
-        wear = 0,
-    })
-        armor:register_armor("overpowered:shield", {
-        description = S("Tek Shield"),
-        inventory_image = "shields_inv_shield_tek.png",
-		groups = {armor_shield=1, armor_heal=15, armor_use=3, armor_fire=10,  physics_speed=1.2},
-        armor_groups = {fleshy=15},
         sound = {breaks = "default_tool_breaks", gain = 2.0},
         wear = 0,
     })
@@ -380,17 +348,17 @@ minetest.register_craftitem("overpowered:alpha_dragon_lock", {
 minetest.register_craftitem("overpowered:gamma_endboss_lock", {
     description = "Gamma EndBoss Lock",
     inventory_image = "overpowered_gamma_lock.png",
-    groups = {lock = 1, gamma_lock = 1},
+    groups = {lock = 1, gamma_lock = 1, endboss_lock = 1},
 })
 
 minetest.register_craftitem("overpowered:beta_endboss_lock", {
     description = "Beta EndBoss Lock",
     inventory_image = "overpowered_beta_lock.png",
-    groups = {lock = 1, beta_lock = 1},
+    groups = {lock = 1, beta_lock = 1, endboss_lock = 1},
 })
 
 minetest.register_craftitem("overpowered:alpha_endboss_lock", {
     description = "Alpha EndBoss Lock",
     inventory_image = "overpowered_alpha_lock.png",
-    groups = {lock = 1, alpha_lock = 1},
+    groups = {lock = 1, alpha_lock = 1, endboss_lock = 1},
 })

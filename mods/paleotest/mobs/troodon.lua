@@ -2,6 +2,66 @@
 -- Troodon --
 ------------------
 
+local function apply_torpor_effect(player)
+    player:set_physics_override({
+        speed = 0,
+        jump = 0,
+        gravity = 0,
+    })
+    minetest.chat_send_player(player:get_player_name(), "Your torpor is rising fast!")
+    minetest.sound_play("yawn", {gain = 1})
+    player:hud_set_flags({minimap = false})
+    local torpor_hud_id = player:hud_add({
+        hud_elem_type = "image",
+        position = {x = 0.5, y = 0.5},
+        scale = {
+            x = -100,
+            y = -100
+        },
+        text = "paleotest_torpor.png"
+    })
+    return {player = player, hud_id = torpor_hud_id}
+end
+
+local function remove_torpor_effect(hud_data)
+    local player = hud_data.player
+    local hud_id = hud_data.hud_id
+
+    player:set_physics_override({
+        speed = 1,
+        jump = 1,
+        gravity = 1,
+    })
+    player:hud_set_flags({minimap = true})
+    player:hud_remove(hud_id)
+    minetest.sound_play("yawn", {gain = 1})
+end
+
+
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local troodon_inv_size = 1 * 8
+local inv_troodon = {}
+inv_troodon.troodon_number = tonumber(storage:get("troodon_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, troodon_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -32,6 +92,20 @@ end
 local function troodon_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:troodon_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("troodon_" .. self.troodon_number)
         mob_core.on_die(self)
         return
     end
@@ -44,6 +118,21 @@ local function troodon_logic(self)
     if mobkit.timer(self, 1) then
 
 		mob_core.random_drop(self, 900, 1800, "paleotest:small_animal_poop")
+		
+	if mobkit.timer(self, 1) then
+        local pos = self.object:get_pos()
+        for _, player in ipairs(minetest.get_connected_players()) do
+            local player_pos = player:get_pos()
+            local distance = vector.distance(pos, player_pos)
+
+            if distance <= 3 and player:get_player_name() ~= self.owner then
+                local torpor_player = apply_torpor_effect(player)
+                minetest.after(300, function()
+                    remove_torpor_effect(torpor_player)
+                end)
+            end
+        end
+    end
 
         if self.order == "stand" and self.mood > 50 then
             mobkit.animate(self, "stand")
@@ -121,7 +210,7 @@ minetest.register_entity("paleotest:troodon", {
     -- Stats
     max_hp = 200,
     armor_groups = {fleshy = 100},
-    view_range = 16,
+    view_range = 64,
     reach = 2,
     damage = 7,
     knockback = -10,
@@ -154,6 +243,25 @@ minetest.register_entity("paleotest:troodon", {
         latch = {range = {x = 130, y = 148}, speed = 15, loop = true},
         sleep = {range = {x = 160, y = 220}, speed = 15, loop = true}
     },
+    -- Sound
+    sounds = {
+        alter_child_pitch = true,
+        random = {
+            name = "paleotest_troodon_idle",
+            gain = 1.0,
+            distance = 16
+        },
+        hurt = {
+            name = "paleotest_troodon_hurt",
+            gain = 1.0,
+            distance = 16
+        },
+        death = {
+            name = "paleotest_troodon_idle",
+            gain = 1.0,
+            distance = 16
+        }
+    },
     -- Basic
     physical = true,
     collide_with_objects = true,
@@ -161,7 +269,7 @@ minetest.register_entity("paleotest:troodon", {
     needs_enrichment = true,
     live_birth = false,
     sleeps_at = "day",
-    max_hunger = 200,
+    max_hunger = 600,
     punch_cooldown = 1,
     defend_owner = true,
     targets = {},
@@ -173,15 +281,34 @@ minetest.register_entity("paleotest:troodon", {
     },
     timeout = 0,
     logic = troodon_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.troodon_number = inv_troodon.troodon_number
+    inv_troodon.troodon_number = inv_troodon.troodon_number + 1
+    storage:set_int("troodon_number", inv_troodon.troodon_number)
+    local inv = minetest.create_detached_inventory("paleotest:troodon_" .. self.troodon_number, {})
+    inv:set_size("main", troodon_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 50, true, true) then
             return
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         if clicker:get_wielded_item():get_name() == "paleotest:field_guide" then
             minetest.show_formspec(clicker:get_player_name(),
@@ -192,6 +319,14 @@ minetest.register_entity("paleotest:troodon", {
                 diet = "Carnivore",
                 temper = "Nocturnally Aggressive"
             }))
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:troodon_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:troodon_" .. self.troodon_number .. ";main;0,0;8,1;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:troodon_" .. self.troodon_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
@@ -230,4 +365,9 @@ minetest.register_craftitem("paleotest:troodon_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_troodon_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

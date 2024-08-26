@@ -38,11 +38,11 @@ XBows:register_arrow('grappling_hook', {
     wield_image = 'x_bows_extras_arrow_teleport.png',
     custom = {
         recipe = {
-            { 'x_bows:arrow_stone' },
-            { 'group:paste' },
+            { 'x_bows:arrow_diamond' },
+            { 'group:endboss_lock' },
             { 'default:steel_ingot' },
-            { 'default:thatch' },
-            { 'default:fiber' }
+            { 'overpowered:ingot' },
+            { 'default:diamond' }
         },
         tool_capabilities = {
             full_punch_interval = 0.7,

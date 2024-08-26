@@ -121,6 +121,18 @@ local function trilobite_logic(self)
             mob_core.hq_roam(self, 0, true)
         end
     end
+    
+    local megatherium_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 5)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:megatherium" then
+            megatherium_nearby = true
+            break
+        end
+    end
+
+    if megatherium_nearby then
+        self.hp = 0
+    end
 end
 
 minetest.register_entity("paleotest:trilobite", {
@@ -220,4 +232,9 @@ minetest.register_craftitem("paleotest:trilobite_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_trilobite_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

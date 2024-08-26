@@ -29,7 +29,7 @@ if minetest.get_modpath("default") then
 	
 	awards.register_award("awards_experienced_explorer", {
 		title = S("Perfect Explorer"),
-		description = S("Find the 125 Explorer Notes on The Island. (This achievement is buggy)."),
+		description = S("Find the 125 Explorer Notes on The Island."),
 		icon = "default_scroll.png",
 		difficulty = 0.1,
 		trigger = {
@@ -130,7 +130,7 @@ if minetest.get_modpath("default") then
 		difficulty = 0.09,
 		trigger = {
 			type = "craft",
-			item = "give_initial_stuff:gamma_ascension_specimen_implant",
+			item = "msa_implant:gamma_ascension_specimen_implant",
 			target = 1
 		}
 	})
@@ -142,7 +142,7 @@ if minetest.get_modpath("default") then
 		difficulty = 0.2,
 		trigger = {
 			type = "craft",
-			item = "give_initial_stuff:beta_ascension_specimen_implant",
+			item = "msa_implant:beta_ascension_specimen_implant",
 			target = 1
 		}
 	})
@@ -154,7 +154,7 @@ if minetest.get_modpath("default") then
 		difficulty = 1.5,
 		trigger = {
 			type = "craft",
-			item = "give_initial_stuff:alpha_ascension_specimen_implant",
+			item = "msa_implant:alpha_ascension_specimen_implant",
 			target = 1
 		}
 	})

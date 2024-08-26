@@ -6,7 +6,22 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:achatina" and
+            name ~= "paleotest:pulmonoscorpius" and
+            name ~= "paleotest:araneo" and
+            name ~= "paleotest:arthropluera" and
+            name ~= "paleotest:dilophosaur" and
+            name ~= "paleotest:leech" and
+            name ~= "paleotest:leech_diseased" and
+            name ~= "paleotest:megalania" and
+            name ~= "paleotest:megalosaurus" and
+            name ~= "paleotest:meganeura" and
+            name ~= "paleotest:onyc" and
+            name ~= "paleotest:titanoboa" and
+            name ~= "paleotest:titanomyrma" and
+            name ~= "paleotest:titanomyrma_soldier" and
+            name ~= "paleotest:dung_beetle" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
                 height < 3.5 then
@@ -131,6 +146,18 @@ local function eurypterid_logic(self)
             mob_core.hq_roam(self, 0)
         end
     end
+    
+    local megatherium_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 5)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:megatherium" then
+            megatherium_nearby = true
+            break
+        end
+    end
+
+    if megatherium_nearby then
+        self.hp = 0
+    end
 end
 
 minetest.register_entity("paleotest:eurypterid", {
@@ -154,7 +181,6 @@ minetest.register_entity("paleotest:eurypterid", {
     scale_stage1 = 0.25,
     scale_stage2 = 0.5,
     scale_stage3 = 0.75,
-    makes_footstep_sound = true,
     visual = "mesh",
     mesh = "paleotest_eurypterid.b3d",
     female_textures = {"paleotest_eurypterid.png"},
@@ -234,4 +260,9 @@ minetest.register_craftitem("paleotest:eurypterid_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_eurypterid_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

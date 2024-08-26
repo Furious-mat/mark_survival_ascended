@@ -2,11 +2,36 @@
 -- Tyrannosaurus --
 -------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local tyrannosaurus_inv_size = 6 * 8
+local inv_tyrannosaurus = {}
+inv_tyrannosaurus.tyrannosaurus_number = tonumber(storage:get("tyrannosaurus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, tyrannosaurus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:alpha_tyrannosaurus" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
                 height < 3.5 then
@@ -31,13 +56,27 @@ end
 local function tyrannosaurus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:tyrannosaurus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("tyrannosaurus_" .. self.tyrannosaurus_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 50 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -63,7 +102,7 @@ local function tyrannosaurus_logic(self)
             return
         end
 
-        if prty < 16 and self.owner_target then
+        if self.owner_target then
             mob_core.logic_attack_mob(self, 16, self.owner_target)
         end
 
@@ -86,7 +125,7 @@ local function tyrannosaurus_logic(self)
                         table.insert(self.targets, self.name)
                         mob_core.logic_attack_mobs(self, 12)
                     end
-                    if self.mood < 90 or not self.tamed then
+                    if not self.tamed then
                         mob_core.logic_attack_mobs(self, 12)
                     end
                     if #self.rivals > 0 then
@@ -169,8 +208,8 @@ minetest.register_entity("paleotest:tyrannosaurus", {
     makes_footstep_sound = true,
     visual = "mesh",
     mesh = "paleotest_tyrannosaurus.b3d",
-    female_textures = {"paleotest_tyrannosaurus_female.png"},
-    male_textures = {"paleotest_tyrannosaurus_male.png"},
+    female_textures = {"paleotest_tyrannosaurus_female.png", "paleotest_tyrannosaurus.png"},
+    male_textures = {"paleotest_tyrannosaurus_male.png", "paleotest_tyrannosaurus.png"},
     child_textures = {"paleotest_tyrannosaurus_child.png"},
     sleep_overlay = "paleotest_tyrannosaurus_eyes_closed.png",
     child_sleep_overlay = "paleotest_tyrannosaurus_eyes_closed_child.png",
@@ -222,19 +261,113 @@ minetest.register_entity("paleotest:tyrannosaurus", {
     punch_cooldown = 1,
     defend_owner = true,
     imprint_tame = true,
-    targets = {},
+    targets = {
+    "paleotest:polar_bear",
+    "paleotest:polar_purlovia",
+    "paleotest:yeti",
+    "paleotest:ankylosaurus",
+    "paleotest:baryonyx",
+    "paleotest:brachiosaurus",
+    "paleotest:brontosaurus",
+    "paleotest:carnotaurus",
+    "paleotest:compy",
+    "paleotest:diplodocus",
+    "paleotest:dilophosaur",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:kentrosaurus",
+    "paleotest:megalosaurus",
+    "paleotest:microraptor",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:stegosaurus",
+    "paleotest:therizinosaur",
+    "paleotest:triceratops",
+    "paleotest:troodon",
+    "paleotest:velociraptor",
+    "paleotest:gigantoraptor",
+    "paleotest:carbonemys",
+    "paleotest:dimorphodon",
+    "paleotest:kaprosuchus",
+    "paleotest:megalania",
+    "paleotest:pteranodon",
+    "paleotest:quetzalcoatlus",
+    "paleotest:sarcosuchus",
+    "paleotest:tapejara",
+    "paleotest:titanoboa",
+    "paleotest:castoroides",
+    "paleotest:chalicotherium",
+    "paleotest:daeodon",
+    "paleotest:dire_bear",
+    "paleotest:dire_wolf",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:hyaenodon",
+    "paleotest:elasmotherium",
+    "paleotest:mammoth",
+    "paleotest:megaloceros",
+    "paleotest:megatherium",
+    "paleotest:mesopithecus",
+    "paleotest:onyc",
+    "paleotest:ovis",
+    "paleotest:paraceratherium",
+    "paleotest:phiomia",
+    "paleotest:procoptodon",
+    "paleotest:smilodon",
+    "paleotest:thylacoleo",
+    "paleotest:achatina",
+    "paleotest:araneo",
+    "paleotest:arthropluera",
+    "paleotest:dung_beetle",
+    "paleotest:pulmonoscorpius",
+    "paleotest:argentavis",
+    "paleotest:dodo",
+    "paleotest:ichthyornis",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:terror_bird",
+    "paleotest:beelzebufo",
+    "paleotest:diplocaulus",
+    "paleotest:dimetrodon",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:purlovia",
+    "paleotest:unicorn"
+    },
     rivals = {},
     follow = paleotest.global_meat,
     drops = {
         {name = "paleotest:meat_raw", chance = 1, min = 20, max = 40},
         {name = "paleotest:raw_prime_meat", chance = 1, min = 6, max = 12},
         {name = "paleotest:hide", chance = 1, min = 20, max = 30},
-        {name = "paleotest:tyrannosaurus_arm", chance = 1, min = 1, max = 1}
+        {name = "paleotest:tyrannosaurus_arm", chance = 1, min = 2, max = 2}
     },
     timeout = 0,
     logic = tyrannosaurus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.tyrannosaurus_number = inv_tyrannosaurus.tyrannosaurus_number
+    inv_tyrannosaurus.tyrannosaurus_number = inv_tyrannosaurus.tyrannosaurus_number + 1
+    storage:set_int("tyrannosaurus_number", inv_tyrannosaurus.tyrannosaurus_number)
+    local inv = minetest.create_detached_inventory("paleotest:tyrannosaurus_" .. self.tyrannosaurus_number, {})
+    inv:set_size("main", tyrannosaurus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 125, true, true) then
@@ -251,17 +384,24 @@ minetest.register_entity("paleotest:tyrannosaurus", {
                 temper = "Aggressive"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:tyrannosaurus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:tyrannosaurus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
-            minetest.sound_play("i3_skin_change", {gain = 1})
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:tyrannosaurus_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:tyrannosaurus_" .. self.tyrannosaurus_number .. ";main;0,0;8,6;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:tyrannosaurus_" .. self.tyrannosaurus_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
-    end,
+  end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
             paleotest.set_attack(self, puncher)
@@ -283,4 +423,9 @@ minetest.register_craftitem("paleotest:tyrannosaurus_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_tyrannosaurus_fg_female.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

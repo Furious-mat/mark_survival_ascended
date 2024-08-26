@@ -6,7 +6,27 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:alpha_megalodon" and
+            name ~= "paleotest:ammonite" and
+            name ~= "paleotest:basilosaurus" and
+            name ~= "paleotest:cnidaria" and
+            name ~= "paleotest:coelacanth" and
+            name ~= "paleotest:dunkleosteus" and
+            name ~= "paleotest:ichthyosaurus" and
+            name ~= "paleotest:electrophorus" and
+            name ~= "paleotest:liopleurodon" and
+            name ~= "paleotest:piranha" and
+            name ~= "paleotest:plesiosaurus" and
+            name ~= "paleotest:angler" and
+            name ~= "paleotest:alpha_mosasaurus" and
+            name ~= "paleotest:alpha_tusoteuthis" and
+            name ~= "paleotest:manta" and
+            name ~= "paleotest:salmon" and
+            name ~= "paleotest:alpha_leedsichthys" and
+            name ~= "paleotest:megalodon" and
+            name ~= "paleotest:mosasaurus" and
+            name ~= "paleotest:tusoteuthis" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name)
             and (height and height < 1.5)
@@ -23,6 +43,10 @@ local function set_mob_tables(self)
 end
 
 local function leedsichthys_logic(self)
+
+    if not self.isinliquid then
+        self.hp = 0
+    end
 
     if self.hp <= 0 then
         mob_core.on_die(self)
@@ -184,4 +208,9 @@ minetest.register_craftitem("paleotest:leedsichthys_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_leedsichthys_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

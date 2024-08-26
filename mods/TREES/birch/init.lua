@@ -140,9 +140,9 @@ end
 minetest.register_node("birch:sapling", {
 	description = S("Birch Tree Sapling"),
 	drawtype = "plantlike",
-	tiles = {"birch_sapling.png"},
-	inventory_image = "birch_sapling.png",
-	wield_image = "birch_sapling.png",
+	tiles = {"moretrees_birch_sapling.png"},
+	inventory_image = "moretrees_birch_sapling.png",
+	wield_image = "moretrees_birch_sapling.png",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -177,9 +177,9 @@ minetest.register_node("birch:sapling", {
 minetest.register_node("birch:trunk", {
 	description = S("Birch Trunk"),
 	tiles = {
-		"birch_trunk_top.png",
-		"birch_trunk_top.png",
-		"birch_trunk.png"
+		"moretrees_birch_trunk_top.png",
+		"moretrees_birch_trunk_top.png",
+		"moretrees_birch_trunk.png"
 	},
 	groups = {tree = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 2},
 	sounds = default.node_sound_wood_defaults(),
@@ -198,7 +198,7 @@ minetest.register_node("birch:trunk", {
 -- birch wood
 minetest.register_node("birch:wood", {
 	description = S("Birch Wood Planks"),
-	tiles = {"birch_wood.png"},
+	tiles = {"moretrees_birch_wood.png"},
 	is_ground_content = false,
 	groups = {wood = 1, choppy = 2, oddly_breakable_by_hand = 1, flammable = 3},
 	sounds = default.node_sound_wood_defaults(),
@@ -208,7 +208,7 @@ minetest.register_node("birch:wood", {
 minetest.register_node("birch:leaves", {
 	description = S("Birch Leaves"),
 	drawtype = "allfaces_optional",
-	tiles = {"birch_leaves.png"},
+	tiles = {"moretrees_birch_leaves.png"},
 	paramtype = "light",
         walkable = false,
 	waving = 1,
@@ -268,7 +268,7 @@ default.register_leafdecay({
 if minetest.settings:get_bool("cool_fences", true) then
 	local fence = {
 		description = S("Birch Fence"),
-		texture =  "birch_wood.png",
+		texture =  "moretrees_birch_wood.png",
 		material = "birch:wood",
 		groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
 		sounds = default.node_sound_wood_defaults(),
@@ -276,18 +276,13 @@ if minetest.settings:get_bool("cool_fences", true) then
 	default.register_fence("birch:fence", table.copy(fence))
 	fence.description = S("Birch Fence Rail")
 	default.register_fence_rail("birch:fence_rail", table.copy(fence))
-
-	if minetest.get_modpath("doors") ~= nil then
-		fence.description = S("Birch Fence Gate")
-		doors.register_fencegate("birch:gate", table.copy(fence))
-	end
 end
 
 -- Stairs
 if minetest.get_modpath("moreblocks") then -- stairsplus/moreblocks
 	stairsplus:register_all("birch", "wood", "birch:wood", {
 		description = S("Birch Wood"),
-		tiles = {"birch_wood.png"},
+		tiles = {"moretrees_birch_wood.png"},
 		sunlight_propagates = true,
 		groups = {choppy = 2, oddly_breakable_by_hand = 1, flammable = 3},
 		sounds = default.node_sound_wood_defaults()
@@ -307,7 +302,7 @@ elseif minetest.get_modpath("stairs") then
 		"birch_wood",
 		"birch:wood",
 		{choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-		{"birch_wood.png"},
+		{"moretrees_birch_wood.png"},
 		S("Birch Wood Stair"),
 		S("Birch Wood Slab"),
 		default.node_sound_wood_defaults()
@@ -318,21 +313,6 @@ end
 if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"birch:sapling", grow_new_birch_tree, "soil"},
-	})
-end
-
--- Door
-if minetest.get_modpath("doors") ~= nil then
-	doors.register("door_birch_wood", {
-		tiles = {{ name = "birch_door_wood.png", backface_culling = true }},
-		description = S("Birch Wood Door"),
-		inventory_image = "birch_item_wood.png",
-		groups = {node = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-		recipe = {
-			{"birch:wood", "birch:wood"},
-			{"birch:wood", "birch:wood"},
-			{"birch:wood", "birch:wood"},
-		}
 	})
 end
 
