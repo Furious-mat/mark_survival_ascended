@@ -8,6 +8,16 @@
 --------------
 
 minetest.register_craft({
+	output = "paleotest:gigantoraptor_saddle",
+	recipe = {
+		{"paleotest:hide", "default:fiber", "paleotest:hide"},
+		{"default:wood_stick", "default:steel_ingot", "default:wood_stick"},
+		{"default:wood_stick", "default:steel_ingot", "default:wood_stick"},
+		{"paleotest:hide", "default:fiber", "paleotest:hide"},
+	}
+})
+
+minetest.register_craft({
 	output = "paleotest:allosaurus_saddle",
 	recipe = {
 		{"paleotest:hide", "default:fiber", "paleotest:hide"},
@@ -77,6 +87,17 @@ minetest.register_craft({
 
 minetest.register_craft({
 	output = "paleotest:brachiosaurus_saddle",
+	recipe = {
+		{"group:paste", "group:paste", "group:paste"},
+		{"paleotest:silica_pearls", "paleotest:hide", "paleotest:silica_pearls"},
+		{"default:steel_ingot", "default:fiber", "default:steel_ingot"},
+		{"paleotest:silica_pearls", "paleotest:hide", "paleotest:silica_pearls"},
+		{"group:paste", "group:paste", "group:paste"},
+	}
+})
+
+minetest.register_craft({
+	output = "paleotest:brontosaurus_saddle",
 	recipe = {
 		{"group:paste", "group:paste", "group:paste"},
 		{"paleotest:silica_pearls", "paleotest:hide", "paleotest:silica_pearls"},
@@ -300,6 +321,16 @@ minetest.register_craft({
 		{"paleotest:hide", "default:fiber", "default:fiber", "paleotest:hide"},
 		{"default:steel_ingot", "default:fiber", "default:fiber", "default:steel_ingot"},
 		{"default:steel_ingot", "default:fiber", "default:fiber", "default:steel_ingot"},
+	}
+})
+
+minetest.register_craft({
+	output = "paleotest:megatherium_saddle",
+	recipe = {
+		{"paleotest:hide", "group:paste", "group:paste", "paleotest:hide"},
+		{"group:paste", "default:fiber", "default:fiber", "group:paste"},
+		{"group:paste", "default:fiber", "default:fiber", "group:paste"},
+		{"default:steel_ingot", "group:paste", "group:paste", "default:steel_ingot"},
 	}
 })
 
@@ -697,36 +728,22 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "paleotest:rhyniognatha_feeder",
-	recipe = {
-		{"paleotest:achatina_paste", "paleotest:egg_carcharodontosaurus", "biofuel:fuel_can"},
-		{"paleotest:ammonite_bile", "paleotest:egg_giganotosaurus", "paleotest:GiantBeeHoney"},
-		{"paleotest:black_pearl", "paleotest:egg_quetzalcoatlus", "paleotest:sweet_vegetable_cake"},
-		{"paleotest:golden_hesperornis_egg", "overpowered:ingot", "paleotest:elasmotherium_horn"},
-	}
-})
-
-minetest.register_craft({
 	output = "paleotest:feed",
 	recipe = {
-		{"paleotest:rhyniognatha_pheromone", "paleotest:rhyniognatha_feeder"},
-	}
-})
-
-minetest.register_craft({
-	output = "paleotest:syringe_tamable_rhyniognatha",
-	recipe = {
-		{"paleotest:rhyniognatha_pheromone"},
+		{"paleotest:achatina_paste", "paleotest:bio_toxin", "biofuel:fuel_can"},
+		{"paleotest:ammonite_bile", "paleotest:sap", "paleotest:GiantBeeHoney"},
+		{"paleotest:black_pearl", "paleotest:angler_gel", "paleotest:sweet_vegetable_cake"},
+		{"paleotest:golden_hesperornis_egg", "paleotest:egg", "paleotest:elasmotherium_horn"},
 	}
 })
 
 minetest.register_craft({
 	output = "paleotest:oil_ore",
 	recipe = {
-		{"paleotest:oil", "paleotest:oil", "paleotest:oil"},
-		{"paleotest:oil", "paleotest:oil", "paleotest:oil"},
-		{"paleotest:oil", "paleotest:oil", "paleotest:oil"},
-		{"paleotest:oil", "paleotest:oil", "paleotest:oil"},
+		{"paleotest:oil", "paleotest:oil", "paleotest:oil", "paleotest:oil"},
+		{"paleotest:oil", "paleotest:oil", "paleotest:oil", "paleotest:oil"},
+		{"paleotest:oil", "paleotest:oil", "paleotest:oil", "paleotest:oil"},
+		{"paleotest:oil", "paleotest:oil", "paleotest:oil", "paleotest:oil"},
 	}
 })
 
@@ -736,6 +753,15 @@ minetest.register_craft({
 		{"paleotest:organic_oil", "paleotest:organic_oil", "paleotest:organic_oil"},
 		{"paleotest:organic_oil", "paleotest:organic_oil", "paleotest:organic_oil"},
 		{"paleotest:organic_oil", "paleotest:organic_oil", "paleotest:organic_oil"},
+	}
+})
+
+minetest.register_craft({
+	output = "paleotest:gigantoraptor_nest",
+	recipe = {
+		{"default:wood_stick", "default:wood_stick", "default:wood_stick"},
+		{"default:wood_stick", "paleotest:gigantoraptor_feather", "default:wood_stick"},
+		{"default:wood_stick", "default:wood_stick", "default:wood_stick"},
 	}
 })
 
@@ -777,6 +803,6 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "paleotest:organic_oil",
+	output = "paleotest:organic_oil 5",
 	recipe = "paleotest:egg_hesperornis",
 })

@@ -169,6 +169,6 @@ minetest.register_craft({
 	recipe = {
 		{"", "default:mese_crystal_fragment", ""},
 		{"default:mese_crystal", "default:steel_ingot", "default:steel_ingot"},
-		{"", "", ""},
+		{"", "msa_battery:battery", ""},
 	}
 })

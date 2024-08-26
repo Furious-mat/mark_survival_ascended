@@ -696,11 +696,10 @@ minetest.register_node("paleotest:gravestone", {
 minetest.register_node("paleotest:pete_moss", {
     description = "Pete Moss",
     tiles = {
-        "prehistoric_life_pete_moss.png",
-        "prehistoric_life_pete_moss.png", "prehistoric_life_pete_moss_side.png"
+        "paleotest_pete_moss.png",
+        "paleotest_pete_moss.png", "paleotest_pete_moss_side.png"
     },
     paramtype2 = "facedir",
-    is_ground_content = false,
     light_source = 5,
 	on_blast = function() end,
 	can_dig = function() return false end,
@@ -709,4 +708,12 @@ minetest.register_node("paleotest:pete_moss", {
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name = "default_grass_footstep", gain = 0.25},
 	}),
+})
+
+-- Gigantoraptor Nest --
+
+minetest.register_node("paleotest:gigantoraptor_nest", {
+    description = "Give the gigantoraptor this to tame it !",
+    tiles = {"paleotest_gigantoraptor_nest.png"},
+    groups = {dig_immediate = 3},
 })

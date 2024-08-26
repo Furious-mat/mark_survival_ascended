@@ -115,7 +115,12 @@ i3.files.detached()
 i3.files.fields()
 i3.files.groups()
 i3.files.callbacks(http, storage)
+
+local creative = minetest.settings:get_bool("creative_mode")
+
+if creative == false then
 i3.files.progressive()
+end
 
 if i3.settings.debug_mode then
 	lf("/tests/test_tabs.lua")()

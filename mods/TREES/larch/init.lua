@@ -155,9 +155,9 @@ minetest.register_node("larch:moss", {
 	walkable = true,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"larch_moss.png"},
-	inventory_image = "larch_moss.png",
-	wield_image = "larch_moss.png",
+	tiles = {"trunks_moss.png"},
+	inventory_image = "trunks_moss.png",
+	wield_image = "trunks_moss.png",
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
@@ -264,21 +264,6 @@ end
 if minetest.get_modpath("bonemeal") ~= nil then
 	bonemeal:add_sapling({
 		{"larch:sapling", grow_new_larch_tree, "soil"},
-	})
-end
-
--- Door
-if minetest.get_modpath("doors") ~= nil then
-	doors.register("door_larch_wood", {
-		tiles = {{ name = "larch_door_wood.png", backface_culling = true }},
-		description = S("Larch Wood Door"),
-		inventory_image = "larch_item_wood.png",
-		groups = {node = 1, choppy = 2, oddly_breakable_by_hand = 2, flammable = 2},
-		recipe = {
-			{"larch:wood", "larch:wood"},
-			{"larch:wood", "larch:wood"},
-			{"larch:wood", "larch:wood"},
-		}
 	})
 end
 

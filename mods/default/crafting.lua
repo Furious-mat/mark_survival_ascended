@@ -128,18 +128,10 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:clay",
-	recipe = {
-		{"default:clay_lump", "default:clay_lump"},
-		{"default:clay_lump", "default:clay_lump"},
-	}
-})
-
-minetest.register_craft({
 	output = "default:brick",
 	recipe = {
-		{"default:clay_brick", "default:clay_brick"},
-		{"default:clay_brick", "default:clay_brick"},
+		{"default:Brick", "default:Brick"},
+		{"default:Brick", "default:Brick"},
 	}
 })
 

@@ -1,2 +1,0 @@
-# Cryopod can be crafted.
-cryopod.craftable (Craftable Cryopod) bool false

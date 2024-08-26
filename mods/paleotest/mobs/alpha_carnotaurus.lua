@@ -6,10 +6,12 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:carnotaurus" and
+            name ~= "paleotest:yutyrannus" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
-                height < 2 then
+                height < 3.5 then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
                     table.insert(self.targets, name)
@@ -36,6 +38,8 @@ local function carnotaurus_logic(self)
     end
 
     set_mob_tables(self)
+    
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -191,7 +195,59 @@ minetest.register_entity("paleotest:alpha_carnotaurus", {
     max_hunger = 2000,
     punch_cooldown = 1,
     defend_owner = true,
-    targets = {},
+    targets = {
+    "paleotest:polar_bear",
+    "paleotest:polar_purlovia",
+    "paleotest:yeti",
+    "paleotest:ankylosaurus",
+    "paleotest:compy",
+    "paleotest:diplodocus",
+    "paleotest:dilophosaur",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:kentrosaurus",
+    "paleotest:microraptor",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:stegosaurus",
+    "paleotest:triceratops",
+    "paleotest:troodon",
+    "paleotest:carbonemys",
+    "paleotest:dimorphodon",
+    "paleotest:pteranodon",
+    "paleotest:tapejara",
+    "paleotest:castoroides",
+    "paleotest:chalicotherium",
+    "paleotest:daeodon",
+    "paleotest:dire_bear",
+    "paleotest:dire_wolf",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:hyaenodon",
+    "paleotest:elasmotherium",
+    "paleotest:mammoth",
+    "paleotest:megaloceros",
+    "paleotest:megatherium",
+    "paleotest:mesopithecus",
+    "paleotest:ovis",
+    "paleotest:procoptodon",
+    "paleotest:achatina",
+    "paleotest:argentavis",
+    "paleotest:dodo",
+    "paleotest:ichthyornis",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:terror_bird",
+    "paleotest:beelzebufo",
+    "paleotest:diplocaulus",
+    "paleotest:dimetrodon",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:unicorn"
+    },
     predators = {},
     follow = paleotest.global_meat,
     drops = {

@@ -6,10 +6,11 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:velociraptor" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
-                height < 2 then
+                height < 3.5 then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
                     table.insert(self.targets, name)
@@ -17,8 +18,7 @@ local function set_mob_tables(self)
                     table.insert(self.targets, name)
                 end
                 if entity.targets and
-                    paleotest.find_string(entity.targets, self.name) and
-                    not not paleotest.find_string(self.predators, name) then
+                    paleotest.find_string(entity.targets, self.name) then
                     if entity.object:get_armor_groups() and
                         entity.object:get_armor_groups().fleshy then
                         table.insert(self.predators, name)
@@ -37,6 +37,8 @@ local function velociraptor_logic(self)
     end
 
     set_mob_tables(self)
+    
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)

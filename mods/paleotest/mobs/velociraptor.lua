@@ -2,14 +2,39 @@
 -- Velociraptor --
 ------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local velociraptor_inv_size = 2 * 8
+local inv_velociraptor = {}
+inv_velociraptor.velociraptor_number = tonumber(storage:get("velociraptor_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, velociraptor_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:alpha_raptor" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
-                height < 2 then
+                height < 3.5 then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
                     table.insert(self.targets, name)
@@ -17,8 +42,7 @@ local function set_mob_tables(self)
                     table.insert(self.targets, name)
                 end
                 if entity.targets and
-                    paleotest.find_string(entity.targets, self.name) and
-                    not not paleotest.find_string(self.predators, name) then
+                    paleotest.find_string(entity.targets, self.name) then
                     if entity.object:get_armor_groups() and
                         entity.object:get_armor_groups().fleshy then
                         table.insert(self.predators, name)
@@ -32,6 +56,20 @@ end
 local function velociraptor_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:velociraptor_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("velociraptor_" .. self.velociraptor_number)
         mob_core.on_die(self)
         return
     end
@@ -128,7 +166,7 @@ minetest.register_entity("paleotest:velociraptor", {
     -- Stats
     max_hp = 200,
     armor_groups = {fleshy = 100},
-    view_range = 32,
+    view_range = 64,
     reach = 2,
     damage = 15,
     knockback = 2,
@@ -195,7 +233,42 @@ minetest.register_entity("paleotest:velociraptor", {
     max_hunger = 1200,
     punch_cooldown = 1,
     defend_owner = true,
-    targets = {},
+    targets = {
+    "paleotest:ankylosaurus",
+    "paleotest:diplodocus",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:kentrosaurus",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:stegosaurus",
+    "paleotest:triceratops",
+    "paleotest:carbonemys",
+    "paleotest:pteranodon",
+    "paleotest:tapejara",
+    "paleotest:castoroides",
+    "paleotest:chalicotherium",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:megaloceros",
+    "paleotest:mesopithecus",
+    "paleotest:ovis",
+    "paleotest:phiomia",
+    "paleotest:procoptodon",
+    "paleotest:achatina",
+    "paleotest:pulmonoscorpius",
+    "paleotest:dodo",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:diplocaulus",
+    "paleotest:dimetrodon",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:unicorn"
+    },
     predators = {},
     follow = paleotest.global_meat,
     drops = {
@@ -204,18 +277,37 @@ minetest.register_entity("paleotest:velociraptor", {
     },
     timeout = 0,
     logic = velociraptor_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.velociraptor_number = inv_velociraptor.velociraptor_number
+    inv_velociraptor.velociraptor_number = inv_velociraptor.velociraptor_number + 1
+    storage:set_int("velociraptor_number", inv_velociraptor.velociraptor_number)
+    local inv = minetest.create_detached_inventory("paleotest:velociraptor_" .. self.velociraptor_number, {})
+    inv:set_size("main", velociraptor_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 20, true, true) then
             return
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:raptor_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:raptor_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         if clicker:get_wielded_item():get_name() == "paleotest:field_guide" then
             minetest.show_formspec(clicker:get_player_name(),
@@ -227,10 +319,18 @@ minetest.register_entity("paleotest:velociraptor", {
                 temper = "Aggressive"
             }))
         end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:velociraptor_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:velociraptor_" .. self.velociraptor_number .. ";main;0,0;8,2;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:velociraptor_" .. self.velociraptor_number .. ";main]" ..
+            "listring[current_player;main]")
+        end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
-    end,
+  end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
             paleotest.set_attack(self, puncher)
@@ -264,4 +364,9 @@ minetest.register_craftitem("paleotest:velociraptor_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_velociraptor_fg_male.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

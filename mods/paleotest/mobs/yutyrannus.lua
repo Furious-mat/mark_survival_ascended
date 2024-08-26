@@ -2,11 +2,37 @@
 -- Yutyrannus --
 -------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local yutyrannus_inv_size = 6 * 8
+local inv_yutyrannus = {}
+inv_yutyrannus.yutyrannus_number = tonumber(storage:get("yutyrannus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, yutyrannus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:carnotaurus" and
+            name ~= "paleotest:alpha_carnotaurus" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
                 height < 3.5 then
@@ -31,13 +57,27 @@ end
 local function yutyrannus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:yutyrannus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("yutyrannus_" .. self.yutyrannus_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 50 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -154,7 +194,7 @@ minetest.register_entity("paleotest:yutyrannus", {
     knockback = 8,
     lung_capacity = 40,
     -- Movement & Physics
-    max_speed = 6,
+    max_speed = 5,
     stepheight = 1.26,
     jump_height = 1.26,
     max_fall = 3,
@@ -195,7 +235,7 @@ minetest.register_entity("paleotest:yutyrannus", {
             distance = 16
         },
         roar = {
-            name = "paleotest_tyrannosaurus_roar",
+            name = "paleotest_yutyrannus_roar",
             gain = 1.0,
             distance = 32
         },
@@ -220,7 +260,81 @@ minetest.register_entity("paleotest:yutyrannus", {
     punch_cooldown = 1,
     defend_owner = true,
     imprint_tame = true,
-    targets = {},
+    targets = {
+    "paleotest:polar_bear",
+    "paleotest:polar_purlovia",
+    "paleotest:yeti",
+    "paleotest:ankylosaurus",
+    "paleotest:baryonyx",
+    "paleotest:brachiosaurus",
+    "paleotest:brontosaurus",
+    "paleotest:compy",
+    "paleotest:diplodocus",
+    "paleotest:dilophosaur",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:kentrosaurus",
+    "paleotest:megalosaurus",
+    "paleotest:microraptor",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:stegosaurus",
+    "paleotest:therizinosaur",
+    "paleotest:triceratops",
+    "paleotest:troodon",
+    "paleotest:velociraptor",
+    "paleotest:gigantoraptor",
+    "paleotest:carbonemys",
+    "paleotest:dimorphodon",
+    "paleotest:kaprosuchus",
+    "paleotest:megalania",
+    "paleotest:pteranodon",
+    "paleotest:quetzalcoatlus",
+    "paleotest:sarcosuchus",
+    "paleotest:tapejara",
+    "paleotest:titanoboa",
+    "paleotest:castoroides",
+    "paleotest:chalicotherium",
+    "paleotest:daeodon",
+    "paleotest:dire_bear",
+    "paleotest:dire_wolf",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:hyaenodon",
+    "paleotest:elasmotherium",
+    "paleotest:mammoth",
+    "paleotest:megaloceros",
+    "paleotest:megatherium",
+    "paleotest:mesopithecus",
+    "paleotest:onyc",
+    "paleotest:ovis",
+    "paleotest:paraceratherium",
+    "paleotest:phiomia",
+    "paleotest:procoptodon",
+    "paleotest:smilodon",
+    "paleotest:thylacoleo",
+    "paleotest:achatina",
+    "paleotest:araneo",
+    "paleotest:arthropluera",
+    "paleotest:dung_beetle",
+    "paleotest:pulmonoscorpius",
+    "paleotest:argentavis",
+    "paleotest:dodo",
+    "paleotest:ichthyornis",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:terror_bird",
+    "paleotest:beelzebufo",
+    "paleotest:diplocaulus",
+    "paleotest:dimetrodon",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:purlovia",
+    "paleotest:unicorn"
+    },
     rivals = {},
     follow = paleotest.global_meat,
     drops = {
@@ -232,9 +346,40 @@ minetest.register_entity("paleotest:yutyrannus", {
     },
     timeout = 0,
     logic = yutyrannus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
-    on_step = paleotest.on_step,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.yutyrannus_number = inv_yutyrannus.yutyrannus_number
+    inv_yutyrannus.yutyrannus_number = inv_yutyrannus.yutyrannus_number + 1
+    storage:set_int("yutyrannus_number", inv_yutyrannus.yutyrannus_number)
+    local inv = minetest.create_detached_inventory("paleotest:yutyrannus_" .. self.yutyrannus_number, {})
+    inv:set_size("main", yutyrannus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+    self.timer = 0
+end,
+    on_step = function(self, dtime)
+        paleotest.on_step(self, dtime)
+        self.timer = self.timer + dtime
+        if self.timer > 300 and not self.tamed then
+            local pos = self.object:get_pos()
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:carnotaurus")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:carnotaurus")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:carnotaurus")
+            minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:carnotaurus")
+            self.timer = 0
+        end
+    end,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 115, true, true) then
             return
@@ -250,16 +395,24 @@ minetest.register_entity("paleotest:yutyrannus", {
                 temper = "Aggressive"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:yutyrannus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:yutyrannus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:yutyrannus_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:yutyrannus_" .. self.yutyrannus_number .. ";main;0,0;8,6;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:yutyrannus_" .. self.yutyrannus_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
-    end,
+  end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
             paleotest.set_attack(self, puncher)
@@ -281,4 +434,9 @@ minetest.register_craftitem("paleotest:yutyrannus_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_yutyrannus_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

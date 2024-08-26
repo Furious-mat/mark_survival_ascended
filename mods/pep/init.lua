@@ -357,12 +357,12 @@ if(minetest.get_modpath("default")~=nil) then
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:breath",
-		recipe = { "default:coral_cyan", "default:coral_green", "default:coral_pink", "paleotest:ammonite_bile", "vessels:glass_bottle" }
+		recipe = { "default:coral_cyan", "default:coral_green", "default:coral_pink", "paleotest:bio_toxin", "vessels:glass_bottle" }
 	})
 	minetest.register_craft({
 		type = "shapeless",
 		output = "pep:speedminus",
-		recipe = { "default:dry_grass_1", "paleotest:sap", "vessels:glass_bottle" }
+		recipe = { "paleotest:bio_toxin", "paleotest:sap", "vessels:glass_bottle" }
 	})
 	if(minetest.get_modpath("flowers") ~= nil) then
 		minetest.register_craft({
@@ -374,7 +374,7 @@ if(minetest.get_modpath("default")~=nil) then
 		minetest.register_craft({
 			type = "shapeless",
 			output = "pep:poisoner",
-			recipe = { "flowers:mushroom_red", "paleotest:organic_polymer", "flowers:mushroom_red", "vessels:glass_bottle" }
+			recipe = { "paleotest:bio_toxin", "paleotest:organic_polymer", "flowers:mushroom_red", "vessels:glass_bottle" }
 		})
 
 		if(minetest.get_modpath("farming") ~= nil) then
@@ -389,7 +389,7 @@ if(minetest.get_modpath("default")~=nil) then
 		minetest.register_craft({
 			type = "shapeless",
 			output = "pep:regen2",
-			recipe = { "paleotest:leech_blood", "paleotest:sap", "pep:regen" }
+			recipe = { "paleotest:leech_blood", "paleotest:resin", "pep:regen" }
 		})
 		if minetest.get_modpath("mana") ~= nil then
 			minetest.register_craft({

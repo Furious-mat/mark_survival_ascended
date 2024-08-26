@@ -1,0 +1,10 @@
+mod_storage_backend = sqlite3
+auth_backend = sqlite3
+player_backend = sqlite3
+backend = sqlite3
+gameid = mark_survival_ascended
+world_name = TheIsland
+creative_mode = false
+enable_damage = true
+server_announce = false
+load_mod_the_island_transition = mods/the_island_transition

@@ -48,28 +48,6 @@ function default.register_mgv6_ores()
 	-- Blob ore
 	-- These first to avoid other ores in blobs
 
-	-- Clay
-	-- This first to avoid clay in sand blobs
-
-	minetest.register_ore({
-		ore_type        = "blob",
-		ore             = "default:clay",
-		wherein         = {"default:sand"},
-		clust_scarcity  = 16 * 16 * 16,
-		clust_size      = 5,
-		y_max           = 0,
-		y_min           = -15,
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.2,
-			spread = {x = 5, y = 5, z = 5},
-			seed = -316,
-			octaves = 1,
-			persist = 0.0
-		},
-	})
-
 	-- Sand
 
 	minetest.register_ore({
@@ -333,27 +311,6 @@ function default.register_ores()
 
 	-- Blob ore.
 	-- These before scatter ores to avoid other ores in blobs.
-
-	-- Clay
-
-	minetest.register_ore({
-		ore_type        = "blob",
-		ore             = "default:clay",
-		wherein         = {"default:sand"},
-		clust_scarcity  = 16 * 16 * 16,
-		clust_size      = 5,
-		y_max           = 0,
-		y_min           = -15,
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.2,
-			spread = {x = 5, y = 5, z = 5},
-			seed = -316,
-			octaves = 1,
-			persist = 0.0
-		},
-	})
 
 	-- Silver sand
 

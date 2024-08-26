@@ -183,15 +183,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:shovel_diamond",
-	recipe = {
-		{"default:diamond"},
-		{"default:wood_stick"},
-		{"default:thatch"},
-	}
-})
-
-minetest.register_craft({
 	output = "default:axe_stone",
 	recipe = {
 		{"loose_rocks:loose_rocks_1", "loose_rocks:loose_rocks_1", "default:wood_stick"},
@@ -236,10 +227,4 @@ minetest.register_craft({
 		{"default:fiber", "default:wood_stick", "default:fiber"},
 		{"default:fiber", "default:wood_stick", "default:fiber"},
 	}
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:sword_wood",
-	burntime = 5,
 })

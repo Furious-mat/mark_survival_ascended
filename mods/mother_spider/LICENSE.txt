@@ -15,8 +15,9 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 
 -------------------------------------------------------------------------------------------------------------
 License for Textures/Models : CC-by-SA 4.0
+Sounds = https://freesound.org/people/Darsycho/sounds/505185/
+https://freesound.org/people/MinigunFiend/sounds/175226/
 Copyright (c) 2023 DuckGo
-
 -------------------------------------------------------------------------------------------------------------
 
 

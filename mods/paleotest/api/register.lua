@@ -399,6 +399,7 @@ function paleotest.register_egg(mob, scale, imprint)
                 self.progress = self.progress + dtime
                 if self.progress >= 90 and not self.hatching then
                     self.hatching = true
+                    minetest.sound_play("paleotest_egg_hatching", {gain = 1})
                     self.object:set_animation({x = 1, y = 40}, 30, 0)
                 end
                 if self.progress >= 100 then
@@ -425,6 +426,5 @@ function paleotest.register_egg(mob, scale, imprint)
                 pickup_egg(self, clicker)
             end
         end,
-        on_punch = function(self, puncher) pickup_egg(self, puncher) end
     })
 end

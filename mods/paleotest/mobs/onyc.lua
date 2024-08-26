@@ -2,6 +2,30 @@
 -- Onyc --
 --------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local onyc_inv_size = 1 * 8
+local inv_onyc = {}
+inv_onyc.onyc_number = tonumber(storage:get("onyc_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, onyc_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function find_feeder(self)
     local pos = self.object:get_pos()
     local pos1 = {x = pos.x + 32, y = pos.y + 32, z = pos.z + 32}
@@ -32,6 +56,20 @@ end
 local function onyc_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:onyc_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("onyc_" .. self.onyc_number)
         mob_core.on_die(self)
         return
     end
@@ -173,7 +211,6 @@ minetest.register_entity("paleotest:onyc", {
     scale_stage1 = 0.25,
     scale_stage2 = 0.5,
     scale_stage3 = 0.75,
-    makes_footstep_sound = true,
     visual = "mesh",
     mesh = "paleotest_onyc.b3d",
     female_textures = {"paleotest_onyc.png"},
@@ -225,18 +262,35 @@ minetest.register_entity("paleotest:onyc", {
     timeout = 0,
     logic = onyc_logic,
     on_step = paleotest.on_step,
-    get_staticdata = mobkit.statfunc,
-    on_activate = function(self, staticdata, dtime_s)
-        paleotest.on_activate(self, staticdata, dtime_s)
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.onyc_number = inv_onyc.onyc_number
+    inv_onyc.onyc_number = inv_onyc.onyc_number + 1
+    storage:set_int("onyc_number", inv_onyc.onyc_number)
+    local inv = minetest.create_detached_inventory("paleotest:onyc_" .. self.onyc_number, {})
+    inv:set_size("main", onyc_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
         self.flight_timer = mobkit.recall(self, "flight_timer") or 1
         self.finding_feeder = mobkit.recall(self, "finding_feeder") or false
-    end,
+end,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 30, true, true) then
             return
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         if clicker:get_wielded_item():get_name() == "paleotest:field_guide" then
             minetest.show_formspec(clicker:get_player_name(),
@@ -247,6 +301,14 @@ minetest.register_entity("paleotest:onyc", {
                 diet = "Omnivore",
                 temper = "Aggressive"
             }))
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:onyc_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:onyc_" .. self.onyc_number .. ";main;0,0;8,4;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:onyc_" .. self.onyc_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
@@ -277,4 +339,9 @@ minetest.register_craftitem("paleotest:onyc_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_onyc_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

@@ -260,6 +260,77 @@ function paleotest.feed_tame(self, clicker, feed_count, tame, breed)
 	return false
 end
 
+function paleotest.gigantoraptor_tame(self, clicker, feed_count, tame, breed)
+	local item = clicker:get_wielded_item()
+	local pos = self.object:get_pos()
+	local mob_name = mob_core.get_name_proper(self.name)
+	if mob_core.follow_holding(self, clicker) then
+		if creative == false then
+			item:take_item()
+			clicker:set_wielded_item(item)
+		end
+		mobkit.heal(self, self.max_hp/feed_count)
+		if self.hp >= self.max_hp then
+			self.hp = self.max_hp
+		end
+		if self.hunger < self.max_hunger then
+			self.food = mobkit.remember(self, "food", self.food + 1)
+			if self.hunger < self.max_hunger then
+				self.hunger = mobkit.remember(self,"hunger",self.hunger+5)
+			elseif self.hunger >= self.max_hunger then
+				self.hunger = mobkit.remember(self,"hunger",self.max_hunger)
+			end
+			local minppos = vector.add(pos, hitbox(self)[4])
+            local maxppos = vector.subtract(pos, hitbox(self)[4])
+            local def = minetest.registered_items[item:get_name()]
+            local texture = def.inventory_image
+            if not texture or texture == "" then
+				texture = def.wield_image
+				if def.tiles then
+					texture = def.tiles[1]
+				end
+            end
+            minetest.add_particlespawner({
+                amount = 12*self.height,
+                time = 0.1,
+                minpos = minppos,
+                maxpos = maxppos,
+                minvel = {x=-1, y=1, z=-1},
+                maxvel = {x=1, y=2, z=1},
+                minacc = {x=0, y=-5, z=0},
+                maxacc = {x=0, y=-9, z=0},
+                minexptime = 1,
+                maxexptime = 1,
+                minsize = 2*self.height,
+                maxsize = 3*self.height,
+                collisiondetection = true,
+                vertical = false,
+                texture = texture,
+            })
+			if self.food >= feed_count then
+				self.food = mobkit.remember(self, "food", 0)
+				if tame and not self.tamed then
+					mob_core.set_owner(self, clicker:get_player_name())
+					minetest.chat_send_player(clicker:get_player_name(), mob_name.." has been tamed!")
+					mobkit.clear_queue_high(self)
+					paleotest.particle_spawner(pos, "mob_core_green_particle.png", "float")
+					minetest.sound_play("mobs_spell", {gain = 1})
+					mob_core.random_loot_drop(self, 1, 1, "feather_fall:feather")
+				end
+				if breed then
+					if self.child then return false end
+					if self.breed_mode then return false end
+					if self.breed_timer == 0 and self.breed_mode == false then
+						self.breed_mode = true
+						paleotest.particle_spawner(pos, "heart.png", "float")
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
 ------------
 -- Basics --
 ------------
@@ -288,11 +359,6 @@ function paleotest.can_find_post(self)
 end
 
 function paleotest.on_punch(self)
-	if self.mood > 0 then
-		self.mood = self.mood - 5
-	elseif self.mood <= 0 then
-		self.mood = 0
-	end
 	mobkit.remember(self, "mood", self.mood)
 	if self.status == "sleeping" then
 		self.status = mobkit.remember(self, "status", "")
@@ -379,8 +445,6 @@ end
 -- Breeding --
 --------------
 
-local breeding = minetest.settings:get_bool("breeding")
-
 function paleotest.breed(self, live) -- Breeding
 	if not breeding then return end
     if self.breed_timer > 0 then
@@ -389,7 +453,7 @@ function paleotest.breed(self, live) -- Breeding
         self.breed_timer = mobkit.remember(self,"breed_timer",0)
 	end
 	local name = self.name:split(":")[2]
-	if self.gender == "female" then
+	if self.gender == "female" and self.tamed then
 		local pos = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(pos, self.collisionbox[4]*4)
 		for _,obj in ipairs(objs) do
@@ -407,7 +471,6 @@ function paleotest.breed(self, live) -- Breeding
 					else
 						minetest.add_entity(pos,"paleotest:egg_"..name.."_ent")
 					end
-					paleotest.particle_spawner(self.object:get_pos(), "heart.png", "float")
 				end)
 			end
 		end
@@ -453,11 +516,9 @@ end
 -- Block Breaking --
 --------------------
 
-local block_breaking = minetest.settings:get_bool("block_breaking")
-
 local function can_break(pos)
 	local node = minetest.get_node_or_nil(pos)
-	if node
+	if node and creative == false
 	and not minetest.registered_nodes[node.name].groups.stone
 	and not minetest.registered_nodes[node.name].groups.level
 	and not minetest.registered_nodes[node.name].groups.unbreakable
@@ -467,9 +528,6 @@ local function can_break(pos)
 end
 
 function paleotest.block_breaking(self)
-	if not block_breaking then
-		return
-	end
 	local width = self.object:get_properties().collisionbox[4] + 0.25
 	local height = self.height + 0.25
 	local pos = mobkit.get_stand_pos(self)
@@ -503,11 +561,9 @@ end
 -- Ankylosaurus/Doedicurus Block Breaking --
 --------------------
 
-local dinos_block_breaking = minetest.settings:get_bool("dinos_block_breaking")
-
 local function can_break(pos)
 	local node = minetest.get_node_or_nil(pos)
-	if node
+	if node and creative == false
 	and not minetest.registered_nodes[node.name].groups.unbreakable
 	and not minetest.registered_nodes[node.name].groups.liquid then
 		return true
@@ -515,9 +571,6 @@ local function can_break(pos)
 end
 
 function paleotest.dinos_block_breaking(self)
-	if not dinos_block_breaking then
-		return
-	end
 	local width = self.object:get_properties().collisionbox[4] + 0.25
 	local height = self.height + 0.25
 	local pos = mobkit.get_stand_pos(self)

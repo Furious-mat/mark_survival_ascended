@@ -17,7 +17,7 @@ bamboo = {}
 local ai = {name = "air", param1 = 000}
 local bt = {name = "bamboo:trunk", param1 = 255}
 local bf = {name = "bamboo:trunk", param1 = 255, force_place = true}
-local fd = {name = "default:dirt", param1 = 255, force_place = true}
+local fd = {name = "default:sand", param1 = 255, force_place = true}
 local lp = {name = "bamboo:leaves", param1 = 255}
 local lr = {name = "bamboo:leaves", param1 = 100}
 

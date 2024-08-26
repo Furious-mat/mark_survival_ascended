@@ -34,7 +34,7 @@ minetest.override_item("dfarm:seed_carrot", {
 
 -- FAZER COM QUE A CENOURA NO STAGE 5 DROP CARROT SEED ...
 minetest.override_item("dfarm:carrot_5", {
-	drop = "dfarm:seed_carrot 2",
+	drop = "dfarm:carrot 2",
 })
 
 -- MATER AS CENOURAS ANTIGAS COMESTIVEIS ( MANTIDA PARA QUEM JÁ TINHA, SERÁ REMOVIDA NO FUTURO ..

@@ -97,10 +97,18 @@ minetest.register_craftitem("farming:string", {
 })
 
 minetest.register_craft({
-	output = "wool:white",
+	output = "wool:white 2",
 	recipe = {
 		{"farming:cotton", "farming:cotton"},
 		{"farming:cotton", "farming:cotton"},
+	}
+})
+
+minetest.register_craft({
+	output = "wool:white",
+	recipe = {
+		{"farming:string", "farming:string"},
+		{"farming:string", "farming:string"},
 	}
 })
 
@@ -140,11 +148,25 @@ minetest.register_craftitem("farming:tintoberry", {
 	groups = {berry = 1},
 })
 
+minetest.register_craft({
+	output = "dye:red",
+	recipe = {
+		{"farming:tintoberry"},
+	}
+})
+
 minetest.register_craftitem("farming:amarberry", {
 	description = S("Amarberry"),
 	inventory_image = "farming_amarberry.png",
 	on_use = minetest.item_eat(1.5),
 	groups = {berry = 1},
+})
+
+minetest.register_craft({
+	output = "dye:yellow",
+	recipe = {
+		{"farming:amarberry"},
+	}
 })
 
 minetest.register_craftitem("farming:azulberry", {
@@ -154,11 +176,25 @@ minetest.register_craftitem("farming:azulberry", {
 	groups = {berry = 1},
 })
 
+minetest.register_craft({
+	output = "dye:blue",
+	recipe = {
+		{"farming:azulberry"},
+	}
+})
+
 minetest.register_craftitem("farming:mejoberry", {
 	description = S("Mejoberry"),
 	inventory_image = "farming_mejoberry.png",
 	on_use = minetest.item_eat(1.5),
 	groups = {berry = 1},
+})
+
+minetest.register_craft({
+	output = "dye:violet",
+	recipe = {
+		{"farming:mejoberry"},
+	}
 })
 
 minetest.register_craftitem("farming:narcoberry", {
@@ -168,11 +204,25 @@ minetest.register_craftitem("farming:narcoberry", {
 	groups = {berry = 1},
 })
 
+minetest.register_craft({
+	output = "dye:black",
+	recipe = {
+		{"farming:narcoberry"},
+	}
+})
+
 minetest.register_craftitem("farming:stimberry", {
 	description = S("Stimberry"),
 	inventory_image = "farming_stimberry.png",
 	on_use = minetest.item_eat(1.5),
 	groups = {berry = 1},
+})
+
+minetest.register_craft({
+	output = "dye:white",
+	recipe = {
+		{"farming:stimberry"},
+	}
 })
 
 minetest.register_craftitem("farming:verdberry", {
@@ -182,6 +232,13 @@ minetest.register_craftitem("farming:verdberry", {
 	groups = {berry = 1},
 })
 
+minetest.register_craft({
+	output = "dye:green",
+	recipe = {
+		{"farming:verdberry"},
+	}
+})
+
 minetest.register_craftitem("farming:magenberry", {
 	description = S("Magenberry"),
 	inventory_image = "farming_magenberry.png",
@@ -189,9 +246,23 @@ minetest.register_craftitem("farming:magenberry", {
 	groups = {berry = 1},
 })
 
+minetest.register_craft({
+	output = "dye:magenta",
+	recipe = {
+		{"farming:magenberry"},
+	}
+})
+
 minetest.register_craftitem("farming:cianberry", {
 	description = S("Cianberry"),
 	inventory_image = "farming_cianberry.png",
 	on_use = minetest.item_eat(1.5),
 	groups = {berry = 1},
+})
+
+minetest.register_craft({
+	output = "dye:cyan",
+	recipe = {
+		{"farming:cianberry"},
+	}
 })

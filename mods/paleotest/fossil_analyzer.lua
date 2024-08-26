@@ -29,7 +29,8 @@ local fossil_output = {
     "paleotest:dna_pachycephalosaurus", "paleotest:dna_pachyrhinosaurus",
     "paleotest:dna_parasaurolophus", "paleotest:dna_pelagornis",
     "paleotest:dna_pulmonoscorpius", "paleotest:dna_terror_bird",
-    "paleotest:dna_therizinosaur", "paleotest:dna_yutyrannus"
+    "paleotest:dna_therizinosaur", "paleotest:dna_yutyrannus",
+    "paleotest:dna_tapejara", "paleotest:dna_brontosaurus"
 }
 local waste_fossil = {"default:gravel 3", "default:cobble 3"}
 

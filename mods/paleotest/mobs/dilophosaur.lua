@@ -2,14 +2,53 @@
 -- Dilophosaur --
 ------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local dilophosaur_inv_size = 2 * 8
+local inv_dilophosaur = {}
+inv_dilophosaur.dilophosaur_number = tonumber(storage:get("dilophosaur_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, dilophosaur_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:achatina" and
+            name ~= "paleotest:pulmonoscorpius" and
+            name ~= "paleotest:araneo" and
+            name ~= "paleotest:arthropluera" and
+            name ~= "paleotest:dung_beetle" and
+            name ~= "paleotest:leech" and
+            name ~= "paleotest:leech_diseased" and
+            name ~= "paleotest:megalania" and
+            name ~= "paleotest:megalosaurus" and
+            name ~= "paleotest:meganeura" and
+            name ~= "paleotest:onyc" and
+            name ~= "paleotest:titanoboa" and
+            name ~= "paleotest:titanomyrma" and
+            name ~= "paleotest:titanomyrma_soldier" and
+            name ~= "paleotest:eurypterid" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
-                height < 2 then
+                height < 3.5 then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
                     table.insert(self.targets, name)
@@ -17,8 +56,7 @@ local function set_mob_tables(self)
                     table.insert(self.targets, name)
                 end
                 if entity.targets and
-                    paleotest.find_string(entity.targets, self.name) and
-                    not not paleotest.find_string(self.predators, name) then
+                    paleotest.find_string(entity.targets, self.name) then
                     if entity.object:get_armor_groups() and
                         entity.object:get_armor_groups().fleshy then
                         table.insert(self.predators, name)
@@ -32,6 +70,20 @@ end
 local function dilophosaur_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:dilophosaur_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("dilophosaur_" .. self.dilophosaur_number)
         mob_core.on_die(self)
         return
     end
@@ -79,7 +131,7 @@ local function dilophosaur_logic(self)
                     end
                 end
             end
-
+            
             if prty < 8 then
                 if player and not self.child then
                     if self.mood > 50 and player:get_player_name() ~= self.owner then
@@ -158,7 +210,7 @@ minetest.register_entity("paleotest:dilophosaur", {
     sounds = {
         alter_child_pitch = true,
         random = {
-            name = "Dilosound",
+            name = "paleotest_dilophosaur",
             gain = 1.0,
             distance = 16
         },
@@ -182,7 +234,27 @@ minetest.register_entity("paleotest:dilophosaur", {
     max_hunger = 450,
     punch_cooldown = 1,
     defend_owner = true,
-    targets = {},
+    targets = {
+    "paleotest:compy",
+    "paleotest:iguanodon",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:pteranodon",
+    "paleotest:tapejara",
+    "paleotest:equus",
+    "paleotest:mesopithecus",
+    "paleotest:ovis",
+    "paleotest:phiomia",
+    "paleotest:achatina",
+    "paleotest:dodo",
+    "paleotest:kairuku",
+    "paleotest:pelagornis",
+    "paleotest:diplocaulus",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:unicorn"
+    },
     predators = {},
     follow = paleotest.global_meat,
     drops = {
@@ -192,8 +264,27 @@ minetest.register_entity("paleotest:dilophosaur", {
     },
     timeout = 0,
     logic = dilophosaur_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.dilophosaur_number = inv_dilophosaur.dilophosaur_number
+    inv_dilophosaur.dilophosaur_number = inv_dilophosaur.dilophosaur_number + 1
+    storage:set_int("dilophosaur_number", inv_dilophosaur.dilophosaur_number)
+    local inv = minetest.create_detached_inventory("paleotest:dilophosaur_" .. self.dilophosaur_number, {})
+    inv:set_size("main", dilophosaur_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 12, true, true) then
@@ -209,8 +300,16 @@ minetest.register_entity("paleotest:dilophosaur", {
                 temper = "Territorial"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:dilophosaur_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:dilophosaur_" .. self.dilophosaur_number .. ";main;0,0;8,2;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:dilophosaur_" .. self.dilophosaur_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
@@ -232,6 +331,25 @@ minetest.register_entity("paleotest:dilophosaur", {
             if puncher:get_player_name() == self.owner and self.mood > 50 then
                 return
             end
+            local pos = self.object:get_pos()
+        minetest.add_particlespawner({
+            amount = 30,
+            time = 30,
+            minpos = {x = pos.x - 0.2, y = pos.y, z = pos.z - 0.2},
+            maxpos = {x = pos.x + 0.2, y = pos.y + 0.5, z = pos.z + 0.2},
+            minvel = {x = 0, y = 2, z = 0},
+            maxvel = {x = 0, y = 4, z = 0},
+            minacc = {x = 0, y = -9.8, z = 0},
+            maxacc = {x = 0, y = -9.8, z = 0},
+            minexptime = 30,
+            maxexptime = 30,
+            minsize = 10,
+            maxsize = 20,
+            collisiondetection = true,
+            collision_removal = true,
+            vertical = false,
+            texture = "paleotest_split.png",
+        })
             mob_core.on_punch_retaliate(self, puncher, false, true)
         end
     end,
@@ -249,4 +367,9 @@ minetest.register_craftitem("paleotest:dilophosaur_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_dilo_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

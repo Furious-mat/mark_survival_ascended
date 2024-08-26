@@ -5,11 +5,11 @@ minetest.register_craftitem("rangedweapons:red_ray_visual", {
 
 	minetest.register_tool("rangedweapons:laser_rifle", {
 	wield_scale = {x=1.9,y=1.9,z=2.5},
-		description = "" ..core.colorize("#35cdff","Laser rifle\n") ..core.colorize("#FFFFFF", "Ranged damage: 150\n") ..core.colorize("#FFFFFF", "accuracy: 100%\n") ..core.colorize("#FFFFFF", "knockback: 0\n")  ..core.colorize("#FFFFFF", "Critical chance: 9%\n") ..core.colorize("#FFFFFF", "Critical efficiency: 2.0x\n")  ..core.colorize("#FFFFFF", "Power usage: 8\n") ..core.colorize("#FFFFFF", "Rate of fire: 0.1 (full-auto)\n") ..core.colorize("#FFFFFF", "Enemy penetration: 40%\n") ..core.colorize("#FFFFFF", "Gun type: power assault rifle\n") ..core.colorize("#FFFFFF", "Bullet velocity: 60"),
+		description = "" ..core.colorize("#35cdff","Laser rifle\n") ..core.colorize("#FFFFFF", "Ranged damage: 750\n") ..core.colorize("#FFFFFF", "accuracy: 100%\n") ..core.colorize("#FFFFFF", "knockback: 0\n")  ..core.colorize("#FFFFFF", "Critical chance: 9%\n") ..core.colorize("#FFFFFF", "Critical efficiency: 2.0x\n")  ..core.colorize("#FFFFFF", "Power usage: 8\n") ..core.colorize("#FFFFFF", "Rate of fire: 0.1 (full-auto)\n") ..core.colorize("#FFFFFF", "Enemy penetration: 40%\n") ..core.colorize("#FFFFFF", "Gun type: power assault rifle\n") ..core.colorize("#FFFFFF", "Bullet velocity: 60"),
 	range = 0,
 RW_powergun_capabilities = {
 		automatic_gun = 1,
-		power_damage = {fleshy=150,knockback=0},
+		power_damage = {fleshy=750,knockback=0},
 		power_crit = 9,
 		power_critEffc = 2.0,
 		power_skill = {"",1},
@@ -18,7 +18,7 @@ RW_powergun_capabilities = {
 		power_accuracy = 100,
 		power_cooldown = 0.1,
 		power_projectiles = 1,
-		power_durability = 80,
+		power_durability = 240,
 		power_sound = "rangedweapons_laser",
 		power_glass_breaking = 1,
 		power_door_breaking = 1,

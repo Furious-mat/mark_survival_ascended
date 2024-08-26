@@ -170,51 +170,6 @@ food_fuel (food waste) bool false
 # Disable recipe for bones:bones to craft into bonemeal
 bonemeal.disable_deathbones_recipe (Disable recipe for death bones into bonemeal) bool false
 
-[Ccompass]
-# If disabled each compass can be calibrated one time only
-ccompass_recalibrate (Allow compass recalibration) bool true
-
-# If disabled (default) all nodes are allowed to be compass target
-ccompass_restrict_target (Restrict nodes usable for calibration) bool false
-
-# If enabled, climbable nodes above target are considered unsafe.
-ccompass_deny_climbable_target (Deny climbable node above target) bool false
-
-# List of technical node names allowed for compass calibration, separated by ','
-ccompass_restrict_target_nodes (Nodes list allowed for calibration) string
-
-# Enable aliasses to replace other compass mods
-ccompass_aliasses (Enable compatibility aliasses) bool false
-
-# Nodes able to teleport to destination on punch, separated by ','. Set it to "none" to disable the teleporting feature.
-ccompass_teleport_nodes (Nodes list for teleport on punch) string default:mese
-
-# If one of these nodes is at target, skip other checks and allow teleporting.
-# String list of node names separated by ','
-ccompass_nodes_over_target_allow (Nodes list for additional allowed nodes) string
-
-# If one of these nodes is at target, skip other checks and deny teleporting.
-# String list of node names separated by ','
-ccompass_nodes_over_target_deny (Nodes list for additional deny nodes) string
-
-# Drawtype of nodes over target that are considered safe. This will only be checked
-# checked after ccompass_nodes_over_target_allow and ccompass_nodes_over_target_deny.
-# String list of node names separated by ','
-ccompass_nodes_over_target_allow_drawtypes (Drawtypes of nodes allowed over target) string airlike,flowingliquid,liquid,plantlike,plantlike_rooted
-
-# By default ccompass will not teleport players into or over damaging nodes.
-# To allow this, change to true.
-ccompass_allow_damage_target (Enable to allow teleporting into damaging nodes) bool false
-
-# Maximum size of compass stacks. Only identical and same direction pointing compasses can be stacked.
-# Defaults to 1
-ccompass_stack_max (Sets maximum stack size) int 1 1 65535
-# Requires stack_max greater than 1. When true, allows a whole stack to be calibrated at the same time.
-ccompass_allow_using_stacks (Enable to allow callibrating stacks) bool false
-
-# When no players have active compasses, the mod enters an idle state and only checks for compasses at this interval, measured in seconds. This setting is meant to reduce the load on the server.
-ccompass_idle_interval (Time between checks when idling) float 1 0 10
-
 [Crafting]
 #When enabled, all recipes registered via the original minetest.register_craft
 #method will be automatically added to this mod's new crafting system as well
@@ -235,20 +190,7 @@ crafting_sort_alphabetically (Sort crafting output list alphabetically) bool fal
 #and crafting guide items that can be consulted anywhere are defined.
 crafting_show_guides (Show crafting guides) bool true
 
-[Crafting Bench]
-# The number of seconds between each operation of the crafting bench.
-crafting_bench_crafting_rate (Crafting rate) int 5 1 60
-
-[Cryopod]
-# Cryopod can be crafted.
-cryopod.craftable (Craftable Cryopod) bool true
-
-[HUD properties]
-death_compass_hud_x (Relative X coordinate of HUD) float 0.5
-death_compass_hud_y (Relative Y coordinate of HUD) float 0.9
-death_compass_hud_color (Color string for HUD) string FFFF00
-
-[Hotbar]
+[DreamBuilder Hotbar]
 # default hotbar size
 hotbar_size (Default hotbar size) int 16 1 32
 
@@ -303,11 +245,6 @@ hopper_eject_button (Eject items button) bool true
 
 #  The Minetest log level to use for inventory take/put actions
 hopper_inventory_log_level (Inventory log level) enum action none,action,info,verbose
-
-[Give Initial Stuff]
-#    If enabled, speciment implant will be given to new
-#    players.
-give_initial_stuff (Give initial items) bool true
 
 [Appearance]
 # Specifies how the value indicators (i.e. health, breah, etc.) look. There are 3 styles
@@ -429,7 +366,7 @@ hudbars_vmargin (Vertical distance between HUD bars) int 24 0
 # connection and experience performance problems.
 hudbars_tick (Default HUD bars update interval) float 0.1 0.0 4.0
 
-[Pedestal]
+[ItemFrames]
 # If false, the item will always just be dropped on the ground.
 itemframes.return_item (return placed item to the player's inventory on right-click) bool false
 
@@ -438,88 +375,68 @@ itemframes.log_actions (log player actions when using itemframes and pedestals) 
 
 itemframes.allow_rotate (Allow item rotation in protected areas) bool false
 
-[Leads]
-# The length a lead can reach before stretching, in metres.
-leads.lead_length (Lead length) float 8 1 16
+[mesecons]
 
-# The strength of a lead. The lower this number is, the more easily leads will break.
-leads.lead_strength (Lead strength) float 4 0 256
-
-# How to drop leads when broken.
-# drop: Drop the lead item.
-# give: Put the lead in the player's inventory.
-# auto: Matches the node drop behaviour of the game.
-leads.drop_mode (Item drop mode) enum auto drop,give,auto
-
-# If this is enabled, both leads will pull both ends equally.
-# Otherwise, only the follower will be pulled.
-leads.symmetrical (Symmetrical physics) bool false
+mesecon.resumetime (Startup delay) int 4 1 10
+mesecon.overheat_max (Device heat limit) int 20 1 100
+mesecon.cooldown_time (Device cooldown time) float 2.0 0.1 10.0
+mesecon.cooldown_granularity (Cooldown step length) float 0.5 0.0 1.0
 
 
-[Visuals]
+[mesecons_blinkyplant]
 
-# If this is enabled, lead textures will dynamically update to match the length of the lead.
-leads.dynamic_textures (Dynamic textures) bool true
-
-# If this is enabled, leads will have a lead-shaped selection box. Otherwise, the selection box will be a cube in the middle of the lead.
-# This requires a 5.7.0+ client.
-leads.rotate_selection_box (Long selection box) bool true
-
-# If this is enabled, leads will curve downwards instead of being straight.
-# This is purely aesthetic.
-leads.enable_slack (Enable visual slack) bool true
-
-# Displays messages in the chat console when failing to use a lead.
-leads.chat_messages (Show chat messages) bool false
+mesecon.blinky_plant_interval (Plant blinking interval) int 3 1 5
 
 
-[Protection and Ownership]
+[mesecons_detector]
 
-# Disallows adding and removing knots in protected areas.
-leads.respect_protection (Respect protection) bool true
-
-# Allows using leads on mobs with no owner.
-leads.allow_leash_unowned (Allow leashing unowned mobs) bool true
-
-# Allows using leads on mobs owned by other players.
-leads.allow_leash_owned_other (Allow leashing mobs owned by others) bool true
+mesecon.detector_radius (Player detector scanning radius) int 6 3 16
+mesecon.node_detector_distance_max (Node detector distance limit) int 10 1 16
 
 
-[Object Types]
+[mesecons_luacontroller]
 
-# Allows using leads on other players.
-leads.allow_leash_player (Allow leashing players) bool true
+mesecon.luacontroller_string_rep_max (string:rep result length limit) int 64000 1000 1000000
+mesecon.luacontroller_digiline_maxlen (Digiline message size limit) int 50000 1000 1000000
+mesecon.luacontroller_maxevents (Controller execution time limit) int 10000 1000 100000
+mesecon.luacontroller_memsize (Controller memory limit) int 100000 10000 1000000
 
-# Allows using leads on animals.
-leads.allow_leash_animal (Allow leashing animals) bool true
+# Use node timer for interrupts (runs in active blocks only).
+# IID is ignored and at most one interrupt may be queued if this setting is enabled.
+mesecon.luacontroller_lightweight_interrupts (Lightweight interrupts) bool false
 
-# Allows using leads on monsters.
-leads.allow_leash_monster (Allow leashing monsters) bool true
+# Behavior of print() inside a luacontroller. By default, this emits a message into actionstream.
+# Set it to noop if you wish to disable that behavior.
+mesecon.luacontroller_print_behavior (Behavior of print) enum log log,noop
 
-# Allows using leads on NPCs.
-leads.allow_leash_npc (Allow leashing NPCs) bool true
+[mesecons_mvps]
 
-# Allows using leads on vehicles.
-leads.allow_leash_vehicle (Allow leashing vehicles) bool true
+# In pre-existing world, MVPS may not be labelled with the owner.
+# Protection handling for them is configurable.
+# - normal: allow legacy MVPS to work in unprotected areas only
+# - compat: allow legacy MVPS to work everywhere
+# - ignore: allow all MVPS to work everywhere
+# - restrict: disallow legacy MVPS
+# Note that new unowned (e.g. machine-placed) MVPS are always
+# handled as in `normal` mode.
+mesecon.mvps_protection_mode (MVPS [movestones, pistons] protection handling) enum compat normal,compat,ignore,restrict
 
-# Allows using leads on miscellaneous entities.
-leads.allow_leash_other (Allow leashing other) bool true
+[mesecons_movestones]
+
+mesecon.movestone_speed (Speed) int 3 1 10
+mesecon.movestone_max_push (Max push) int 50 1 100
+mesecon.movestone_max_pull (Max pull) int 50 1 100
 
 
-[Advanced]
+[mesecons_pistons]
 
-# Allows using leads on all entities.
-# Leashing an unsupported entity may cause unexpected behaviour.
-# This overrides all other leashable settings.
-leads.allow_leash_all (Allow leashing any object) bool false
+mesecon.piston_max_push (Max push) int 15 1 100
+mesecon.piston_max_pull (Max pull) int 15 1 100
 
-# How hard leads pull entities.
-leads.pull_force (Pull force) float 15 1 1000
 
-# Prints verbose debugging information to the chat console.
-leads.debug (Debug mode) bool false
+[mesecons_pressureplates]
 
-[MESECONS]
+mesecon.pplate_interval (Check interval) float 0.1 0.1 1.0
 
 [Mob Core]
 #    Blocks mobs from spawning in protected areas
@@ -534,7 +451,7 @@ legacy_jump (Legacy node jumping. For pre-5.3 clients) bool false
 #    Mod used to set player animations (default for minetest game, mcl_player for MineClone 2)
 mount_mod (Mod used to set player animation) string default
 
-[BroodMother Lysrix]
+[Mobs]
 #    Enable setting so that Mobs Redo mobs can attack Creatura mobs
 mobs_attack_creatura (Attack Creatura Mobs) bool true
 
@@ -619,20 +536,22 @@ mob_pathfinding_max_jump (path max jump height) int 4
 # max drop height for pathfinding (default 6)
 mob_pathfinding_max_drop (path max drop height) int 6
 
-
-
 [Paleotest]
-#    Allows mobs to breed
-breeding (Breeding) bool true
-
-#    Allows large mobs to destroy blocks weaker than soil
-block_breaking (Block Breaking) bool false
-
-#    Allows Very large mobs to destroy blocks like cobble or iron.
-dinos_block_breaking (Dinos Block Breaking) bool true
-
-#    Allows creatures to appear naturally (Caution: too many creatures on less powerful PC = Lag)
+#    Allows creatures to appear naturally.
 creature_spawning (Creature Spawning) bool true
+
+[Mark's Tall Tales Pull Cart]
+# Cart pulling speed
+#
+# How fast you move while pulling a cart.
+cart_speed_multiplier (Cart pulling speed) float 0.7
+
+
+# The whole point of this mods is to encourage building infrastructure,
+# but if you'd rather not, this lets you avoid it.
+#
+# Retain your ability to jump and increse the carts step height.
+offroad_cart (Use carts without a road) bool false
 
 [Quartz]
 # Set this to true to allow usage of the stairsplus mod in moreblocks
@@ -643,16 +562,13 @@ enable_stairsplus (Enable more stairs) bool false
 
 enable_horizontal_pillar (Enable more pillar) bool true
 
-[Radiant Damage]
-radiant_damage_enable_heat_damage (Enable radiant heat damage) bool false
-radiant_damage_lava_damage (Damage dealt per second when standing directly adjacent to one lava node) int 8
-radiant_damage_fire_damage (Damage dealt per second when standing directly adjacent to one fire node) int 2
+[Real Suffocation]
+# How much damage is caused by “suffocation” by default, that is, running
+# out of breath while being inside solid blocks like dirt, gravel, sand,
+# etc. Like for drowning, damage is caused every 2 seconds.
+real_suffocation_damage (Suffocation damage) int 10 0
 
-radiant_damage_enable_mese_damage (Enable mese ore radiation damage) bool false
-radiant_damage_mese_interval (Number of seconds between mese radiation damage checks) int 5
-radiant_damage_mese_damage (Damage dealt per second when standing directly adjacent to one mese ore node) int 2
-
-[Sounds]
+[Sounds Redone]
 # This setting can increase how loud footsteps are.
 # Default is 0.1, which is a pretty average volume
 # for footsteps.
@@ -661,24 +577,20 @@ radiant_damage_mese_damage (Damage dealt per second when standing directly adjac
 # the larger the number, the louder the footsteps will be.
 footstep_vol (Footstep Volume) float 0.1
 
-[Subtitles]
-# Whether or not subtitles should be enabled by default on singleplayer.
-subtitles.default_enable_singleplayer (Enable subtitles by default on singleplayer) bool true
+[TPH Eating]
+# Play burping audio when finished eating
+tph_eating.burping (Enable Burping) bool true
 
-# Whether or not subtitles should be enabled by default on multiplayer.
-subtitles.default_enable_multiplayer (Enable subtitles by default on multiplayer) bool false
+# Have a random chance playing a burp or not (requires burping to be enabled)
+# 0(or any decimal less than 1) to 100 percent
+tph_eating.burp_chance (Burp Chance) float 100.0
 
-# If this is enabled, an introduction message will be shown to new players informing them that subtitles are available.
-# This has no effect on singleplayer.
-subtitles.show_introduction (Show introduction message) bool true
+# Permit any silly options added in mods that support Dynamic Input-Held Eating
+tph_eating.silly (Enable Supported Silly Stuff) bool false
 
-# If this is enabled, a subtitles button or tab will be shown on supported inventories.
-subtitles.inventory_integration (Enable inventory integration) bool true
-
-[Furniture]
-ts_furniture.enable_sitting (Enable sitting) bool true
-ts_furniture.globalstep (Enable globalstep) bool true
-ts_furniture.kneeling_bench (Enable kneeling benches) bool false
+# Show a wielded ItemStack entity when eating
+# Does not work in versions lower than 5.4.0
+tph_eating.eating_item_entity (Show Eating ItemStack) bool true
 
 [Vein Miner]
 # The maximum amount of nodes that can be mined at once
@@ -693,21 +605,9 @@ vein_miner_allow_trees (Allow mining trees) bool false
 # If true, allow vein mining any block. Overrides previous settings
 vein_miner_allow_all (Allow mining any node) bool false
 
-[WildLife]
-# This file contains settings of wildlife that can be changed in
-# minetest.conf
-
-#    Chance of spawning a mob when there are no other 
-#    mobs in active_block_range around player
-#    must be float from 0 to 1
-#    1 is always, 0 is never
-wildlife_spawn_chance (Spawn chance) float 0.3
-
-#    Base spawn chance is reduced by this factor
-#    for each mob within active_block_range
-#    must be float from 0 to 1
-#    greater number is greater reduction
-wildlife_spawn_reduction (Spawn chance reduction) float 0.2
+[Volumetric Lightning]
+#    Default volumetric lighting strength when no other has been set.
+volumetric_lighting_default_strength (Default volumetric lighting strength) float 0.1 0 1
 
 [X Bows]
 # Disabled per default due to inconsistent mob models scaling (visual_size). This will scale the arrows unproportionally and looks bad. If you have mobs with no scaling you can enable this setting.
@@ -716,19 +616,8 @@ x_bows_attach_arrows_to_entities (Attach arrows to entities) bool false
 # Shows caused damage number flying out from the hit object/player.
 x_bows_show_damage_numbers (Show damage caused) bool false
 
-
 # Shows 3d quiver in 3rd person view (3d armor, and some skins MODs supported - see optional dependencies)
 x_bows_show_3d_quiver (Show 3D Quiver) bool true
-
-[Extras]
-# If enabled, arrow training will be disabled.
-x_bows_extras_arrow_training_enabled (Arrow Training) bool true
-
-# If enabled, arrow teleport will be disabled.
-x_bows_extras_arrow_teleport_enabled (Arrow Teleport) bool true
-
-# If enabled, arrow lightning will be disabled.
-x_bows_extras_arrow_lightning_enabled (Arrow Lightning) bool true
 
 [Xcam]
 xcam_dutch_angle (Xcam Dutch Angle) bool false
@@ -737,6 +626,15 @@ xcam_photo_width (Xcam Photo Width) int 128 16 192
 xcam_render_distance (Xcam Render Distance) float 128.0 1.0 256.0
 xcam_supersampling_samples (Xcam Supersampling Samples) int 4 1 9
 
-[Hi, what are you doing here ?]
-# If Enable −·−· · ·−·· ·−  −· ·  ··−· ·− ·· −  ·−· ·· · −·  −·−· ·−−−−· · ··· −  ··− −· ·  −··· ·−·· ·− −−· ··− · ·−·−·− ·−·−·− ·−·−·−
-something_i_think (Something ???) bool false
+[Microphone]
+# Sets the default hotword when placing a microphone.
+# Default: "microphone"
+mesecons_microphone_default_hotword (Mesecons Microphone default hotword) string microphone
+
+# Range is determined by a cube with "range*2" sides centered on the player.
+# Default: 50
+mesecons_microphone_range (Mesecons Microphone maximum range) int 50
+
+[Hi]
+# Hi bro why are you here ?
+overseer_spawn_everywhere_on_the_map (-.. .. -..     -.-- --- ..-     .-. . .- .-.. .-.. -.--     - .... .. -. .-.     .. -     .-- --- ..- .-.. -..     .-- --- .-. .-.     ... . .     -.-- --- ..-     --- -.     .- .--. .-. .. .-..     .---- --..--     ..--- ----- ..--- .....     ..-. --- .-.     .. -     - ---     .-- --- .-. .-. .-.-.- .-.-.- .-.-.-     ..     .--. .-. --- -- .. ... . .-.-.- .-.-.- .-.-.- ) bool false

@@ -237,10 +237,10 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "rangedweapons:shell 12",
+	output = "rangedweapons:shell 24",
 	recipe = {
 		{"shooter:gunpowder", "default:steel_ingot", "shooter:gunpowder"},
-		{"paleotest:oil", "tnt:gunpowder", "paleotest:oil"},
+		{"group:oil", "tnt:gunpowder", "group:oil"},
 		{"default:steel_ingot", "x_bows:rock", "default:steel_ingot"},
 		{"default:steel_ingot", "tnt:gunpowder", "default:steel_ingot"},
 	}

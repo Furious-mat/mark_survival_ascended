@@ -2,6 +2,30 @@
 -- Sarcosuchus --
 -----------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local sarcosuchus_inv_size = 3 * 8
+local inv_sarcosuchus = {}
+inv_sarcosuchus.sarcosuchus_number = tonumber(storage:get("sarcosuchus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, sarcosuchus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -31,13 +55,27 @@ end
 local function sarcosuchus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:sarcosuchus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("sarcosuchus_" .. self.sarcosuchus_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 50 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -246,9 +284,37 @@ minetest.register_entity("paleotest:sarcosuchus", {
     max_hunger = 1500,
     defend_owner = true,
     imprint_tame = true,
-    targets = {},
+    targets = {
+    "paleotest:ankylosaurus",
+    "paleotest:diplodocus",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:triceratops",
+    "paleotest:carbonemys",
+    "paleotest:pteranodon",
+    "paleotest:tapejara",
+    "paleotest:castoroides",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:megaloceros",
+    "paleotest:mesopithecus",
+    "paleotest:ovis",
+    "paleotest:paraceratherium",
+    "paleotest:phiomia",
+    "paleotest:achatina",
+    "paleotest:dodo",
+    "paleotest:kairuku",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:unicorn"
+    },
     rivals = {},
-    follow = paleotest.global_prime_fish,
+    follow = paleotest.global_meat,
     drops = {
         {name = "paleotest:meat_raw", chance = 1, min = 20, max = 40},
         {name = "paleotest:raw_prime_meat", chance = 1, min = 6, max = 12},
@@ -257,23 +323,40 @@ minetest.register_entity("paleotest:sarcosuchus", {
     },
     timeout = 0,
     logic = sarcosuchus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = function(self, staticdata, dtime_s)
-        paleotest.on_activate(self, staticdata, dtime_s)
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.sarcosuchus_number = inv_sarcosuchus.sarcosuchus_number
+    inv_sarcosuchus.sarcosuchus_number = inv_sarcosuchus.sarcosuchus_number + 1
+    storage:set_int("sarcosuchus_number", inv_sarcosuchus.sarcosuchus_number)
+    local inv = minetest.create_detached_inventory("paleotest:sarcosuchus_" .. self.sarcosuchus_number, {})
+    inv:set_size("main", sarcosuchus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
         self.swim_timer = mobkit.recall(self, "swim_timer") or 40
         self.bone_goal = {}
         self.object:set_bone_position("Bone.007", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 180})
-    end,
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 60, true, true) then
             return
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:sarcosuchus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:sarcosuchus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         if clicker:get_wielded_item():get_name() == "paleotest:field_guide" then
             minetest.show_formspec(clicker:get_player_name(),
@@ -288,6 +371,15 @@ minetest.register_entity("paleotest:sarcosuchus", {
         if self.mood > 60 and self.isinliquid and not self.is_in_shallow then
             paleotest.set_order(self, clicker)
         end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:sarcosuchus_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:sarcosuchus_" .. self.sarcosuchus_number .. ";main;0,0;8,3;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:sarcosuchus_" .. self.sarcosuchus_number .. ";main]" ..
+            "listring[current_player;main]")
+        end
+        paleotest.set_order(self, clicker)
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
     end,
@@ -312,4 +404,9 @@ minetest.register_craftitem("paleotest:sarcosuchus_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_sarcosuchus_fg_female.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

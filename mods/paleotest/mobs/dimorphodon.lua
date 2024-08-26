@@ -2,6 +2,30 @@
 -- Dimorphodon --
 --------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local dimorphodon_inv_size = 1 * 3
+local inv_dimorphodon = {}
+inv_dimorphodon.dimorphodon_number = tonumber(storage:get("dimorphodon_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, dimorphodon_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function find_feeder(self)
     local pos = self.object:get_pos()
     local pos1 = {x = pos.x + 32, y = pos.y + 32, z = pos.z + 32}
@@ -32,6 +56,20 @@ end
 local function dimorphodon_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:dimorphodon_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("dimorphodon_" .. self.dimorphodon_number)
         mob_core.on_die(self)
         return
     end
@@ -151,7 +189,7 @@ minetest.register_entity("paleotest:dimorphodon", {
     -- Stats
     max_hp = 125,
     armor_groups = {fleshy = 100},
-    view_range = 20,
+    view_range = 64,
     reach = 3,
     damage = 23,
     knockback = 6,
@@ -169,17 +207,16 @@ minetest.register_entity("paleotest:dimorphodon", {
     obstacle_avoidance_range = 13,
     -- Visual
     collisionbox = {-0.3, -0.3, -0.3, 0.3, 0.5, 0.3},
-    visual_size = {x = 1.5, y = 1.5},
+    visual_size = {x = 5, y = 5},
     scale_stage1 = 0.25,
     scale_stage2 = 0.5,
     scale_stage3 = 0.75,
     makes_footstep_sound = true,
     visual = "mesh",
     mesh = "paleotest_dimorphodon.b3d",
-    female_textures = {"paleotest_dimorphodon.png"},
-    male_textures = {"paleotest_dimorphodon.png"},
-    child_textures = {"paleotest_dimorphodon.png"},
-    sleep_overlay = "paleotest_dimorphodon.png",
+    female_textures = {"paleotest_dimorphodon_female.png"},
+    male_textures = {"paleotest_dimorphodon_male.png"},
+    child_textures = {"paleotest_dimorphodon_child.png"},
     animation = {
         stand = {range = {x = 1, y = 60}, speed = 10, loop = true},
         walk = {range = {x = 70, y = 100}, speed = 15, loop = true},
@@ -187,6 +224,25 @@ minetest.register_entity("paleotest:dimorphodon", {
         takeoff = {range = {x = 160, y = 175}, speed = 20, loop = false},
         land = {range = {x = 175, y = 160}, speed = -10, loop = false},
         fly = {range = {x = 180, y = 210}, speed = 15, loop = true}
+    },
+    -- Sound
+    sounds = {
+        alter_child_pitch = true,
+        random = {
+            name = "paleotest_dimorphodon_idle",
+            gain = 0.6,
+            distance = 32
+        },
+        hurt = {
+            name = "paleotest_dimorphodon_hurt",
+            gain = 1.0,
+            distance = 16
+        },
+        death = {
+            name = "paleotest_dimorphodon_death",
+            gain = 1.0,
+            distance = 16
+        }
     },
     -- Basic
     physical = true,
@@ -206,12 +262,29 @@ minetest.register_entity("paleotest:dimorphodon", {
     timeout = 0,
     logic = dimorphodon_logic,
     on_step = paleotest.on_step,
-    get_staticdata = mobkit.statfunc,
-    on_activate = function(self, staticdata, dtime_s)
-        paleotest.on_activate(self, staticdata, dtime_s)
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.dimorphodon_number = inv_dimorphodon.dimorphodon_number
+    inv_dimorphodon.dimorphodon_number = inv_dimorphodon.dimorphodon_number + 1
+    storage:set_int("dimorphodon_number", inv_dimorphodon.dimorphodon_number)
+    local inv = minetest.create_detached_inventory("paleotest:dimorphodon_" .. self.dimorphodon_number, {})
+    inv:set_size("main", dimorphodon_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
         self.flight_timer = mobkit.recall(self, "flight_timer") or 1
         self.finding_feeder = mobkit.recall(self, "finding_feeder") or false
-    end,
+end,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 20, true, true) then
             return
@@ -226,8 +299,16 @@ minetest.register_entity("paleotest:dimorphodon", {
                 temper = "Reactive"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:dimorphodon_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:dimorphodon_" .. self.dimorphodon_number .. ";main;0,0;3,1;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:dimorphodon_" .. self.dimorphodon_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
@@ -258,4 +339,9 @@ minetest.register_craftitem("paleotest:dimorphodon_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_dimorphodon_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

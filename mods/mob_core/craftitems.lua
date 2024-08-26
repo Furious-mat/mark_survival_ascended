@@ -23,7 +23,7 @@ minetest.register_craftitem("mob_core:nametag", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mob_core:protection_gem",
-	recipe = {"overpowered:block","group:lock"}
+	recipe = {"overpowered:untreatedingot","overpowered:alpha_endboss_lock"}
 })
 
 if minetest.get_modpath("dye") and minetest.get_modpath("farming") then

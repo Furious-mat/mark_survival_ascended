@@ -135,7 +135,7 @@ minetest.register_node("mahogany:wood", {
 minetest.register_node("mahogany:leaves", {
 	description = S("Mahogany Leaves"),
 	drawtype = "allfaces_optional",
-	tiles = {"mahogany_leaves.png"},
+	tiles = {"default_jungleleaves_simple.png"},
 	paramtype = "light",
 	walkable = false,
 	waving = 1,
@@ -161,9 +161,9 @@ minetest.register_node("mahogany:creeper", {
 	walkable = true,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"mahogany_creeper.png"},
-	inventory_image = "mahogany_creeper.png",
-	wield_image = "mahogany_creeper.png",
+	tiles = {"mahogany_hanging_creeper.png"},
+	inventory_image = "mahogany_hanging_creeper.png",
+	wield_image = "mahogany_hanging_creeper.png",
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",
@@ -190,7 +190,7 @@ minetest.register_node("mahogany:flower_creeper", {
 		fixed = {-0.5, -0.5, 0.49, 0.5, 0.5, 0.5}
 	},
 	groups = {
-		snappy = 2, flammable = 3, oddly_breakable_by_hand = 3, choppy = 2, carpet = 1, attached_node = 2, falling_node = 1
+		snappy = 2, flammable = 3, oddly_breakable_by_hand = 3, choppy = 2, carpet = 1, attached_node = 2
 	},
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -201,9 +201,9 @@ minetest.register_node("mahogany:hanging_creeper", {
 	walkable = true,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"mahogany_hanging_creeper.png"},
-	inventory_image = "mahogany_hanging_creeper.png",
-	wield_image = "mahogany_hanging_creeper.png",
+	tiles = {"mahogany_creeper.png"},
+	inventory_image = "mahogany_creeper.png",
+	wield_image = "mahogany_creeper.png",
 	use_texture_alpha = "clip",
 	node_box = {
 		type = "fixed",

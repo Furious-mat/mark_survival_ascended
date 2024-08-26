@@ -315,13 +315,16 @@ dna_cultivator.register_recipe("paleotest:dna_arthropluera",
                                "paleotest:egg_arthropluera")
 
 dna_cultivator.register_recipe("paleotest:dna_baryonyx",
-							   "paleotest:egg_baryonyx")
+			       "paleotest:egg_baryonyx")
 
 dna_cultivator.register_recipe("paleotest:dna_beelzebufo",
                                "paleotest:egg_beelzebufo")
 
 dna_cultivator.register_recipe("paleotest:dna_brachiosaurus",
-							   "paleotest:egg_brachiosaurus")
+			       "paleotest:egg_brachiosaurus")
+			       
+dna_cultivator.register_recipe("paleotest:dna_brontosaurus",
+			       "paleotest:egg_brontosaurus")
 
 dna_cultivator.register_recipe("paleotest:dna_carbonemys",
                                "paleotest:egg_carbonemys")
@@ -415,6 +418,9 @@ dna_cultivator.register_recipe("paleotest:dna_spinosaurus",
 
 dna_cultivator.register_recipe("paleotest:dna_stegosaurus",
                                "paleotest:egg_stegosaurus")
+                               
+dna_cultivator.register_recipe("paleotest:dna_tapejara",
+                               "paleotest:egg_tapejara")
 
 dna_cultivator.register_recipe("paleotest:dna_terror_bird",
                                "paleotest:egg_terror_bird")

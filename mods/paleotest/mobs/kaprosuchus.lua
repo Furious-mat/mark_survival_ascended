@@ -2,6 +2,30 @@
 -- Kaprosuchus --
 -----------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local kaprosuchus_inv_size = 3 * 8
+local inv_kaprosuchus = {}
+inv_kaprosuchus.kaprosuchus_number = tonumber(storage:get("kaprosuchus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, kaprosuchus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -31,6 +55,20 @@ end
 local function kaprosuchus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:kaprosuchus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("kaprosuchus_" .. self.kaprosuchus_number)
         mob_core.on_die(self)
         return
     end
@@ -229,7 +267,7 @@ minetest.register_entity("paleotest:kaprosuchus", {
             distance = 16
         },
         death = {
-            name = "paleotest_kaprosuchus_idle",
+            name = "paleotest_kaprosuchus_death",
             gain = 1.0,
             distance = 16
         }
@@ -244,7 +282,35 @@ minetest.register_entity("paleotest:kaprosuchus", {
     max_hunger = 1200,
     defend_owner = true,
     imprint_tame = true,
-    targets = {},
+    targets = {
+    "paleotest:ankylosaurus",
+    "paleotest:diplodocus",
+    "paleotest:gallimimus",
+    "paleotest:iguanodon",
+    "paleotest:oviraptor",
+    "paleotest:pachycephalosaurus",
+    "paleotest:pachyrhinosaurus",
+    "paleotest:parasaurolophus",
+    "paleotest:triceratops",
+    "paleotest:carbonemys",
+    "paleotest:pteranodon",
+    "paleotest:tapejara",
+    "paleotest:castoroides",
+    "paleotest:doedicurus",
+    "paleotest:equus",
+    "paleotest:gigantopithecus",
+    "paleotest:megaloceros",
+    "paleotest:mesopithecus",
+    "paleotest:ovis",
+    "paleotest:paraceratherium",
+    "paleotest:phiomia",
+    "paleotest:achatina",
+    "paleotest:dodo",
+    "paleotest:kairuku",
+    "paleotest:lystrosaurus",
+    "paleotest:moschops",
+    "paleotest:unicorn"
+    },
     rivals = {},
     follow = paleotest.global_meat,
     drops = {
@@ -253,13 +319,30 @@ minetest.register_entity("paleotest:kaprosuchus", {
     },
     timeout = 0,
     logic = kaprosuchus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = function(self, staticdata, dtime_s)
-        paleotest.on_activate(self, staticdata, dtime_s)
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.kaprosuchus_number = inv_kaprosuchus.kaprosuchus_number
+    inv_kaprosuchus.kaprosuchus_number = inv_kaprosuchus.kaprosuchus_number + 1
+    storage:set_int("kaprosuchus_number", inv_kaprosuchus.kaprosuchus_number)
+    local inv = minetest.create_detached_inventory("paleotest:kaprosuchus_" .. self.kaprosuchus_number, {})
+    inv:set_size("main", kaprosuchus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
         self.swim_timer = mobkit.recall(self, "swim_timer") or 40
         self.bone_goal = {}
         self.object:set_bone_position("Bone.007", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 180})
-    end,
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 60, true, true) then
@@ -275,11 +358,19 @@ minetest.register_entity("paleotest:kaprosuchus", {
                 temper = "Patient"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:kaprosuchus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:kaprosuchus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:kaprosuchus_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:kaprosuchus_" .. self.kaprosuchus_number .. ";main;0,0;8,3;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:kaprosuchus_" .. self.kaprosuchus_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
@@ -306,4 +397,9 @@ minetest.register_craftitem("paleotest:kaprosuchus_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_kaprosuchus_fg_female.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

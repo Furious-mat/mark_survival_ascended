@@ -2,6 +2,30 @@
 -- Therizinosaur --
 -------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local therizinosaurus_inv_size = 5 * 8
+local inv_therizinosaurus = {}
+inv_therizinosaurus.therizinosaurus_number = tonumber(storage:get("therizinosaurus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, therizinosaurus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -31,21 +55,35 @@ end
 local function therizinosaur_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:therizinosaur_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("therizinosaur_" .. self.therizinosaurus_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 50 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
 
     if mobkit.timer(self, 1) then
 
-		mob_core.random_drop(self, 900, 1800, "paleotest:medium_animal_poop")
-
+        mob_core.random_drop(self, 900, 1800, "paleotest:medium_animal_poop")
+        
         if prty < 20 then
             if self.driver then
                 mob_core.hq_mount_logic(self, 20)
@@ -148,30 +186,30 @@ minetest.register_entity("paleotest:therizinosaur", {
     -- Stats
     max_hp = 870,
     armor_groups = {fleshy = 80},
-    view_range = 10,
+    view_range = 20,
     reach = 5,
     damage = 52,
     knockback = 8,
     lung_capacity = 40,
     -- Movement & Physics
-    max_speed = 8,
+    max_speed = 5,
     stepheight = 1.26,
     jump_height = 1.26,
     max_fall = 3,
     buoyancy = 0.25,
     springiness = 0,
     -- Visual
-    collisionbox = {-1.3, -1.75, -1.3, 1.3, 0.95, 1.3},
-    visual_size = {x = 3, y = 3},
+    collisionbox = {-1.3, 0, -1.3, 1.3, 0.95, 1.3},
+    visual_size = {x = 30, y = 30},
     scale_stage1 = 0.25,
     scale_stage2 = 0.5,
     scale_stage3 = 0.75,
     makes_footstep_sound = true,
     visual = "mesh",
-    mesh = "paleotest_therizinosaur.obj",
-    female_textures = {"paleotest_metasequoia_wood.png"},
-    male_textures = {"paleotest_metasequoia_wood.png"},
-    child_textures = {"paleotest_metasequoia_wood.png"},
+    mesh = "paleotest_therizinosaur.b3d",
+    female_textures = {"paleotest_therizinosaur_female.png"},
+    male_textures = {"paleotest_therizinosaur_male.png"},
+    child_textures = {"paleotest_therizinosaur_child.png"},
     animation = {
         stand = {range = {x = 1, y = 59}, speed = 15, loop = true},
         walk = {range = {x = 70, y = 100}, speed = 20, loop = true},
@@ -182,30 +220,30 @@ minetest.register_entity("paleotest:therizinosaur", {
     },
     -- Mount
     driver_scale = {x = 0.0325, y = 0.0325},
-    driver_attach_at = {x = 0, y = 0.500, z = 0},
-    driver_eye_offset = {{x = 0, y = 20, z = 5}, {x = 0, y = 45, z = 55}},
+    driver_attach_at = {x = 0, y = 1, z = 0},
+    driver_eye_offset = {{x = 0, y = 45, z = 5}, {x = 0, y = 45, z = 55}},
     max_speed_forward = 8,
     max_speed_reverse = 4,
     -- Sound
     sounds = {
         alter_child_pitch = true,
         random = {
-            name = "paleotest_titanosaur",
+            name = "paleotest_therizinosaur_idle",
             gain = 1.0,
             distance = 16
         },
         roar = {
-            name = "Therizinosound",
+            name = "paleotest_therizinosaur_roar",
             gain = 1.0,
             distance = 32
         },
         hurt = {
-            name = "Therizinosound",
+            name = "paleotest_therizinosaur_hurt",
             gain = 1.0,
             distance = 16
         },
         death = {
-            name = "paleotest_therizinosaur_claws_death",
+            name = "paleotest_therizinosaur_death",
             gain = 1.0,
             distance = 16
         }
@@ -217,7 +255,7 @@ minetest.register_entity("paleotest:therizinosaur", {
     needs_enrichment = true,
     live_birth = false,
     max_hunger = 3000,
-    punch_cooldown = 1,
+    punch_cooldown = 0.2,
     defend_owner = true,
     imprint_tame = true,
     targets = {},
@@ -232,11 +270,30 @@ minetest.register_entity("paleotest:therizinosaur", {
     },
     timeout = 0,
     logic = therizinosaur_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
     on_step = paleotest.on_step,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.therizinosaurus_number = inv_therizinosaurus.therizinosaurus_number
+    inv_therizinosaurus.therizinosaurus_number = inv_therizinosaurus.therizinosaurus_number + 1
+    storage:set_int("therizinosaurus_number", inv_therizinosaurus.therizinosaurus_number)
+    local inv = minetest.create_detached_inventory("paleotest:therizinosaur_" .. self.therizinosaurus_number, {})
+    inv:set_size("main", therizinosaurus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_rightclick = function(self, clicker)
-        if paleotest.feed_tame(self, clicker, 105, true, true) then
+        if paleotest.feed_tame(self, clicker, 80, true, true) then
             return
         end
         paleotest.imprint_tame(self, clicker)
@@ -244,21 +301,30 @@ minetest.register_entity("paleotest:therizinosaur", {
             minetest.show_formspec(clicker:get_player_name(),
                                    "paleotest:therizinosaur_guide",
                                    paleotest.register_fg_entry(self, {
-                female_image = "paleotest_therizinosaur_fg.png",
-                male_image = "paleotest_therizinosaur_fg.png",
-                diet = "Carnivore",
-                temper = "Aggressive"
+                female_image = "paleotest_therizinosaur_male_fg.png",
+                male_image = "paleotest_therizinosaur_female_fg.png",
+                diet = "Herbivore",
+                temper = "Territorial"
             }))
+        end
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         if clicker:get_wielded_item():get_name() == "paleotest:therizinosaur_saddle" then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
-        end
         if self.mood > 50 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
+        
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:therizinosaur_inv",
+            "size[8,9]" ..
+            "list[detached:paleotest:therizinosaur_" .. self.therizinosaurus_number .. ";main;0,0;8,5;]" ..
+            "list[current_player;main;0,6;8,3;]" ..
+            "listring[detached:paleotest:therizinosaur_" .. self.therizinosaurus_number .. ";main]" ..
+            "listring[current_player;main]")
+        end
     end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
@@ -271,14 +337,19 @@ minetest.register_entity("paleotest:therizinosaur", {
             end
             mob_core.on_punch_retaliate(self, puncher, false, false)
         end
-    end
+    end  
 })
 
 mob_core.register_spawn_egg("paleotest:therizinosaur", "60544dcc", "453e39d9")
 
 minetest.register_craftitem("paleotest:therizinosaur_dossier", {
-	description = "Therizinosaur Dossier",
+	description = "Therizinosaurus Dossier",
 	stack_max= 1,
-	inventory_image = "paleotest_therizinosaur_fg.png",
+	inventory_image = "paleotest_therizinosaur_male_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 500)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

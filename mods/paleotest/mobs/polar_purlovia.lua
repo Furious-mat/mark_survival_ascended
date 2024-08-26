@@ -6,10 +6,14 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:dire_wolf" and
+            name ~= "paleotest:polar_bear" and
+            name ~= "paleotest:onyc" and
+            name ~= "paleotest:yeti" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
-                height < 2 then
+                height < 3.5 then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
                     table.insert(self.targets, name)
@@ -133,7 +137,7 @@ minetest.register_entity("paleotest:polar_purlovia", {
     max_hp = 550,
     armor_groups = {fleshy = 100},
     view_range = 50,
-    reach = 5,
+    reach = 1,
     damage = 64,
     knockback = 4,
     lung_capacity = 30,
@@ -142,7 +146,7 @@ minetest.register_entity("paleotest:polar_purlovia", {
     stepheight = 1.26,
     jump_height = 1.26,
     max_fall = 8,
-    buoyancy = 0.25,
+    buoyancy = 10,
     springiness = 0,
     -- Visual
 	visual_size = {x=9, y=9},
@@ -224,6 +228,9 @@ minetest.register_entity("paleotest:polar_purlovia", {
                 diet = "Carnivore",
                 temper = "Patient"
             }))
+        end
+                if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         paleotest.set_order(self, clicker)
         mob_core.protect(self, clicker, true)

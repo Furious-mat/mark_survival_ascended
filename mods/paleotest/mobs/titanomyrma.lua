@@ -6,10 +6,25 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:achatina" and
+            name ~= "paleotest:pulmonoscorpius" and
+            name ~= "paleotest:araneo" and
+            name ~= "paleotest:arthropluera" and
+            name ~= "paleotest:dilophosaur" and
+            name ~= "paleotest:eurypterid" and
+            name ~= "paleotest:leech" and
+            name ~= "paleotest:leech_diseased" and
+            name ~= "paleotest:megalania" and
+            name ~= "paleotest:meganeura" and
+            name ~= "paleotest:onyc" and
+            name ~= "paleotest:megalosaurus" and
+            name ~= "paleotest:titanoboa" and
+            name ~= "paleotest:titanomyrma_soldier" and
+            name ~= "paleotest:dung_beetle" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
-                height < 2 then
+                height < 3.5 then
                 if entity.object:get_armor_groups() and
                     entity.object:get_armor_groups().fleshy then
                     table.insert(self.targets, name)
@@ -17,8 +32,7 @@ local function set_mob_tables(self)
                     table.insert(self.targets, name)
                 end
                 if entity.targets and
-                    paleotest.find_string(entity.targets, self.name) and
-                    not not paleotest.find_string(self.predators, name) then
+                    paleotest.find_string(entity.targets, self.name) then
                     if entity.object:get_armor_groups() and
                         entity.object:get_armor_groups().fleshy then
                         table.insert(self.predators, name)
@@ -124,6 +138,31 @@ local function titanomyrma_drone_logic(self)
         if mobkit.is_queue_empty_high(self) then
             mob_core.hq_roam(self, 0)
         end
+    end
+    
+    local megatherium_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 5)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:megatherium" then
+            megatherium_nearby = true
+            break
+        end
+    end
+
+    if megatherium_nearby then
+        self.hp = 0
+    end
+    
+    local beelzebufo_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 5)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:beelzebufo" then
+            beelzebufo_nearby = true
+            break
+        end
+    end
+
+    if beelzebufo_nearby then
+        self.hp = 0
+        mob_core.random_loot_drop(self, 1, 1, "paleotest:cementing_paste")
     end
 end
 
@@ -379,6 +418,31 @@ local function titanomyrma_soldier_logic(self)
             end
         end
     end
+    
+    local megatherium_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 5)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:megatherium" then
+            megatherium_nearby = true
+            break
+        end
+    end
+
+    if megatherium_nearby then
+        self.hp = 0
+    end
+    
+    local beelzebufo_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 5)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:beelzebufo" then
+            beelzebufo_nearby = true
+            break
+        end
+    end
+
+    if beelzebufo_nearby then
+        self.hp = 0
+        mob_core.random_loot_drop(self, 1, 1, "paleotest:cementing_paste")
+    end
 end
 
 minetest.register_entity("paleotest:titanomyrma_soldier", {
@@ -505,4 +569,9 @@ minetest.register_craftitem("paleotest:titanomyrma_dossier", {
 	stack_max= 1,
 	inventory_image = "paleotest_titanomyrma_fg.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

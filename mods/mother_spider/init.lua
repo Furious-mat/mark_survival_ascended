@@ -23,12 +23,11 @@ mobs:register_mob("mother_spider:broodmother_lysrix", {
 	textures = {
 		{"spider_mother_boss.png"},
 	},
-	--blood_texture = " ",
 	makes_footstep_sound = true,
 	sounds = {
-		random = "SpiderLsound",
-		death = "SpiderLsound",
-		shoot_attack = "paleotest_araneo_idle.ogg",
+		random = "broodmother",
+		death = "paleotest_araneo_idle",
+		shoot_attack = "shoot_attack",
 	},
 	view_range = 64,
 	walk_velocity = 1,
@@ -88,7 +87,11 @@ mobs:register_arrow("mother_spider:cobweb_arrow", {
 		-- add bloco de teias para segurar palyer
 		local pp = player:get_pos()
 		minetest.set_node(pp, {name = "paleotest:spiderweb"})
-		
+                local pos = self.object:get_pos()
+                minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:araneo")
+                minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:araneo")
+                minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "paleotest:araneo")
+                
 	end,
 
 	hit_mob = function(self, player)
@@ -162,9 +165,9 @@ mobs:register_mob("mother_spider:broodmother_lysrix_beta", {
 	--blood_texture = " ",
 	makes_footstep_sound = true,
 	sounds = {
-		random = "SpiderLsound",
-		death = "SpiderLsound",
-		shoot_attack = "paleotest_araneo_idle.ogg",
+		random = "broodmother",
+		death = "paleotest_araneo_idle",
+		shoot_attack = "shoot_attack",
 	},
 	view_range = 64,
 	walk_velocity = 1,
@@ -263,9 +266,9 @@ mobs:register_mob("mother_spider:broodmother_lysrix_alpha", {
 	--blood_texture = " ",
 	makes_footstep_sound = true,
 	sounds = {
-		random = "SpiderLsound",
-		death = "SpiderLsound",
-		shoot_attack = "paleotest_araneo_idle.ogg",
+		random = "broodmother",
+		death = "paleotest_araneo_idle",
+		shoot_attack = "shoot_attack",
 	},
 	view_range = 64,
 	walk_velocity = 1,

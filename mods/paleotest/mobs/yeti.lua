@@ -6,7 +6,11 @@ local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
         if name ~= self.name and
-            paleotest.find_string(paleotest.mobkit_mobs, name) then
+            paleotest.find_string(paleotest.mobkit_mobs, name) and
+            name ~= "paleotest:dire_wolf" and
+            name ~= "paleotest:polar_purlovia" and
+            name ~= "paleotest:onyc" and
+            name ~= "paleotest:polar_bear" then
             local height = entity.height
             if not paleotest.find_string(self.targets, name) and height and
                 height < 3.5 then
@@ -142,7 +146,7 @@ minetest.register_entity("paleotest:yeti", {
     max_hp = 2000,
     armor_groups = {fleshy = 80},
     view_range = 32,
-    reach = 5,
+    reach = 3,
     damage = 55,
     knockback = 8,
     lung_capacity = 40,
@@ -151,7 +155,7 @@ minetest.register_entity("paleotest:yeti", {
     stepheight = 1.26,
     jump_height = 1.26,
     max_fall = 3,
-    buoyancy = 0.25,
+    buoyancy = 10,
     springiness = 0,
     -- Visual
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.5, 0.4},
@@ -223,6 +227,9 @@ minetest.register_entity("paleotest:yeti", {
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 65, false, false) then
             return
+        end
+                if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
         end
         paleotest.imprint_tame(self, clicker)
         if clicker:get_wielded_item():get_name() == "paleotest:field_guide" then

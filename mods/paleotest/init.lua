@@ -8,6 +8,7 @@ paleotest.global_plants = {}
 paleotest.global_liquid = {}
 paleotest.global_hand = {""}
 paleotest.global_pearl = {"paleotest:black_pearl"}
+paleotest.global_nest = {"paleotest:gigantoraptor_nest"}
 paleotest.global_saddle = {"paleotest:titanosaur_saddle"}
 paleotest.global_broth_of_enlightenment = {"paleotest:broth_of_enlightenment"}
 paleotest.global_feed = {"paleotest:feed"}
@@ -25,7 +26,9 @@ paleotest.global_beer = {"wine:glass_wheat_beer","wine:glass_beer"}
 paleotest.global_spoiled = {"paleotest:spoiled_meat"}
 paleotest.global_chitin = {"paleotest:chitin"}
 paleotest.global_cake = {"paleotest:sweet_vegetable_cake"}
+paleotest.global_moschops = {"paleotest:sap","paleotest:leech_blood","paleotest:organic_polymer"}
 paleotest.global_herbivore = {"dfarm:carrot","crops:green_bean","crops:potato","crops:corn_cob","dfarm:potato","dfarm:seed_potato","dfarm:seed_carrot","farming:tintoberry","farming:amarberry","farming:azulberry","farming:mejoberry","farming:cianberry","farming:verdberry","farming:magenberry"}
+paleotest.global_hemogoblin_cocktail = {"paleotest:hemogoblin_cocktail"}
 
 minetest.register_on_mods_loaded(function()
 	-- Entities
@@ -168,9 +171,11 @@ dofile(path.."/mobs/allosaurus.lua")
 dofile(path.."/mobs/ankylosaurus.lua")
 dofile(path.."/mobs/archaeopteryx.lua")
 dofile(path.."/mobs/baryonyx.lua")
-dofile(path.."/mobs/brachiosaurus.lua")
+dofile(path.."/mobs/brachiosaurus.lua") -- (ARK Additions)
+dofile(path.."/mobs/brontosaurus.lua")
 dofile(path.."/mobs/carcharodontosaurus.lua")
 dofile(path.."/mobs/carnotaurus.lua")
+dofile(path.."/mobs/ceratosaurus.lua")
 dofile(path.."/mobs/compy.lua")
 dofile(path.."/mobs/diplodocus.lua")
 dofile(path.."/mobs/dilophosaur.lua")
@@ -184,7 +189,7 @@ dofile(path.."/mobs/oviraptor.lua")
 dofile(path.."/mobs/pachycephalosaurus.lua")
 dofile(path.."/mobs/pachyrhinosaurus.lua")
 dofile(path.."/mobs/parasaurolophus.lua")
-dofile(path.."/mobs/pegomastax.lua") -- Future release (Pegomastax, 3D models required !)
+dofile(path.."/mobs/pegomastax.lua")
 dofile(path.."/mobs/stegosaurus.lua")
 dofile(path.."/mobs/spinosaurus.lua")
 dofile(path.."/mobs/therizinosaur.lua")
@@ -194,9 +199,11 @@ dofile(path.."/mobs/troodon.lua")
 dofile(path.."/mobs/tyrannosaurus.lua")
 dofile(path.."/mobs/velociraptor.lua")
 dofile(path.."/mobs/yutyrannus.lua")
+dofile(path.."/mobs/gigantoraptor.lua")
 
 -- Reptiles
 dofile(path.."/mobs/carbonemys.lua")
+dofile(path.."/mobs/deinosuchus.lua")
 dofile(path.."/mobs/dimorphodon.lua")
 dofile(path.."/mobs/ichthyosaurus.lua")
 dofile(path.."/mobs/kaprosuchus.lua")
@@ -210,6 +217,7 @@ dofile(path.."/mobs/titanoboa.lua")
 
 -- Aquatic Mobs
 dofile(path.."/mobs/angler.lua")
+dofile(path.."/mobs/anomalocaris.lua") --The power of Minetest... NOT TO HAVE A $5 MOD!!!
 dofile(path.."/mobs/coelacanth.lua")
 dofile(path.."/mobs/electrophorus.lua")
 dofile(path.."/mobs/leedsichthys.lua")
@@ -220,6 +228,7 @@ dofile(path.."/mobs/piranha.lua")
 dofile(path.."/mobs/sabertooth_salmon.lua")
 dofile(path.."/mobs/mosasaurus.lua")
 dofile(path.."/mobs/plesiosaurus.lua")
+dofile(path.."/mobs/xiphactinus.lua")
 
 -- Mammals
 dofile(path.."/mobs/basilosaurus.lua")
@@ -235,12 +244,12 @@ dofile(path.."/mobs/hyaenodon.lua")
 dofile(path.."/mobs/elasmotherium.lua")
 dofile(path.."/mobs/mammoth.lua")
 dofile(path.."/mobs/megaloceros.lua")
-dofile(path.."/mobs/megatherium.lua") -- Future release (Megatherium, 3D models required !)
+dofile(path.."/mobs/megatherium.lua")
 dofile(path.."/mobs/mesopithecus.lua")
 dofile(path.."/mobs/onyc.lua")
 dofile(path.."/mobs/otter.lua")
 dofile(path.."/mobs/ovis.lua")
-dofile(path.."/mobs/deinotherium.lua") -- (Paracer)
+dofile(path.."/mobs/paraceratherium.lua")
 dofile(path.."/mobs/phiomia.lua")
 dofile(path.."/mobs/procoptodon.lua")
 dofile(path.."/mobs/smilodon.lua")
@@ -256,11 +265,9 @@ dofile(path.."/mobs/dung_beetle.lua")
 dofile(path.."/mobs/eurypterid.lua")
 dofile(path.."/mobs/giant_bee.lua")
 dofile(path.."/mobs/leech.lua")
-dofile(path.."/mobs/leech_diseased.lua")
 dofile(path.."/mobs/meganeura.lua")
 dofile(path.."/mobs/pulmonoscorpius.lua")
 dofile(path.."/mobs/rhyniognatha.lua")
-dofile(path.."/mobs/tamable_rhyniognatha.lua")
 dofile(path.."/mobs/titanomyrma.lua")
 dofile(path.."/mobs/trilobite.lua")
 dofile(path.."/mobs/tusoteuthis.lua")
@@ -276,12 +283,12 @@ dofile(path.."/mobs/terror_bird.lua")
 
 -- Amphibians
 dofile(path.."/mobs/beelzebufo.lua")
-dofile(path.."/mobs/diplocaulus.lua") -- Future release (Diplocaulus, 3D models required !)
+dofile(path.."/mobs/diplocaulus.lua")
 
 -- Synapsids
 dofile(path.."/mobs/dimetrodon.lua")
 dofile(path.."/mobs/lystrosaurus.lua")
-dofile(path.."/mobs/moschops.lua") -- Future release (Moschops, 3D models required !)
+dofile(path.."/mobs/moschops.lua")
 dofile(path.."/mobs/purlovia.lua")
 
 -- Fantasy Creature

@@ -101,7 +101,7 @@ minetest.register_craft({
     recipe = {
         {"default:steel_ingot", "wool:black", "default:steel_ingot"},
         {"default:steel_ingot", "wool:black", "default:steel_ingot"},
-        {"default:steel_ingot", "group:mesecon_conductor_craftable", "default:steel_ingot"},
+        {"default:steel_ingot", "paleotest:electronics", "default:steel_ingot"},
     }, 
 })
 print("[OK] Mesecon Microphone")

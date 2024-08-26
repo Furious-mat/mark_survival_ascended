@@ -2,6 +2,30 @@
 -- Brachiosaurus --
 -------------------
 
+local modname = minetest.get_current_modname()
+local storage = minetest.get_mod_storage()
+
+local brachiosaurus_inv_size = 20 * 8
+local inv_brachiosaurus = {}
+inv_brachiosaurus.brachiosaurus_number = tonumber(storage:get("brachiosaurus_number") or 1)
+
+local function serialize_inventory(inv)
+    local items = {}
+    for _, item in ipairs(inv:get_list("main")) do
+        if item then
+            table.insert(items, item:to_string())
+        end
+    end
+    return items
+end
+
+local function deserialize_inventory(inv, data)
+    local items = data
+    for i = 0, brachiosaurus_inv_size do
+        inv:set_stack("main", i - 0, items[i] or "")
+    end
+end
+
 local function set_mob_tables(self)
     for _, entity in pairs(minetest.luaentities) do
         local name = entity.name
@@ -30,13 +54,27 @@ end
 local function brachiosaurus_logic(self)
 
     if self.hp <= 0 then
+        local inv_content = self.inv:get_list("main")
+        local pos = self.object:get_pos()
+
+        for _, item in pairs(inv_content) do
+            minetest.add_item(pos, item)
+        end
+        if self.owner then
+            local player = minetest.get_player_by_name(self.owner)
+            if player then
+                minetest.close_formspec(player:get_player_name(), "paleotest:brachiosaurus_inv")
+            end
+        end
+        
+        minetest.remove_detached_inventory("brachiosaurus_" .. self.brachiosaurus_number)
         mob_core.on_die(self)
         return
     end
 
     set_mob_tables(self)
 
-    if self.mood < 25 then paleotest.block_breaking(self) end
+    if not self.tamed then paleotest.block_breaking(self) end
 
     local prty = mobkit.get_queue_priority(self)
     local player = mobkit.get_nearby_player(self)
@@ -217,8 +255,27 @@ minetest.register_entity("paleotest:brachiosaurus", {
     },
     timeout = 0,
     logic = brachiosaurus_logic,
-    get_staticdata = mobkit.statfunc,
-    on_activate = paleotest.on_activate,
+get_staticdata = function(self)
+    local mob_data = mobkit.statfunc(self)
+    local inv_data = serialize_inventory(self.inv)
+    return minetest.serialize({
+        mob = mob_data,
+        inventory = inv_data,
+    })
+end,
+on_activate = function(self, staticdata, dtime_s)
+    local data = minetest.deserialize(staticdata) or {}
+    paleotest.on_activate(self, data.mob or "", dtime_s)
+    self.brachiosaurus_number = inv_brachiosaurus.brachiosaurus_number
+    inv_brachiosaurus.brachiosaurus_number = inv_brachiosaurus.brachiosaurus_number + 1
+    storage:set_int("brachiosaurus_number", inv_brachiosaurus.brachiosaurus_number)
+    local inv = minetest.create_detached_inventory("paleotest:brachiosaurus_" .. self.brachiosaurus_number, {})
+    inv:set_size("main", brachiosaurus_inv_size)
+    self.inv = inv
+    if data.inventory then
+        deserialize_inventory(inv, data.inventory)
+    end
+end,
     on_step = paleotest.on_step,
     on_rightclick = function(self, clicker)
         if paleotest.feed_tame(self, clicker, 160, true, true) then
@@ -234,16 +291,24 @@ minetest.register_entity("paleotest:brachiosaurus", {
                 temper = "Docile"
             }))
         end
-        if clicker:get_wielded_item():get_name() == "paleotest:brachiosaurus_saddle" then
+        if clicker:get_wielded_item():get_name() == "paleotest:brachiosaurus_saddle" and clicker:get_player_name() == self.owner then
             mob_core.mount(self, clicker)
         end
-        if clicker:get_wielded_item():get_name() == "cryopod:cryopod" then
-        cryopod.capture_with_cryopod(self, clicker)
+        if clicker:get_wielded_item():get_name() == "msa_cryopod:cryopod" then
+        msa_cryopod.capture_with_cryopod(self, clicker)
+        end
+        if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
+        minetest.show_formspec(clicker:get_player_name(), "paleotest:brachiosaurus_inv",
+            "size[30,30]" ..
+            "list[detached:paleotest:brachiosaurus_" .. self.brachiosaurus_number .. ";main;0,0;8,20;]" ..
+            "list[current_player;main;0,20;9,4;]" ..
+            "listring[detached:paleotest:brachiosaurus_" .. self.brachiosaurus_number .. ";main]" ..
+            "listring[current_player;main]")
         end
         if self.mood > 25 then paleotest.set_order(self, clicker) end
         mob_core.protect(self, clicker, true)
         mob_core.nametag(self, clicker)
-    end,
+  end,
     on_punch = function(self, puncher, _, tool_capabilities, dir)
         if puncher:get_player_control().sneak == true then
             paleotest.set_attack(self, puncher)
@@ -260,9 +325,14 @@ minetest.register_entity("paleotest:brachiosaurus", {
 
 mob_core.register_spawn_egg("paleotest:brachiosaurus", "473f33cc", "393225d9")
 
-minetest.register_craftitem("paleotest:brachiosaurus_dossier", {
-	description = "Brachiosaurus Dossier",
+minetest.register_craftitem("paleotest:brontosaurus_dossier", {
+	description = "Brontosaurus Dossier",
 	stack_max= 1,
-	inventory_image = "paleotest_brachiosaurus_fg_male.png",
+	inventory_image = "paleotest_spawn_egg_base.png",
 	groups = {dossier = 1},
+	on_use = function(itemstack, user, pointed_thing)
+		xp_redo.add_xp(user:get_player_name(), 100)
+		itemstack:take_item()
+		return itemstack
+	end,
 })

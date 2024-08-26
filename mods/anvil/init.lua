@@ -19,11 +19,8 @@ local hud_timeout = 2  -- seconds
 anvil.make_unrepairable = function(item_name)
 	local item_def = minetest.registered_items[item_name]
 	if item_def then
-		-- Drop table reference. Copy other values over.
-		local groups = {not_repaired_by_anvil = 1}
-		for k, v in pairs(item_def.groups) do
-			groups[k] = v
-		end
+		local groups = table.copy(item_def.groups)
+		groups.not_repaired_by_anvil = 1
 		minetest.override_item(item_name, {groups = groups})
 	end
 end
@@ -57,12 +54,21 @@ end
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local shared_anvil_item = ItemStack({
+	name = "anvil:anvil",
+	meta = {
+		shared = 1,
+		description = S("Shared anvil")
+	}
+})
+
 -- the hammer for the anvil
 
 local hammer_def = {
 	description = S("Steel blacksmithing hammer"),
 	_doc_items_longdesc = S("A tool for repairing other tools at a blacksmith's anvil."),
-	_doc_items_usagehelp = S("Use this hammer to strike blows upon an anvil bearing a damaged tool and you can repair it. It can also be used for smashing stone, but it is not well suited to this task."),
+	_doc_items_usagehelp = S("Use this hammer to strike blows upon an anvil bearing a damaged tool and you can repair it. "
+		.. "It can also be used for smashing stone, but it is not well suited to this task."),
 	image = "anvil_tool_steelhammer.png",
 	inventory_image = "anvil_tool_steelhammer.png",
 
@@ -117,10 +123,14 @@ minetest.register_entity("anvil:item", {
 		end
 		return ""
 	end,
+	on_blast = function()
+		return false, false, {}
+	end,
 })
 
 local remove_item = function(pos, node)
-	local objs = minetest.get_objects_inside_radius({x = pos.x, y = pos.y + anvil.setting.item_displacement, z = pos.z}, .5)
+	local npos = vector.new(pos.x, pos.y + anvil.setting.item_displacement, pos.z)
+	local objs = minetest.get_objects_inside_radius(npos, .5)
 	if objs then
 		for _, obj in ipairs(objs) do
 			if obj and obj:get_luaentity() and obj:get_luaentity().name == "anvil:item" then
@@ -139,23 +149,21 @@ local update_item = function(pos, node)
 		tmp.texture = inv:get_stack("input", 1):get_name()
 		local e = minetest.add_entity(pos, "anvil:item")
 		local yaw = math.pi * 2 - node.param2 * math.pi / 2
-		if e.set_rotation == nil then
-			-- This is for 0.4.16 support, remove it eventually
-			e:set_yaw(yaw)
-			pos.y = pos.y + 5 / 16
-			e:set_pos(pos)
-		else
-			e:set_rotation({x = -1.5708, y = yaw, z = 0}) -- x is pitch, 1.5708 is 90 degrees.
-		end
+		e:set_rotation({x = -1.5708, y = yaw, z = 0}) -- x is pitch, 1.5708 is 90 degrees.
 	end
 end
 
-local metal_sounds
--- Apparently node_sound_metal_defaults is a newer thing, I ran into games using an older version of the default mod without it.
-if default.node_sound_metal_defaults ~= nil then
-	metal_sounds = default.node_sound_metal_defaults()
-else
-	metal_sounds = default.node_sound_stone_defaults()
+
+local function has_access(pos, player)
+	local name = player:get_player_name()
+	local meta = minetest.get_meta(pos)
+	local owner = meta:get_string("owner")
+	local shared = meta:get_int("shared") == 1
+	if shared or name == owner then
+		return true
+	else
+		return false
+	end
 end
 
 local hud_info_by_puncher_name = {}
@@ -184,16 +192,107 @@ minetest.register_globalstep(function()
 	end
 end)
 
+local function anvil_rightclick(pos, node, clicker, itemstack)
+	if not clicker or not itemstack then
+		return
+	end
+	local meta = minetest.get_meta(pos)
+	local name = clicker:get_player_name()
+	local owner = meta:get_string("owner")
+	local shared = meta:get_int("shared") == 1
+
+	if name ~= owner and not shared then
+		return itemstack
+	end
+
+	if itemstack:get_count() == 0 then
+		local inv = meta:get_inventory()
+		if not inv:is_empty("input") then
+			local return_stack = inv:get_stack("input", 1)
+			inv:set_stack("input", 1, nil)
+			local wield_index = clicker:get_wield_index()
+			clicker:get_inventory():set_stack("main", wield_index, return_stack)
+			if shared then
+				meta:set_string("infotext", S("Shared anvil"))
+			else
+				meta:set_string("infotext", S("@1's anvil", owner))
+			end
+			remove_item(pos, node)
+			return return_stack
+		end
+	end
+
+	local this_def = minetest.registered_nodes[node.name]
+	if this_def.allow_metadata_inventory_put(pos, "input", 1, itemstack:peek_item(), clicker) > 0 then
+		local s = itemstack:take_item()
+		local inv = meta:get_inventory()
+		inv:add_item("input", s)
+		local meta_description = s:get_meta():get_string("description")
+		if "" ~= meta_description then
+			if shared then
+				meta:set_string("infotext", S("Shared anvil"))
+			else
+				meta:set_string("infotext", S("@1's anvil", owner) .. "\n" .. meta_description)
+			end
+		end
+		meta:set_int("informed", 0)
+		update_item(pos, node)
+	end
+	return itemstack
+end
+
+local function anvil_rotate(pos, node, user, mode, new_param2)
+	if minetest.get_modpath("screwdriver") ~= nil and mode == screwdriver.ROTATE_FACE then
+		return
+	end
+
+	if not minetest.is_player(user) then
+		return
+	end
+
+	local player_name = user:get_player_name()
+	local wield_list = user:get_wield_list()
+	local wield_index = user:get_wield_index()
+	local wielded_original = user:get_inventory():get_stack(wield_list, wield_index)
+
+	minetest.after(0,function()
+		local player = minetest.get_player_by_name(player_name)
+		if not player then
+			return
+		end
+
+		local inv = player:get_inventory()
+		local wielded = inv:get_stack(wield_list, wield_index)
+
+		if wielded:get_name() ~= wielded_original:get_name() then
+			return
+		end
+
+		local node_now = minetest.get_node(pos)
+		if node_now.name ~= "anvil:anvil" then
+			return
+		end
+
+		local tool_after_rightclicking = anvil_rightclick(pos, node_now, player, wielded)
+		inv:set_stack(wield_list, wield_index, tool_after_rightclicking)
+	end)
+
+	return false
+end
+
 minetest.register_node("anvil:anvil", {
 	drawtype = "nodebox",
 	description = S("Anvil"),
 	_doc_items_longdesc = S("A tool for repairing other tools in conjunction with a blacksmith's hammer."),
-	_doc_items_usagehelp = S("Right-click on this anvil with a damaged tool to place the damaged tool upon it. You can then repair the damaged tool by striking it with a blacksmith's hammer. Repeated blows may be necessary to fully repair a badly worn tool. To retrieve the tool either punch or right-click the anvil with an empty hand."),
+	_doc_items_usagehelp = S("Right-click on this anvil with a damaged tool to place the damaged tool upon it. " ..
+		"You can then repair the damaged tool by striking it with a blacksmith's hammer. " ..
+		"Repeated blows may be necessary to fully repair a badly worn tool. " ..
+		"To retrieve the tool either punch or right-click the anvil with an empty hand."),
 	tiles = {"default_stone.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	groups = {cracky = 2},
-	sounds = metal_sounds,
+	sounds = default.node_sound_metal_defaults(),
 	-- the nodebox model comes from realtest
 	node_box = {
 		type = "fixed",
@@ -233,10 +332,8 @@ minetest.register_node("anvil:anvil", {
 	end,
 
 	preserve_metadata = function(pos, oldnode, oldmeta, drops)
-		if next(drops) and tonumber(oldmeta.shared) == 1 then
-			local meta = drops[next(drops)]:get_meta()
-			meta:set_int("shared", 1)
-			meta:set_string("description", S("Shared anvil"))
+		if drops[1] and tonumber(oldmeta.shared) == 1 then
+			drops[1] = ItemStack(shared_anvil_item)
 		end
 		return drops
 	end,
@@ -254,6 +351,10 @@ minetest.register_node("anvil:anvil", {
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
 		if listname ~= "input" then
+			return 0
+		end
+
+		if not has_access(pos, player) then
 			return 0
 		end
 
@@ -277,60 +378,18 @@ minetest.register_node("anvil:anvil", {
 	end,
 
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		if not has_access(pos, player) then
+			return 0
+		end
+
 		if listname ~= "input" then
 			return 0
 		end
 		return stack:get_count()
 	end,
 
-	on_rightclick = function(pos, node, clicker, itemstack)
-		if not clicker or not itemstack then
-			return
-		end
-		local meta = minetest.get_meta(pos)
-		local name = clicker:get_player_name()
-		local owner = meta:get_string("owner")
-		local shared = meta:get_int("shared") == 1
-
-		if name ~= owner and not shared then
-			return itemstack
-		end
-		if itemstack:get_count() == 0 then
-			local inv = meta:get_inventory()
-			if not inv:is_empty("input") then
-				local return_stack = inv:get_stack("input", 1)
-				inv:set_stack("input", 1, nil)
-				local wield_index = clicker:get_wield_index()
-				clicker:get_inventory():set_stack("main", wield_index, return_stack)
-				if shared then
-					meta:set_string("infotext", S("Shared anvil"))
-				else
-					meta:set_string("infotext", S("@1's anvil", owner))
-				end
-				remove_item(pos, node)
-				return return_stack
-			end
-		end
-		local this_def = minetest.registered_nodes[node.name]
-		if this_def.allow_metadata_inventory_put(pos, "input", 1, itemstack:peek_item(), clicker) > 0 then
-			local s = itemstack:take_item()
-			local meta = minetest.get_meta(pos)
-			local inv = meta:get_inventory()
-			inv:add_item("input", s)
-			local meta_description = s:get_meta():get_string("description")
-			if "" ~= meta_description then
-				if shared then
-					meta:set_string("infotext", S("Shared anvil"))
-				else
-					meta:set_string("infotext", S("@1's anvil", owner) .. "\n" .. meta_description)
-				end
-			end
-			meta:set_int("informed", 0)
-			update_item(pos, node)
-		end
-
-		return itemstack
-	end,
+	on_rotate = anvil_rotate,
+	on_rightclick = anvil_rightclick,
 
 	on_punch = function(pos, node, puncher)
 		if not pos or not node or not puncher then
@@ -466,6 +525,25 @@ minetest.register_node("anvil:anvil", {
 		puncher:set_wielded_item(wielded)
 	end,
 	is_ground_content = false,
+
+	on_blast = function(pos, intensity)
+		local drops = {}
+		local meta = minetest.get_meta(pos)
+		if meta:get_int("shared") == 1 then
+			drops[1] = ItemStack(shared_anvil_item)
+		else
+			drops[1] = ItemStack("anvil:anvil")
+		end
+		local inv = meta:get_inventory()
+		local input = inv:get_stack("input", 1)
+		if not input:is_empty() then
+			drops[2] = input:to_string()
+		end
+		remove_item(pos)
+		minetest.remove_node(pos)
+
+		return drops
+	end,
 })
 
 -- automatically restore entities lost due to /clearobjects or similar
