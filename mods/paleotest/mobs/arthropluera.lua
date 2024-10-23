@@ -67,6 +67,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 150)
+        end
+    end
+end
+
 local function arthropluera_logic(self)
 
     if self.hp <= 0 then
@@ -85,6 +94,7 @@ local function arthropluera_logic(self)
         
         minetest.remove_detached_inventory("arthropluera_" .. self.arthropluera_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 
@@ -357,7 +367,7 @@ end,
         if clicker:get_wielded_item():get_name() == "" and clicker:get_player_control().sneak == false and clicker:get_player_name() == self.owner then
         minetest.show_formspec(clicker:get_player_name(), "paleotest:arthropluera_inv",
             "size[8,9]" ..
-            "list[detached:paleotest:arthropluera_" .. self.arthropluera_number .. ";main;0,0;8,4;]" ..
+            "list[detached:paleotest:arthropluera_" .. self.arthropluera_number .. ";main;0,0;8,2;]" ..
             "list[current_player;main;0,6;8,3;]" ..
             "listring[detached:paleotest:arthropluera_" .. self.arthropluera_number .. ";main]" ..
             "listring[current_player;main]")

@@ -51,6 +51,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 250)
+        end
+    end
+end
+
 local function brachiosaurus_logic(self)
 
     if self.hp <= 0 then
@@ -69,6 +78,7 @@ local function brachiosaurus_logic(self)
         
         minetest.remove_detached_inventory("brachiosaurus_" .. self.brachiosaurus_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 
@@ -325,10 +335,10 @@ end,
 
 mob_core.register_spawn_egg("paleotest:brachiosaurus", "473f33cc", "393225d9")
 
-minetest.register_craftitem("paleotest:brontosaurus_dossier", {
-	description = "Brontosaurus Dossier",
+minetest.register_craftitem("paleotest:brachiosaurus_dossier", {
+	description = "Brachiosaurus Dossier",
 	stack_max= 1,
-	inventory_image = "paleotest_spawn_egg_base.png",
+	inventory_image = "paleotest_brachiosaurus_fg_female.png",
 	groups = {dossier = 1},
 	on_use = function(itemstack, user, pointed_thing)
 		xp_redo.add_xp(user:get_player_name(), 100)

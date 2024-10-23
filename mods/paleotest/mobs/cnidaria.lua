@@ -42,14 +42,25 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 15)
+        end
+    end
+end
+
 local function cnidaria_logic(self)
 
     if not self.isinliquid then
         self.hp = 0
     end
-
+    
     if self.hp <= 0 then
+        local pos = self.object:get_pos()
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 
@@ -88,6 +99,18 @@ local function cnidaria_logic(self)
         if mobkit.is_queue_empty_high(self) then
             mob_core.hq_aqua_roam(self, 0, 0.8, 3, 12)
         end
+    end
+    
+    local archelon_nearby = false
+    for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:getpos(), 10)) do
+        if obj:get_luaentity() and obj:get_luaentity().name == "paleotest:archelon" then
+            archelon_nearby = true
+            break
+        end
+    end
+
+    if archelon_nearby then
+        self.hp = 0
     end
 end
 

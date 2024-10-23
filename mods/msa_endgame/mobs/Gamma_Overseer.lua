@@ -18,6 +18,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 500)
+        end
+    end
+end
+
 local function gamma_overseer_logic(self)
 	
     if self.hp <= 0 then
@@ -175,6 +184,7 @@ minetest.register_entity("msa_endgame:gamma_overseer",{
             minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "msa_endgame:gamma_defense_unit")
             minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "msa_attack_drone:gamma_attack_drone")
             minetest.add_entity({x=pos.x+1, y=pos.y+1, z=pos.z+1}, "msa_endgame:gamma_defense_unit")
+            give_xp_to_nearby_players(pos)
             self.object:set_properties({
                 mesh = models[random_index],
                 textures = {textures[random_index]},

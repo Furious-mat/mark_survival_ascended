@@ -91,6 +91,15 @@ local function get_predators_in_area(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 85)
+        end
+    end
+end
+
 local function dire_wolf_logic(self)
 
     if self.hp <= 0 then
@@ -109,6 +118,7 @@ local function dire_wolf_logic(self)
         
         minetest.remove_detached_inventory("dire_wolf_" .. self.dire_wolf_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 

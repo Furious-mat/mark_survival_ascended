@@ -53,6 +53,15 @@ local function scan_for_prey(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 25)
+        end
+    end
+end
+
 local function ichthyornis_logic(self)
 
     if self.hp <= 0 then
@@ -71,6 +80,7 @@ local function ichthyornis_logic(self)
         
         minetest.remove_detached_inventory("ichthyornis_" .. self.ichthyornis_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 
@@ -225,6 +235,25 @@ minetest.register_entity("paleotest:ichthyornis", {
         takeoff = {range = {x = 160, y = 175}, speed = 20, loop = false},
         land = {range = {x = 175, y = 160}, speed = -10, loop = false},
         fly = {range = {x = 180, y = 210}, speed = 15, loop = true}
+    },
+    -- Sound
+    sounds = {
+        alter_child_pitch = true,
+        random = {
+            name = "paleotest_ichthyornis_idle",
+            gain = 1.0,
+            distance = 16
+        },
+        hurt = {
+            name = "paleotest_ichthyornis_hurt",
+            gain = 1.0,
+            distance = 16
+        },
+        death = {
+            name = "paleotest_ichthyornis_death",
+            gain = 1.0,
+            distance = 16
+        }
     },
     -- Basic
     physical = true,
