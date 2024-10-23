@@ -202,6 +202,7 @@ dofile(path.."/mobs/yutyrannus.lua")
 dofile(path.."/mobs/gigantoraptor.lua")
 
 -- Reptiles
+dofile(path.."/mobs/archelon.lua")
 dofile(path.."/mobs/carbonemys.lua")
 dofile(path.."/mobs/deinosuchus.lua")
 dofile(path.."/mobs/dimorphodon.lua")

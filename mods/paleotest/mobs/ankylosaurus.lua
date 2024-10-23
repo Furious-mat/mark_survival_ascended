@@ -53,6 +53,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 80)
+        end
+    end
+end
+
 local function ankylosaurus_logic(self)
 
     if self.hp <= 0 then
@@ -71,6 +80,7 @@ local function ankylosaurus_logic(self)
         
         minetest.remove_detached_inventory("ankylosaurus_" .. self.ankylosaurus_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 

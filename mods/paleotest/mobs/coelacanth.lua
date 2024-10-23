@@ -42,6 +42,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 5)
+        end
+    end
+end
+
 local function coelacanth_logic(self)
 
     if not self.isinliquid then
@@ -49,7 +58,9 @@ local function coelacanth_logic(self)
     end
 
     if self.hp <= 0 then
+        local pos = self.object:get_pos()
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 

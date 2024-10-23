@@ -52,6 +52,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 130)
+        end
+    end
+end
+
 local function ceratosaurus_logic(self)
 
     if self.hp <= 0 then
@@ -70,6 +79,7 @@ local function ceratosaurus_logic(self)
         
         minetest.remove_detached_inventory("ceratosaurus_" .. self.ceratosaurus_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         return
     end
 
@@ -337,8 +347,10 @@ minetest.register_entity("paleotest:ceratosaurus", {
     rivals = {},
     follow = paleotest.global_hemogoblin_cocktail,
     drops = {
-        {name = "paleotest:meat_raw", chance = 1, min = 20, max = 40},
-        {name = "paleotest:hide", chance = 1, min = 20, max = 30},
+        {name = "paleotest:meat_raw", chance = 1, min = 20, max = 30},
+        {name = "paleotest:raw_prime_meat", chance = 1, min = 10, max = 20},
+        {name = "paleotest:keratin", chance = 1, min = 10, max = 20},
+        {name = "paleotest:hide", chance = 1, min = 20, max = 40},
         {name = "paleotest:cerato_venom_spine", chance = 1, min = 4, max = 16}
     },
     timeout = 0,

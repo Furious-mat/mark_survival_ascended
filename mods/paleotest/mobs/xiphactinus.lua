@@ -64,6 +64,15 @@ local function set_mob_tables(self)
     end
 end
 
+local function give_xp_to_nearby_players(pos)
+    local players = minetest.get_objects_inside_radius(pos, 10)
+    for _, obj in ipairs(players) do
+        if obj:is_player() then
+            xp_redo.add_xp(obj:get_player_name(), 50)
+        end
+    end
+end
+
 local function xiphactinus_logic(self)
 
     if not self.isinliquid and not self.tamed then
@@ -86,6 +95,7 @@ local function xiphactinus_logic(self)
         
         minetest.remove_detached_inventory("xiphactinus_" .. self.xiphactinus_number)
         mob_core.on_die(self)
+        give_xp_to_nearby_players(pos)
         local pos = self.object:get_pos()
             minetest.add_particlespawner({
 	    amount = 15,
